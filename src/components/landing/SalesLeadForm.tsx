@@ -4,31 +4,41 @@ import { FormEvent, useState, type ReactNode } from "react";
 import { currentHebrewMonth, LANDING } from "@/data/landing";
 import { cn } from "@/lib/cn";
 
-type Errors = Partial<Record<"name" | "phone" | "form", string>>;
+type FieldKey = "name" | "phone" | "business" | "form";
+type Errors = Partial<Record<FieldKey, string>>;
 
 function validatePhone(phone: string) {
   const digits = phone.replace(/\D/g, "");
   return digits.length >= 9 && digits.length <= 12;
 }
 
+/**
+ * High-converting lead form
+ * Fields: Name · Phone · Business (optional via withBusiness)
+ */
 export function SalesLeadForm({
   idPrefix = "lead",
   title = "רוצה שאבנה את זה לעסק שלך?",
   cta = "אני רוצה אתר שמביא לי לקוחות",
-  namePh = "איך קוראים לך?",
-  phonePh = "מה המספר שלך?",
+  namePh = "השם שלך",
+  phonePh = "טלפון",
+  businessPh = "שם העסק",
   source,
   className,
   variant = "card",
+  withBusiness = false,
 }: {
   idPrefix?: string;
   title?: ReactNode;
   cta?: string;
   namePh?: string;
   phonePh?: string;
+  businessPh?: string;
   source?: string;
   className?: string;
   variant?: "card" | "soft";
+  /** Name + Phone + Business (CRO default for agency pages) */
+  withBusiness?: boolean;
 }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [errors, setErrors] = useState<Errors>({});
@@ -39,10 +49,14 @@ export function SalesLeadForm({
     const fd = new FormData(form);
     const name = String(fd.get("name") ?? "").trim();
     const phone = String(fd.get("phone") ?? "").trim();
+    const business = String(fd.get("business") ?? "").trim();
 
     const next: Errors = {};
-    if (name.length < 2) next.name = "נא למלא שם";
-    if (!validatePhone(phone)) next.phone = "טלפון לא תקין";
+    if (name.length < 2) next.name = "נא למלא שם מלא";
+    if (!validatePhone(phone)) next.phone = "נא להזין טלפון תקין (9–12 ספרות)";
+    if (withBusiness && business.length < 2) {
+      next.business = "נא למלא שם עסק";
+    }
     setErrors(next);
     if (Object.keys(next).length) return;
 
@@ -54,6 +68,7 @@ export function SalesLeadForm({
         body: JSON.stringify({
           name,
           phone,
+          business: withBusiness ? business : "",
           source: source || idPrefix || "טופס אתר",
         }),
       });
@@ -81,6 +96,7 @@ export function SalesLeadForm({
           {title}
         </p>
       ) : null}
+
       {status === "sent" ? (
         <p className="lead-ok" role="status" aria-live="polite">
           תודה! קיבלנו את הפרטים — נחזור אליך בהקדם.
@@ -90,10 +106,11 @@ export function SalesLeadForm({
           onSubmit={onSubmit}
           noValidate
           aria-labelledby={title ? `${idPrefix}-title` : undefined}
+          className="lead-form"
         >
           <div className="lead-row">
-            <div className="field">
-              <label htmlFor={`${idPrefix}-name`} className="sr-only">
+            <div className={cn("field", errors.name && "field--error")}>
+              <label htmlFor={`${idPrefix}-name`} className="field-label">
                 {namePh}
               </label>
               <input
@@ -104,16 +121,23 @@ export function SalesLeadForm({
                 required
                 aria-required="true"
                 aria-invalid={errors.name ? true : undefined}
-                aria-describedby={errors.name ? `${idPrefix}-name-err` : undefined}
+                aria-describedby={
+                  errors.name ? `${idPrefix}-name-err` : undefined
+                }
               />
               {errors.name ? (
-                <p className="field-error" id={`${idPrefix}-name-err`} role="alert">
+                <p
+                  className="field-error"
+                  id={`${idPrefix}-name-err`}
+                  role="alert"
+                >
                   {errors.name}
                 </p>
               ) : null}
             </div>
-            <div className="field">
-              <label htmlFor={`${idPrefix}-phone`} className="sr-only">
+
+            <div className={cn("field", errors.phone && "field--error")}>
+              <label htmlFor={`${idPrefix}-phone`} className="field-label">
                 {phonePh}
               </label>
               <input
@@ -141,12 +165,43 @@ export function SalesLeadForm({
                 </p>
               ) : null}
             </div>
+
+            {withBusiness ? (
+              <div className={cn("field", errors.business && "field--error")}>
+                <label htmlFor={`${idPrefix}-business`} className="field-label">
+                  {businessPh}
+                </label>
+                <input
+                  id={`${idPrefix}-business`}
+                  name="business"
+                  placeholder={businessPh}
+                  autoComplete="organization"
+                  required
+                  aria-required="true"
+                  aria-invalid={errors.business ? true : undefined}
+                  aria-describedby={
+                    errors.business ? `${idPrefix}-business-err` : undefined
+                  }
+                />
+                {errors.business ? (
+                  <p
+                    className="field-error"
+                    id={`${idPrefix}-business-err`}
+                    role="alert"
+                  >
+                    {errors.business}
+                  </p>
+                ) : null}
+              </div>
+            ) : null}
           </div>
+
           {errors.form ? (
-            <p className="field-error" role="alert">
+            <p className="field-error field-error--form" role="alert">
               {errors.form}
             </p>
           ) : null}
+
           <button
             type="submit"
             className="btn btn-cta lead-submit"
@@ -156,15 +211,17 @@ export function SalesLeadForm({
             <span>{status === "sending" ? "שולח…" : cta}</span>
             {status !== "sending" ? (
               <span className="lead-arrow" aria-hidden>
-                ↗
+                ←
               </span>
             ) : null}
           </button>
+
           <p className="lead-micro">
-            בלי ספאם. בלי התחייבות. חוזרת עם הצעד הבא תוך 24 שעות.
+            בלי ספאם. בלי התחייבות. נחזור מהר — אתם מחליטים.
           </p>
         </form>
       )}
+
       <p className="scarcity">
         *מוגבל ל־{LANDING.monthlyCap} עסקים בחודש · מקומות אחרונים ל
         {currentHebrewMonth()}

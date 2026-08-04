@@ -1,7 +1,9 @@
 @import "tailwindcss";
 @config "../../tailwind.config.mjs";
 @import "../styles/tokens.css";
-@import "../styles/base.css";
+@import "../styles/elite.css";
 @import "../styles/a11y.css";
 
-/* Sales page: base tokens + a11y modes. Legacy chrome kept for unused imports. */
+/* Elite conversion landing shell. Legacy sales CSS available if needed:
+   @import "../styles/base.css";
+*/

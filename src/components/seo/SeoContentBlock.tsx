@@ -29,17 +29,21 @@ export function SeoContentBlock() {
         <p>
           אנחנו משלבים עיצוב יוקרתי, מבנה שממיר, בסיס <strong>SEO</strong>, מובייל
           מלא ובעלות מלאה שלכם על האתר. מחפשים{" "}
-          <strong>בניית אתרים לעסקים</strong>,{" "}
-          <strong>אתר תדמית שמביא לידים</strong>, <strong>דף נחיתה</strong> או{" "}
+          <strong>דף נחיתה מקצועי</strong>, <strong>אתר One Page</strong>,{" "}
+          <strong>אתר תדמית לעסק</strong>, <strong>שדרוג אתר קיים</strong> או{" "}
           <strong>בניית חנות אונליין</strong>? Aviya בונה את המסלול הנכון לעסק —
-          בעברית, בישראל, ברמה גבוהה.
+          בעברית, בישראל, ברמה גבוהה. בהקמה נכללים בין היתר: התאמה לכל המסכים,
+          טופס ווואטסאפ, SEO בסיסי, Analytics, Search Console, ביצועים ואבטחה.
         </p>
         <ul className="seo-services">
           <li>
-            <a href="#how">בניית אתרים וחנויות אונליין — Aviya</a>
+            <a href="#services">דף נחיתה · One Page · אתר תדמית · חנות</a>
           </li>
           <li>
-            <a href="#includes">עיצוב, סליקה, SEO ואוטומציות</a>
+            <a href="#includes">מה כוללת הקמת אתר (SEO, Analytics, מובייל)</a>
+          </li>
+          <li>
+            <a href="#care">תחזוקה וליווי אחרי השקה</a>
           </li>
           <li>
             <a href="#contact">יצירת קשר — אביה סטודיו</a>

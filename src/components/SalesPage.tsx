@@ -53,6 +53,10 @@ import {
   midJumpDetails,
   midJumpStart,
   navCta,
+  offerTypes,
+  offerTypesCta,
+  offerTypesLead,
+  offerTypesTitle,
   outcomeBenefits,
   outcomesLead,
   outcomesTitle,
@@ -70,6 +74,11 @@ import {
   promiseTitle,
   proofBarItems,
   proofBarLead,
+  careCta,
+  careItems,
+  careLead,
+  careNote,
+  careTitle,
   riskItems,
   riskTitle,
   showcaseLead,
@@ -353,8 +362,9 @@ export default function SalesPage() {
           </div>
           <nav className="sales-nav-links" aria-label="ניווט ראשי">
             <a href="#paths">מסלולים</a>
+            <a href="#services">שירותים</a>
             <a href="#work">דוגמאות</a>
-            <a href="#how">איך</a>
+            <a href="#includes">מה כולל</a>
             <a href="#contact">התחלה</a>
           </nav>
           <a href="#contact" className="sales-nav-cta sales-nav-cta--pulse">
@@ -500,6 +510,38 @@ export default function SalesPage() {
                 ))}
               </div>
             </Reveal>
+          </div>
+        </section>
+
+        {/* Service types — SEO-rich offer menu (no prices) */}
+        <section id="services" className="sales-sec sales-sec-services">
+          <div className="sales-shell">
+            <Reveal>
+              <div className="sales-head">
+                <p className="sales-kicker">שירותים</p>
+                <h2 className="sales-h2">{offerTypesTitle}</h2>
+                <p className="sales-p">{offerTypesLead}</p>
+              </div>
+            </Reveal>
+            <Reveal delay={40}>
+              <div className="offer-grid">
+                {offerTypes.map((o) => (
+                  <article key={o.id} className="offer-card lift-card">
+                    <h3>{o.title}</h3>
+                    <p className="offer-body">{o.body}</p>
+                    <ul className="offer-bullets">
+                      {o.bullets.map((b) => (
+                        <li key={b}>{b}</li>
+                      ))}
+                    </ul>
+                    <a href="#contact" className="offer-cta">
+                      {offerTypesCta}
+                    </a>
+                  </article>
+                ))}
+              </div>
+            </Reveal>
+            <MidJump label={midJumpDetails} soft />
           </div>
         </section>
 
@@ -757,6 +799,36 @@ export default function SalesPage() {
               <p className="sales-p sales-center sales-note">{includesNote}</p>
             </Reveal>
             <MidJump label={midJumpStart} />
+          </div>
+        </section>
+
+        <section id="care" className="sales-sec sales-sec-care">
+          <div className="sales-shell">
+            <Reveal>
+              <div className="sales-head">
+                <p className="sales-kicker">אחרי ההשקה</p>
+                <h2 className="sales-h2">{careTitle}</h2>
+                <p className="sales-p">{careLead}</p>
+              </div>
+            </Reveal>
+            <Reveal delay={40}>
+              <ul className="care-grid">
+                {careItems.map((c) => (
+                  <li key={c.title}>
+                    <h3>{c.title}</h3>
+                    <p>{c.body}</p>
+                  </li>
+                ))}
+              </ul>
+            </Reveal>
+            <Reveal>
+              <p className="sales-p sales-center sales-note">{careNote}</p>
+              <div className="mid-jump">
+                <a href="#contact" className="mid-jump-link mid-jump-link--soft">
+                  {careCta}
+                </a>
+              </div>
+            </Reveal>
           </div>
         </section>
 

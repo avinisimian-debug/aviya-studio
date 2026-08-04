@@ -1,8 +1,11 @@
 "use client";
 
-import SalesPage from "@/components/SalesPage";
+import ElitePage from "@/components/elite/ElitePage";
 
-/** Entry: long-form conversion landing (AVIYA) */
+/**
+ * Home entry → elite conversion architecture (skeleton).
+ * Previous long-form SalesPage remains at @/components/SalesPage for reference / migration.
+ */
 export default function HomePage() {
-  return <SalesPage />;
+  return <ElitePage />;
 }
