@@ -160,12 +160,14 @@ export function SalesLeadForm({
               </span>
             ) : null}
           </button>
+          <p className="lead-micro">
+            בלי ספאם. בלי התחייבות. חוזרת עם הצעד הבא תוך 24 שעות.
+          </p>
         </form>
       )}
       <p className="scarcity">
-        *מוגבל ל־{LANDING.monthlyCap} עסקים בחודש
-        <br />
-        *מקומות אחרונים לחודש {currentHebrewMonth()}
+        *מוגבל ל־{LANDING.monthlyCap} עסקים בחודש · מקומות אחרונים ל
+        {currentHebrewMonth()}
       </p>
     </div>
   );

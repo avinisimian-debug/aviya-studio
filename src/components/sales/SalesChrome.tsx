@@ -1,6 +1,23 @@
 "use client";
 
-import { useEffect, useState, type CSSProperties } from "react";
+import {
+  useEffect,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+} from "react";
+
+function usePrefersReducedMotion() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+      mq.addEventListener("change", onChange);
+      return () => mq.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => true
+  );
+}
 
 /** Top reading progress — agency / SaaS pattern */
 export function SalesScrollProgress() {
@@ -33,12 +50,11 @@ export function SalesScrollProgress() {
 
 /** Subtle gold wash that follows the pointer on desktop (hero only) */
 export function HeroAura() {
-  const [style, setStyle] = useState<CSSProperties>({
-    opacity: 0,
-  });
+  const reduced = usePrefersReducedMotion();
+  const [style, setStyle] = useState<CSSProperties>({ opacity: 0 });
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (reduced) return;
     if (window.matchMedia("(pointer: coarse)").matches) return;
 
     const root = document.getElementById("top");
@@ -61,8 +77,9 @@ export function HeroAura() {
       root.removeEventListener("pointermove", onMove);
       root.removeEventListener("pointerleave", onLeave);
     };
-  }, []);
+  }, [reduced]);
 
+  if (reduced) return null;
   return <div className="hero-aura" style={style} aria-hidden />;
 }
 
@@ -76,38 +93,38 @@ export function CountSignal({
 }) {
   const n = parseInt(value.replace(/\D/g, ""), 10) || 0;
   const pad = value.length;
+  const reduced = usePrefersReducedMotion();
   const [shown, setShown] = useState(0);
-  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(n);
-      return;
-    }
+    if (reduced || n <= 0) return;
+
     let start: number | null = null;
     const dur = 900;
     let raf = 0;
-    const tick = (t: number) => {
-      if (start == null) start = t;
-      const p = Math.min(1, (t - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setShown(Math.round(n * eased));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    const t = window.setTimeout(() => {
-      setReady(true);
+    const delay = window.setTimeout(() => {
+      const tick = (t: number) => {
+        if (start == null) start = t;
+        const p = Math.min(1, (t - start) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setShown(Math.round(n * eased));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
       raf = requestAnimationFrame(tick);
     }, 420);
+
     return () => {
-      window.clearTimeout(t);
+      window.clearTimeout(delay);
       cancelAnimationFrame(raf);
     };
-  }, [n]);
+  }, [n, reduced]);
 
   const display =
-    n > 0
-      ? String(ready || shown ? shown : 0).padStart(pad, "0")
-      : value;
+    n <= 0
+      ? value
+      : reduced
+        ? String(n).padStart(pad, "0")
+        : String(shown).padStart(pad, "0");
 
   return (
     <li>
