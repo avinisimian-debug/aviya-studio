@@ -14,7 +14,7 @@ function validatePhone(phone: string) {
 export function SalesLeadForm({
   idPrefix = "lead",
   title = "רוצה שאבנה את זה לעסק שלך?",
-  cta = "אני רוצה להתחיל למכור בדיגיטל",
+  cta = "אני רוצה אתר שמביא לי לקוחות",
   namePh = "איך קוראים לך?",
   phonePh = "מה המספר שלך?",
   source,

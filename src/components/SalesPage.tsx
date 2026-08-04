@@ -40,6 +40,9 @@ import {
   midJumpDetails,
   midJumpStart,
   navCta,
+  paths,
+  pathsLead,
+  pathsTitle,
   photos,
   processLead,
   processSteps,
@@ -182,6 +185,7 @@ function ShowcaseCard({
   tone,
   line,
   img,
+  domain,
   traits,
   i,
 }: {
@@ -190,6 +194,7 @@ function ShowcaseCard({
   tone: string;
   line: string;
   img: string;
+  domain: string;
   traits: readonly string[];
   i: number;
 }) {
@@ -200,14 +205,12 @@ function ShowcaseCard({
           <span />
           <span />
           <span />
-          <div className="show-url">
-            {name.toLowerCase().replace(/\s/g, "")}.shop
-          </div>
+          <div className="show-url">{domain}</div>
         </div>
         <div className="show-shot">
           <Image
             src={img}
-            alt={`תבנית עיצוב בסגנון ${cat} — ${name}`}
+            alt={`דוגמת עיצוב ${cat} — ${name}`}
             width={800}
             height={560}
             sizes="(max-width: 900px) 90vw, 33vw"
@@ -258,9 +261,9 @@ export default function SalesPage() {
             <BrandLogo size="nav" href="#top" priority />
           </div>
           <nav className="sales-nav-links" aria-label="ניווט ראשי">
-            <a href="#work">תבניות</a>
-            <a href="#why">למה עכשיו</a>
-            <a href="#how">איך זה עובד</a>
+            <a href="#paths">מסלולים</a>
+            <a href="#work">דוגמאות</a>
+            <a href="#how">איך</a>
             <a href="#contact">התחלה</a>
           </nav>
           <a href="#contact" className="sales-nav-cta">
@@ -301,7 +304,7 @@ export default function SalesPage() {
                 <em className="sales-h1-em">{heroHeadlineEm2}</em>
                 <span className="sr-only">
                   {" "}
-                  — בניית אתרים וחנויות דיגיטליות | Aviya
+                  — בניית אתרים שמביאים לקוחות וחנויות דיגיטליות | Aviya
                 </span>
               </h1>
               <p className="sales-sub hero-rise delay-5">{heroSub}</p>
@@ -341,7 +344,7 @@ export default function SalesPage() {
                   </div>
                   <div className="device-desk-screen">
                     <Image
-                      src={photos.fashion}
+                      src={photos.service}
                       alt=""
                       width={520}
                       height={340}
@@ -349,25 +352,52 @@ export default function SalesPage() {
                   </div>
                 </div>
                 <div className="device-phone">
-                  <Image
-                    src={photos.beauty}
-                    alt=""
-                    width={220}
-                    height={400}
-                  />
+                  <Image src={photos.fashion} alt="" width={220} height={400} />
                 </div>
               </div>
               <p className="sales-hero-side-cap">
                 <span>{LANDING.brand}</span>
-                כך נראית רמה — דסקטופ ומובייל
+                אתר לידים · חנות · מובייל
               </p>
             </div>
           </div>
 
-          <a href="#work" className="sales-scroll-hint" aria-label="גלה עוד">
+          <a href="#paths" className="sales-scroll-hint" aria-label="גלה עוד">
             <span />
             לגלול
           </a>
+        </section>
+
+        {/* Two paths */}
+        <section id="paths" className="sales-sec sales-sec-paths">
+          <div className="sales-shell">
+            <Reveal>
+              <div className="sales-head">
+                <p className="sales-kicker">מה בונים</p>
+                <h2 className="sales-h2">{pathsTitle}</h2>
+                <p className="sales-p">{pathsLead}</p>
+              </div>
+            </Reveal>
+            <Reveal delay={40}>
+              <div className="paths-grid">
+                {paths.map((p) => (
+                  <article key={p.id} className={`path-card path-card--${p.id}`}>
+                    <p className="path-kicker">{p.kicker}</p>
+                    <h3>{p.title}</h3>
+                    <p className="path-body">{p.body}</p>
+                    <ul>
+                      {p.bullets.map((b) => (
+                        <li key={b}>{b}</li>
+                      ))}
+                    </ul>
+                    <a href="#contact" className="path-cta">
+                      זה המסלול שלי
+                    </a>
+                  </article>
+                ))}
+              </div>
+            </Reveal>
+          </div>
         </section>
 
         <section className="sales-strip" aria-label="מיצוב">

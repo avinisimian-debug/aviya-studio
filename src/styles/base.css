@@ -1124,6 +1124,197 @@ img {
   color: var(--fg-on-dark-muted) !important;
 }
 
+/* —— Two offer paths —— */
+.sales-sec-paths {
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(196, 163, 90, 0.08), transparent 55%),
+    var(--paper);
+}
+
+.paths-grid {
+  display: grid;
+  gap: 1.15rem;
+}
+
+@media (min-width: 800px) {
+  .paths-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.35rem;
+  }
+}
+
+.path-card {
+  position: relative;
+  padding: 1.75rem 1.45rem 1.5rem;
+  border-radius: calc(var(--radius) + 0.15rem);
+  border: 1px solid var(--line);
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  overflow: hidden;
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+
+.path-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 22px 50px rgba(20, 20, 24, 0.12);
+}
+
+.path-card--leads {
+  background: linear-gradient(165deg, #121216 0%, #1c1a16 100%);
+  border-color: rgba(196, 163, 90, 0.22);
+  color: var(--fg-on-dark);
+}
+
+.path-card--leads h3,
+.path-card--leads .path-body {
+  color: var(--fg-on-dark);
+}
+
+.path-card--leads .path-body {
+  color: var(--fg-on-dark-soft);
+}
+
+.path-card--leads li {
+  color: var(--fg-on-dark-soft);
+}
+
+.path-card--leads li::before {
+  color: var(--gold);
+}
+
+.path-card--shop {
+  background: linear-gradient(165deg, #fff 0%, #f7f4ec 100%);
+  border-color: rgba(196, 163, 90, 0.28);
+}
+
+.path-kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9a7a35;
+}
+
+.path-card--leads .path-kicker {
+  color: var(--gold);
+}
+
+.path-card h3 {
+  margin: 0;
+  font-family: var(--font-display-stack);
+  font-size: clamp(1.35rem, 2.4vw, 1.65rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--fg);
+}
+
+.path-body {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.7;
+  color: var(--fg-muted);
+  flex: 1;
+}
+
+.path-card ul {
+  list-style: none;
+  margin: 0.25rem 0 0.5rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.path-card li {
+  position: relative;
+  padding-inline-start: 1.15rem;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--fg-soft);
+  line-height: 1.45;
+}
+
+.path-card li::before {
+  content: "→";
+  position: absolute;
+  inset-inline-start: 0;
+  color: #9a7a35;
+  font-size: 0.85rem;
+}
+
+.path-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  margin-top: 0.35rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 1.15rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  background: var(--cta);
+  color: var(--cta-ink);
+  box-shadow: 0 8px 22px rgba(196, 163, 90, 0.25);
+  transition: transform 0.2s var(--ease);
+}
+
+.path-card--leads .path-cta {
+  background: var(--cta);
+  color: var(--ink);
+}
+
+.path-cta:hover {
+  transform: translateY(-1px);
+}
+
+/* Hero polish */
+.sales-h1 {
+  max-width: 22ch;
+}
+
+@media (min-width: 980px) {
+  .sales-h1 {
+    max-width: 26ch;
+  }
+}
+
+.sales-qualifier {
+  max-width: 36rem;
+}
+
+.craft-signals {
+  padding: 0.85rem 0;
+  border-block: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Strip refinement */
+.sales-strip-inner {
+  max-width: 42rem;
+}
+
+@media (max-width: 767px) {
+  .path-card {
+    padding: 1.35rem 1.15rem;
+  }
+
+  .path-cta {
+    width: 100%;
+  }
+}
+
+@media (hover: none) {
+  .path-card:hover {
+    transform: none;
+  }
+}
+
 /* Story */
 .sales-beat {
   position: relative;
