@@ -2,7 +2,13 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { BrandLogo } from "@/components/BrandLogo";
+import {
+  CountSignal,
+  HeroAura,
+  SalesScrollProgress,
+} from "@/components/sales/SalesChrome";
 import {
   aboutStripBody,
   aboutStripTitle,
@@ -214,7 +220,10 @@ function ShowcaseCard({
   i: number;
 }) {
   return (
-    <article className={`show-card show-card--${tone}`}>
+    <article
+      className={`show-card show-card--${tone}`}
+      style={{ animationDelay: `${i * 0.08}s` }}
+    >
       <div className="show-browser">
         <div className="show-chrome" aria-hidden>
           <span />
@@ -255,14 +264,81 @@ function ShowcaseCard({
   );
 }
 
+function HeroDevices() {
+  const wrap = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    if (reduced) return;
+    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const el = wrap.current;
+    if (!el) return;
+
+    let raf = 0;
+    const onMove = (e: PointerEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        el.style.setProperty("--tilt-x", `${px * 10}deg`);
+        el.style.setProperty("--tilt-y", `${py * -8}deg`);
+        el.style.setProperty("--shift-x", `${px * -12}px`);
+        el.style.setProperty("--shift-y", `${py * -10}px`);
+      });
+    };
+    const onLeave = () => {
+      el.style.setProperty("--tilt-x", "0deg");
+      el.style.setProperty("--tilt-y", "0deg");
+      el.style.setProperty("--shift-x", "0px");
+      el.style.setProperty("--shift-y", "0px");
+    };
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerleave", onLeave);
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerleave", onLeave);
+    };
+  }, [reduced]);
+
+  return (
+    <div className="device-stack device-stack--live" ref={wrap} aria-hidden>
+      <div className="device-desk">
+        <div className="device-desk-bar">
+          <span />
+          <span />
+          <span />
+        </div>
+        <div className="device-desk-screen">
+          <Image src={photos.service} alt="" width={520} height={340} />
+        </div>
+      </div>
+      <div className="device-phone">
+        <Image src={photos.fashion} alt="" width={220} height={400} />
+      </div>
+    </div>
+  );
+}
+
 /**
  * Elite conversion homepage — craft proof + sales machine
  */
 export default function SalesPage() {
   const [faqOpen, setFaqOpen] = useState<number | null>(0);
+  const [navScrolled, setNavScrolled] = useState(false);
+  const reduced = useReducedMotion();
+
+  useEffect(() => {
+    const onScroll = () => setNavScrolled(window.scrollY > 18);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <div className="sales-site">
+      <SalesScrollProgress />
       <a href="#main" className="skip-link">
         דלג לתוכן
       </a>
@@ -270,7 +346,7 @@ export default function SalesPage() {
         הצהרת נגישות
       </a>
 
-      <header className="sales-nav">
+      <header className={`sales-nav${navScrolled ? " is-scrolled" : ""}`}>
         <div className="sales-shell sales-nav-inner">
           <div className="sales-nav-brand">
             <BrandLogo size="nav" href="#top" priority />
@@ -281,7 +357,7 @@ export default function SalesPage() {
             <a href="#how">איך</a>
             <a href="#contact">התחלה</a>
           </nav>
-          <a href="#contact" className="sales-nav-cta">
+          <a href="#contact" className="sales-nav-cta sales-nav-cta--pulse">
             {navCta}
           </a>
         </div>
@@ -300,6 +376,9 @@ export default function SalesPage() {
             />
             <div className="sales-hero-veil" />
             <div className="sales-hero-grain" />
+            <div className="hero-orb hero-orb-a" />
+            <div className="hero-orb hero-orb-b" />
+            <HeroAura />
           </div>
 
           <div className="sales-shell sales-hero-grid">
@@ -314,9 +393,11 @@ export default function SalesPage() {
               <p className="sales-qualifier hero-rise delay-3">{heroQualifier}</p>
               <h1 className="sales-h1 hero-rise delay-4">
                 {heroHeadlineBefore}
-                <em className="sales-h1-em">{heroHeadlineEm1}</em>
+                <em className="sales-h1-em text-shimmer">{heroHeadlineEm1}</em>
                 {heroHeadlineMid}
-                <em className="sales-h1-em">{heroHeadlineEm2}</em>
+                <em className="sales-h1-em text-shimmer delay-shimmer">
+                  {heroHeadlineEm2}
+                </em>
                 <span className="sr-only">
                   {" "}
                   — בניית אתרים שמביאים לקוחות וחנויות דיגיטליות | Aviya
@@ -332,10 +413,7 @@ export default function SalesPage() {
 
               <ul className="craft-signals hero-rise delay-5" aria-label="יתרונות">
                 {craftSignals.map((s) => (
-                  <li key={s.t}>
-                    <strong>{s.k}</strong>
-                    <span>{s.t}</span>
-                  </li>
+                  <CountSignal key={s.t} value={s.k} label={s.t} />
                 ))}
               </ul>
 
@@ -359,26 +437,7 @@ export default function SalesPage() {
             </div>
 
             <div className="sales-hero-side hero-rise delay-4">
-              <div className="device-stack" aria-hidden>
-                <div className="device-desk">
-                  <div className="device-desk-bar">
-                    <span />
-                    <span />
-                    <span />
-                  </div>
-                  <div className="device-desk-screen">
-                    <Image
-                      src={photos.service}
-                      alt=""
-                      width={520}
-                      height={340}
-                    />
-                  </div>
-                </div>
-                <div className="device-phone">
-                  <Image src={photos.fashion} alt="" width={220} height={400} />
-                </div>
-              </div>
+              <HeroDevices />
               <p className="sales-hero-side-cap">
                 <span>{LANDING.brand}</span>
                 אתר לידים · חנות · מובייל
@@ -392,15 +451,19 @@ export default function SalesPage() {
           </a>
         </section>
 
-        {/* Social proof strip — elite SaaS pattern right under hero */}
+        {/* Social proof strip — marquee pattern used by elite SaaS */}
         <section className="proof-bar" aria-label="קהלים">
           <div className="sales-shell proof-bar-inner">
             <p className="proof-bar-lead">{proofBarLead}</p>
-            <ul className="proof-bar-list">
-              {proofBarItems.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
+            <div className="proof-marquee" dir="ltr">
+              <ul className="proof-bar-list proof-track">
+                {[...proofBarItems, ...proofBarItems].map((item, i) => (
+                  <li key={`${item}-${i}`} aria-hidden={i >= proofBarItems.length}>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </section>
 
@@ -416,8 +479,12 @@ export default function SalesPage() {
             </Reveal>
             <Reveal delay={40}>
               <div className="paths-grid">
-                {paths.map((p) => (
-                  <article key={p.id} className={`path-card path-card--${p.id}`}>
+                {paths.map((p, i) => (
+                  <article
+                    key={p.id}
+                    className={`path-card path-card--${p.id} lift-card`}
+                    style={{ animationDelay: `${i * 0.1}s` }}
+                  >
                     <p className="path-kicker">{p.kicker}</p>
                     <h3>{p.title}</h3>
                     <p className="path-body">{p.body}</p>
@@ -775,7 +842,31 @@ export default function SalesPage() {
                           {open ? "−" : "+"}
                         </span>
                       </button>
-                      {open ? <p className="sales-faq-a">{item.a}</p> : null}
+                      <AnimatePresence initial={false}>
+                        {open ? (
+                          <motion.div
+                            key="a"
+                            initial={
+                              reduced
+                                ? false
+                                : { height: 0, opacity: 0 }
+                            }
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={
+                              reduced
+                                ? undefined
+                                : { height: 0, opacity: 0 }
+                            }
+                            transition={{
+                              duration: 0.38,
+                              ease: [0.4, 0, 0.2, 1],
+                            }}
+                            className="sales-faq-anim"
+                          >
+                            <p className="sales-faq-a">{item.a}</p>
+                          </motion.div>
+                        ) : null}
+                      </AnimatePresence>
                     </div>
                   );
                 })}
