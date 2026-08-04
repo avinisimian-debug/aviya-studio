@@ -2,8 +2,8 @@ import { siteSeo } from "@/lib/seo";
 import { LANDING } from "@/data/landing";
 
 /**
- * Server-rendered SEO content block — real crawlable text with commercial
- * keywords, written naturally (not hidden spam). Placed before footer.
+ * Server-rendered SEO content — crawlable brand + service text (not hidden).
+ * Helps brand queries: Aviya / אביה / בניית אתרים Aviya
  */
 export function SeoContentBlock() {
   return (
@@ -15,32 +15,34 @@ export function SeoContentBlock() {
     >
       <div className="sales-shell seo-block-inner">
         <h2 id="seo-heading" itemProp="name">
-          בניית אתרים שמביאים לקוחות וחנויות דיגיטליות לעסקים בישראל
+          Aviya (אביה) — בניית אתרים וחנויות דיגיטליות בישראל
         </h2>
         <p itemProp="description">
-          <strong itemProp="provider">{LANDING.brand}</strong> הוא סטודיו דיגיטלי
-          לבניית <strong>אתרים מקצועיים שמביאים לקוחות ישירים</strong> — לשירותים,
-          קליניקות, ייעוץ, B2B ומותגים — וכן{" "}
-          <strong>חנויות אינטרנטיות</strong> ו<strong>אתרי מכירות</strong> כשצריך
-          למכור מוצרים. לא חייבים חנות: רוב העסקים זקוקים לאתר שמסביר למה לבחור בכם
-          וסוגר פנייה. אנחנו משלבים עיצוב יוקרתי, מבנה שממיר, בסיס{" "}
-          <strong>SEO</strong>, מובייל מלא ובעלות מלאה שלכם.
+          <strong itemProp="provider">{LANDING.brand}</strong> (בעברית:{" "}
+          <strong>אביה</strong> / <strong>אביה סטודיו</strong>) הוא סטודיו דיגיטלי
+          ל<strong>בניית אתרים</strong> שמביאים לקוחות ישירים — לשירותים,
+          קליניקות, ייעוץ, B2B ומותגים — וכן ל<strong>חנויות אינטרנטיות</strong>{" "}
+          ו<strong>אתרי מכירות</strong> כשצריך למכור מוצרים. אם חיפשת בגוגל{" "}
+          <strong>בניית אתרים Aviya</strong>, <strong>Aviya studio</strong> או{" "}
+          <strong>אביה בניית אתרים</strong> — הגעת למקום הנכון.
         </p>
         <p>
-          מחפשים <strong>בניית אתרים לעסקים</strong>,{" "}
-          <strong>אתר תדמית שמביא לידים</strong>,{" "}
-          <strong>דף נחיתה</strong> או <strong>בניית חנות אונליין</strong>? Aviya
-          בונה את המסלול הנכון לעסק — בעברית, בישראל, ברמה גבוהה.
+          אנחנו משלבים עיצוב יוקרתי, מבנה שממיר, בסיס <strong>SEO</strong>, מובייל
+          מלא ובעלות מלאה שלכם על האתר. מחפשים{" "}
+          <strong>בניית אתרים לעסקים</strong>,{" "}
+          <strong>אתר תדמית שמביא לידים</strong>, <strong>דף נחיתה</strong> או{" "}
+          <strong>בניית חנות אונליין</strong>? Aviya בונה את המסלול הנכון לעסק —
+          בעברית, בישראל, ברמה גבוהה.
         </p>
         <ul className="seo-services">
           <li>
-            <a href="#how">בניית אתרים וחנויות אונליין</a>
+            <a href="#how">בניית אתרים וחנויות אונליין — Aviya</a>
           </li>
           <li>
             <a href="#includes">עיצוב, סליקה, SEO ואוטומציות</a>
           </li>
           <li>
-            <a href="#contact">יצירת קשר להקמת אתר</a>
+            <a href="#contact">יצירת קשר — אביה סטודיו</a>
           </li>
           <li>
             <a href="/accessibility">נגישות אתרים (ת״י 5568)</a>
@@ -62,6 +64,11 @@ export function SeoContentBlock() {
             rel="noopener noreferrer me"
           >
             {LANDING.instagramHandle}
+          </a>
+          {" · "}
+          אתר:{" "}
+          <a href={siteSeo.url} dir="ltr">
+            {siteSeo.url.replace(/^https?:\/\//, "")}
           </a>
         </p>
       </div>

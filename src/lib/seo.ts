@@ -1,28 +1,66 @@
 import type { Metadata } from "next";
-import { brand } from "@/lib/design-system";
 import { faqs, LANDING } from "@/data/landing";
 
-/** Production site URL — override with NEXT_PUBLIC_SITE_URL when live */
-export const SITE_URL = (
-  process.env.NEXT_PUBLIC_SITE_URL || "https://aviya.studio"
-).replace(/\/$/, "");
+/**
+ * Canonical production URL.
+ *
+ * CRITICAL: Do not invent a domain. If canonical points at a domain that
+ * is not this deployment, Google will not index the live site (or will
+ * prefer a dead URL). Set NEXT_PUBLIC_SITE_URL only after DNS is live.
+ *
+ * Resolution order:
+ * 1. NEXT_PUBLIC_SITE_URL (custom domain when connected)
+ * 2. VERCEL_PROJECT_PRODUCTION_URL (stable production host on Vercel)
+ * 3. VERCEL_URL (per-deployment host — last resort on Vercel)
+ * 4. Known production alias for this project
+ */
+function resolveSiteUrl(): string {
+  const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (explicit) return explicit.replace(/\/$/, "");
+
+  const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (vercelProd) {
+    const host = vercelProd.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    return `https://${host}`;
+  }
+
+  const vercel = process.env.VERCEL_URL?.trim();
+  if (vercel) {
+    const host = vercel.replace(/^https?:\/\//, "").replace(/\/$/, "");
+    return `https://${host}`;
+  }
+
+  return "https://studio-seven-beta-89.vercel.app";
+}
+
+export const SITE_URL = resolveSiteUrl();
 
 /**
- * On-page + SERP meta — Hebrew commercial intent keywords
- * (building, ecommerce, physical stores → digital)
+ * On-page + SERP meta — brand first (so "Aviya" searches match), then intent.
  */
 export const siteSeo = {
   url: SITE_URL,
   locale: "he_IL",
-  title:
-    "בניית אתרים שמביאים לקוחות | חנויות דיגיטליות | Aviya",
-  titleShort: "Aviya | אתרים וחנויות שממירים",
+  /** Brand + core service — wins "Aviya בניית אתרים" type queries once indexed */
+  title: "Aviya | בניית אתרים וחנויות דיגיטליות | אביה סטודיו",
+  titleShort: "Aviya | אביה סטודיו",
   description:
-    "Aviya — סטודיו דיגיטלי: בניית אתרים מקצועיים שמביאים לקוחות ישירים (שירותים, קליניקות, B2B) וחנויות אונליין שמוכרות. עיצוב יוקרתי, מבנה שממיר, SEO בסיסי, בעלות מלאה. ישראל.",
+    "Aviya (אביה) — סטודיו לבניית אתרים בישראל: אתרים שמביאים לקוחות ישירים (שירותים, קליניקות, B2B) וחנויות דיגיטליות. עיצוב יוקרתי, המרה, SEO. studio.aviya1 · 055-557-3090",
   ogDescription:
-    "אתר שמביא לקוחות — או חנות דיגיטלית שמוכרת. לא חייבים e-commerce. רמה של מותג. Aviya.",
+    "Aviya — בניית אתרים שמביאים לקוחות וחנויות שמוכרות. אביה סטודיו דיגיטלי בישראל.",
   /** Focus keywords for meta + content (natural language SEO) */
   keywords: [
+    // Brand (people search these)
+    "Aviya",
+    "AVIYA",
+    "aviya",
+    "אביה",
+    "אביה סטודיו",
+    "אביה בניית אתרים",
+    "Aviya studio",
+    "Aviya בניית אתרים",
+    "studio aviya",
+    "studio.aviya1",
     // Core services
     "בניית אתרים",
     "בניית אתרים לעסקים",
@@ -72,11 +110,6 @@ export const siteSeo = {
     "סליקת אשראי באתר",
     "אתר עם נגישות",
     "Next.js",
-    // Brand
-    "Aviya",
-    "AVIYA",
-    "אביה סטודיו",
-    "Aviya studio",
     // Local
     "ישראל",
     "בניית אתרים בתל אביב",
@@ -252,7 +285,16 @@ export function buildJsonLd() {
         "@type": "Organization",
         "@id": orgId,
         name: "Aviya Studio",
-        alternateName: ["AVIYA", "אביה", "Aviya", "Aviya studio"],
+        alternateName: [
+          "AVIYA",
+          "Aviya",
+          "Aviya studio",
+          "אביה",
+          "אביה סטודיו",
+          "אביה בניית אתרים",
+          "Aviya בניית אתרים",
+          "studio.aviya1",
+        ],
         url: siteSeo.url,
         logo: {
           "@type": "ImageObject",
@@ -357,26 +399,20 @@ export function buildJsonLd() {
         "@id": websiteId,
         url: siteSeo.url,
         name: "Aviya Studio",
-        alternateName: "Aviya — בניית אתרים",
+        alternateName: [
+          "Aviya — בניית אתרים",
+          "אביה סטודיו",
+          "אביה בניית אתרים",
+        ],
         description: siteSeo.description,
         inLanguage: "he-IL",
         publisher: { "@id": orgId },
         copyrightHolder: { "@id": orgId },
-        potentialAction: [
-          {
-            "@type": "CommunicateAction",
-            name: "יצירת קשר לבניית אתר",
-            target: `${siteSeo.url}/#contact`,
-          },
-          {
-            "@type": "SearchAction",
-            target: {
-              "@type": "EntryPoint",
-              urlTemplate: `${siteSeo.url}/#contact`,
-            },
-            "query-input": "required name=search_term_string",
-          },
-        ],
+        potentialAction: {
+          "@type": "CommunicateAction",
+          name: "יצירת קשר לבניית אתר Aviya",
+          target: `${siteSeo.url}/#contact`,
+        },
       },
       {
         "@type": "WebPage",

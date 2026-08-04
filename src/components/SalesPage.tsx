@@ -7,6 +7,11 @@ import {
   aboutStripBody,
   aboutStripTitle,
   craftSignals,
+  compareLead,
+  compareLeftTitle,
+  compareRightTitle,
+  compareRows,
+  compareTitle,
   faqTitle,
   faqs,
   finalSub,
@@ -18,6 +23,8 @@ import {
   fitYes,
   fitYesEnd,
   fitYesTitle,
+  formMicro,
+  heroBenefitBullets,
   heroBrandLine,
   heroCta,
   heroEyebrow,
@@ -40,6 +47,10 @@ import {
   midJumpDetails,
   midJumpStart,
   navCta,
+  outcomeBenefits,
+  outcomesLead,
+  outcomesTitle,
+  pathCta,
   paths,
   pathsLead,
   pathsTitle,
@@ -51,6 +62,10 @@ import {
   promiseClose,
   promiseLead,
   promiseTitle,
+  proofBarItems,
+  proofBarLead,
+  riskItems,
+  riskTitle,
   showcaseLead,
   showcases,
   showcaseTitle,
@@ -309,6 +324,12 @@ export default function SalesPage() {
               </h1>
               <p className="sales-sub hero-rise delay-5">{heroSub}</p>
 
+              <ul className="hero-bullets hero-rise delay-5" aria-label="מה מקבלים">
+                {heroBenefitBullets.map((b) => (
+                  <li key={b}>{b}</li>
+                ))}
+              </ul>
+
               <ul className="craft-signals hero-rise delay-5" aria-label="יתרונות">
                 {craftSignals.map((s) => (
                   <li key={s.t}>
@@ -332,6 +353,9 @@ export default function SalesPage() {
                 source="hero"
                 className="sales-hero-form hero-rise delay-6"
               />
+              <p className="form-micro-hero hero-rise delay-6 sr-only">
+                {formMicro}
+              </p>
             </div>
 
             <div className="sales-hero-side hero-rise delay-4">
@@ -368,6 +392,18 @@ export default function SalesPage() {
           </a>
         </section>
 
+        {/* Social proof strip — elite SaaS pattern right under hero */}
+        <section className="proof-bar" aria-label="קהלים">
+          <div className="sales-shell proof-bar-inner">
+            <p className="proof-bar-lead">{proofBarLead}</p>
+            <ul className="proof-bar-list">
+              {proofBarItems.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
         {/* Two paths */}
         <section id="paths" className="sales-sec sales-sec-paths">
           <div className="sales-shell">
@@ -391,11 +427,35 @@ export default function SalesPage() {
                       ))}
                     </ul>
                     <a href="#contact" className="path-cta">
-                      זה המסלול שלי
+                      {pathCta}
                     </a>
                   </article>
                 ))}
               </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* Outcome benefits */}
+        <section id="outcomes" className="sales-sec">
+          <div className="sales-shell">
+            <Reveal>
+              <div className="sales-head">
+                <p className="sales-kicker">תוצאה</p>
+                <h2 className="sales-h2">{outcomesTitle}</h2>
+                <p className="sales-p">{outcomesLead}</p>
+              </div>
+            </Reveal>
+            <Reveal delay={40}>
+              <ul className="outcome-grid">
+                {outcomeBenefits.map((o) => (
+                  <li key={o.title} className={`outcome-card outcome-${o.icon}`}>
+                    <span className="outcome-mark" aria-hidden />
+                    <h3>{o.title}</h3>
+                    <p>{o.body}</p>
+                  </li>
+                ))}
+              </ul>
             </Reveal>
           </div>
         </section>
@@ -541,11 +601,48 @@ export default function SalesPage() {
                       </p>
                     </div>
                     <p className="sales-quote">“{t.q}”</p>
+                    <p className="sales-metric">{t.metric}</p>
                   </li>
                 ))}
               </ul>
             </Reveal>
             <MidJump label={midJumpDetails} soft />
+          </div>
+        </section>
+
+        {/* Comparison table */}
+        <section className="sales-sec sales-sec-compare">
+          <div className="sales-shell">
+            <Reveal>
+              <div className="sales-head">
+                <p className="sales-kicker">השוואה</p>
+                <h2 className="sales-h2">{compareTitle}</h2>
+                <p className="sales-p">{compareLead}</p>
+              </div>
+            </Reveal>
+            <Reveal delay={40}>
+              <div className="compare-table" role="table" aria-label="השוואת רמות אתר">
+                <div className="compare-head" role="row">
+                  <div role="columnheader" className="compare-cell compare-bad-h">
+                    {compareLeftTitle}
+                  </div>
+                  <div role="columnheader" className="compare-cell compare-good-h">
+                    {compareRightTitle}
+                  </div>
+                </div>
+                {compareRows.map((row) => (
+                  <div key={row.good} className="compare-row" role="row">
+                    <div role="cell" className="compare-cell compare-bad">
+                      <span aria-hidden>✕</span> {row.bad}
+                    </div>
+                    <div role="cell" className="compare-cell compare-good">
+                      <span aria-hidden>✓</span> {row.good}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+            <MidJump />
           </div>
         </section>
 
@@ -694,6 +791,19 @@ export default function SalesPage() {
               <p className="sales-kicker sales-center">{LANDING.brandDisplay}</p>
               <h2 className="sales-h2 sales-center">{finalTitle}</h2>
               <p className="sales-p sales-center sales-final-sub">{finalSub}</p>
+
+              <div className="risk-stack">
+                <p className="risk-title">{riskTitle}</p>
+                <ul>
+                  {riskItems.map((r) => (
+                    <li key={r.t}>
+                      <strong>{r.t}</strong>
+                      <span>{r.d}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
               <SalesLeadForm
                 idPrefix="final"
                 title={
@@ -721,8 +831,13 @@ export default function SalesPage() {
       <footer className="sales-footer">
         <div className="sales-shell sales-footer-inner">
           <BrandLogo size="footer" href="#top" />
-          <p className="sales-footer-tag">{LANDING.tagline}</p>
+          <p className="sales-footer-tag">
+            {LANDING.brand} · אביה סטודיו · {LANDING.tagline}
+          </p>
           <p>{LANDING.promise}</p>
+          <p className="sales-footer-meta">
+            סטודיו לבניית אתרים וחנויות דיגיטליות בישראל
+          </p>
           <SocialLinks iconOnly />
           <p className="sales-footer-meta">
             © {new Date().getFullYear()} {LANDING.brand}
