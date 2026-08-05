@@ -3,9 +3,9 @@ import {
   addLead,
   getLeadsPassword,
   isLeadsAdminConfigured,
-  notifyLeadWebhook,
   readLeads,
 } from "@/lib/leads";
+import { notifyNewLead } from "@/lib/notify-leads";
 import { clientIp, parseLeadBody, rateLimit } from "@/lib/security";
 
 export const runtime = "nodejs";
@@ -28,14 +28,12 @@ export async function POST(req: Request) {
     if (!rateLimit(`lead:post:${ip}`, 8, 60_000)) {
       return noStoreJson({ error: "יותר מדי ניסיונות. נסו שוב בעוד דקה." }, 429);
     }
-    // Also limit total per day window per IP (spam farms)
     if (!rateLimit(`lead:day:${ip}`, 40, 86_400_000)) {
       return noStoreJson({ error: "הגעתם למכסת היום. צרו קשר בוואטסאפ." }, 429);
     }
 
     const parsed = await parseLeadBody(req);
     if (!parsed.ok) {
-      // Honeypot: fake success so bots do not retry differently
       if (parsed.error === "honeypot") {
         return noStoreJson({ ok: true, id: "ok" });
       }
@@ -43,8 +41,8 @@ export async function POST(req: Request) {
     }
 
     const lead = await addLead(parsed.data);
-    // Fire-and-forget notification (does not block user on webhook latency)
-    void notifyLeadWebhook(lead);
+    // Email + WhatsApp (+ optional webhook) — do not block the visitor
+    void notifyNewLead(lead);
 
     return noStoreJson({ ok: true, id: lead.id });
   } catch (e) {

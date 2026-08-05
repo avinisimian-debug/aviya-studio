@@ -97,9 +97,12 @@ export default function LeadsAdminPage() {
             margin: 0,
             color: "var(--e-fg-muted, #5c5578)",
             fontSize: "0.95rem",
+            lineHeight: 1.55,
           }}
         >
-          טפסים שנשלחו מהאתר (שם, טלפון, עסק, מקור).
+          כאן רואים את כל מי שמילא טופס. בנוסף — כל פנייה נשלחת אוטומטית למייל{" "}
+          <strong dir="ltr">aviya.nish@gmail.com</strong>
+          {" "}ולוואטסאפ (אחרי הגדרת CallMeBot ב־Vercel).
         </p>
 
         {!authed ? (

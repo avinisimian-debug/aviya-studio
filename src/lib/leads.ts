@@ -71,7 +71,9 @@ export async function addLead(
   return lead;
 }
 
-/** Optional webhook (Zapier / Make / n8n / Slack) when LEADS_WEBHOOK_URL is set */
+/** Optional webhook (Zapier / Make / n8n / Slack) when LEADS_WEBHOOK_URL is set.
+ * Prefer `notifyNewLead` from `@/lib/notify-leads` for email + WhatsApp.
+ */
 export async function notifyLeadWebhook(lead: Lead): Promise<void> {
   const url = process.env.LEADS_WEBHOOK_URL?.trim();
   if (!url) return;
