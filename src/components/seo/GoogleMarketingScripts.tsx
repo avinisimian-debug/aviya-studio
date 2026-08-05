@@ -2,8 +2,9 @@ import Script from "next/script";
 import { getAdSenseClientId, getGaMeasurementId } from "@/lib/marketing";
 
 /**
- * Loads AdSense + optional Google Analytics when env vars are set.
- * Place once in root layout.
+ * Google AdSense + Analytics.
+ * Auto ads: turn on in AdSense dashboard after approval.
+ * Manual units: AdUnit + NEXT_PUBLIC_ADSENSE_SLOT.
  */
 export function GoogleMarketingScripts() {
   const ads = getAdSenseClientId();

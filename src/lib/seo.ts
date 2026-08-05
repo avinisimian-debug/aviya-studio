@@ -466,12 +466,18 @@ export function buildJsonLd() {
           {
             "@type": "ListItem",
             position: 3,
+            name: "מדריכים",
+            item: `${siteSeo.url}/guides`,
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
             name: "אודות",
             item: `${siteSeo.url}/about`,
           },
           {
             "@type": "ListItem",
-            position: 4,
+            position: 5,
             name: "יצירת קשר",
             item: `${siteSeo.url}/contact`,
           },
@@ -500,6 +506,37 @@ export function buildJsonLd() {
           description: s.description,
           url: `${siteSeo.url}/#process`,
         })),
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${siteSeo.url}/#guides-list`,
+        name: "מדריכי Aviya לבניית אתרים",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "למה עסק צריך אתר מקצועי",
+            url: `${siteSeo.url}/guides/why-business-needs-website`,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "דף נחיתה מול אתר תדמית",
+            url: `${siteSeo.url}/guides/landing-page-vs-website`,
+          },
+          {
+            "@type": "ListItem",
+            position: 3,
+            name: "בניית חנות דיגיטלית",
+            url: `${siteSeo.url}/guides/ecommerce-store-guide`,
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
+            name: "SEO בסיסי לעסקים",
+            url: `${siteSeo.url}/guides/seo-basics-for-business`,
+          },
+        ],
       },
     ],
   };

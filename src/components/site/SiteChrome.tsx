@@ -29,7 +29,7 @@ export function SiteChrome({
         <nav aria-label="ניווט משני">
           <Link href="/">בית</Link>
           <Link href="/about">אודות</Link>
-          <Link href="/guide">מדריך</Link>
+          <Link href="/guides">מדריכים</Link>
           <Link href="/#gallery">תבניות</Link>
           <Link href="/contact">יצירת קשר</Link>
           <a
@@ -54,7 +54,7 @@ export function SiteChrome({
         </div>
         <nav aria-label="קישורי תחתית">
           <Link href="/about">אודות</Link>
-          <Link href="/guide">מדריך</Link>
+          <Link href="/guides">מדריכים</Link>
           <Link href="/contact">יצירת קשר</Link>
           <Link href="/privacy">פרטיות</Link>
           <Link href="/accessibility">נגישות</Link>

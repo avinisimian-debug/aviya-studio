@@ -1,14 +1,14 @@
 import type { MetadataRoute } from "next";
+import { guides } from "@/data/guides";
 import { SITE_URL } from "@/lib/seo";
 
 /**
- * Google / Bing sitemap — add new public routes here.
- * Submit: Search Console → Sitemaps → /sitemap.xml
+ * Google / Bing sitemap — submit in Search Console: /sitemap.xml
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
-  return [
+  const staticPages: MetadataRoute.Sitemap = [
     {
       url: SITE_URL,
       lastModified: now,
@@ -28,10 +28,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
-      url: `${SITE_URL}/guide`,
+      url: `${SITE_URL}/guides`,
       lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.85,
+      changeFrequency: "weekly",
+      priority: 0.9,
     },
     {
       url: `${SITE_URL}/privacy`,
@@ -46,4 +46,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.3,
     },
   ];
+
+  const guidePages: MetadataRoute.Sitemap = guides.map((g) => ({
+    url: `${SITE_URL}/guides/${g.slug}`,
+    lastModified: new Date(g.dateModified),
+    changeFrequency: "monthly" as const,
+    priority: 0.8,
+  }));
+
+  return [...staticPages, ...guidePages];
 }

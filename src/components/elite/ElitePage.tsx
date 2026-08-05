@@ -180,8 +180,8 @@ function Nav() {
         </a>
         <nav className="elite-nav-links" aria-label="ניווט ראשי">
           <a href="#gallery">תבניות</a>
+          <a href="/guides">מדריכים</a>
           <a href="#about">אודות</a>
-          <a href="#craft">רמה</a>
           <a href="#process">תהליך</a>
           <a href="/contact">{NAV_CONTACT}</a>
         </nav>
@@ -1025,6 +1025,60 @@ function Process() {
   );
 }
 
+function SeoResources() {
+  const items = [
+    {
+      href: "/guides/why-business-needs-website",
+      t: "למה עסק צריך אתר",
+      d: "אינסטגרם מול נכס דיגיטלי",
+    },
+    {
+      href: "/guides/landing-page-vs-website",
+      t: "דף נחיתה מול תדמית",
+      d: "מה מתאים לקמפיין ולטווח ארוך",
+    },
+    {
+      href: "/guides/ecommerce-store-guide",
+      t: "חנות דיגיטלית",
+      d: "סליקה, מובייל וחוויית קנייה",
+    },
+    {
+      href: "/guides/seo-basics-for-business",
+      t: "SEO בסיסי",
+      d: "יסודות קידום בגוגל לעסקים",
+    },
+  ] as const;
+
+  return (
+    <Section id="resources" className="elite-resources-section">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="ידע לבעלי עסקים"
+            title="מדריכים קצרים — בלי ז׳רגון"
+            lead="תוכן שמסביר מה עובד אונליין. לקריאה מלאה — או ליצירת קשר כשמוכנים לבנות."
+          />
+        </Reveal>
+        <RevealStagger className="elite-resources-grid">
+          {items.map((item) => (
+            <RevealItem key={item.href}>
+              <a href={item.href} className="elite-resource-card">
+                <strong>{item.t}</strong>
+                <span>{item.d}</span>
+              </a>
+            </RevealItem>
+          ))}
+        </RevealStagger>
+        <Reveal>
+          <p className="elite-resources-all">
+            <a href="/guides">לכל המדריכים ←</a>
+          </p>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
 function FinalCta() {
   return (
     <Section id="contact" tone="inverse" className="elite-final-section">
@@ -1078,7 +1132,7 @@ function Footer() {
             <a href="#gallery">תבניות</a>
             <a href="#about">אודות</a>
             <a href="/about">עמוד אודות</a>
-            <a href="/guide">מדריך</a>
+            <a href="/guides">מדריכים</a>
             <a href="/contact">יצירת קשר</a>
             <a href="#faq">שאלות</a>
             <a href="/privacy">פרטיות</a>
@@ -1160,6 +1214,7 @@ export default function ElitePage() {
         <Voices />
         <Process />
         <Faq />
+        <SeoResources />
         <FinalCta />
       </main>
       <Footer />
