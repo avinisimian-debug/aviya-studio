@@ -32,6 +32,7 @@ import {
   RevealStagger,
 } from "@/components/elite/Reveal";
 import { SalesLeadForm } from "@/components/landing/SalesLeadForm";
+import { AdUnit } from "@/components/ads/AdUnit";
 import { eliteMedia, eliteTemplates } from "@/data/elite-media";
 import { currentHebrewMonth, LANDING } from "@/data/landing";
 import { aboutPage, eliteFaqs } from "@/data/site-content";
@@ -1077,6 +1078,7 @@ function Footer() {
             <a href="#gallery">תבניות</a>
             <a href="#about">אודות</a>
             <a href="/about">עמוד אודות</a>
+            <a href="/guide">מדריך</a>
             <a href="/contact">יצירת קשר</a>
             <a href="#faq">שאלות</a>
             <a href="/privacy">פרטיות</a>
@@ -1148,11 +1150,13 @@ export default function ElitePage() {
         <Marquee />
         <TrustStrip />
         <Gallery />
+        <AdUnit className="aviya-ad-slot--page" />
         <ProductDemo />
         <Craft />
         <Problem />
         <Solution />
         <About />
+        <AdUnit className="aviya-ad-slot--page" />
         <Voices />
         <Process />
         <Faq />

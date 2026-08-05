@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Frank_Ruhl_Libre, Heebo } from "next/font/google";
+import { CookieConsent } from "@/components/ads/CookieConsent";
 import { AppProviders } from "@/components/providers/AppProviders";
+import { GoogleMarketingScripts } from "@/components/seo/GoogleMarketingScripts";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
@@ -56,8 +58,10 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full min-h-dvh bg-background font-sans text-foreground antialiased">
+        <GoogleMarketingScripts />
         <JsonLd />
         <AppProviders>{children}</AppProviders>
+        <CookieConsent />
       </body>
     </html>
   );
