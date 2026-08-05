@@ -21,7 +21,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com data:",
       "img-src 'self' data: blob: https: http:",
-      "connect-src 'self' https://formsubmit.co https://*.formsubmit.co https://ntfy.sh https://zyxkvsueotnenupwjyax.supabase.co https://api.resend.com https://api.callmebot.com https://www.google-analytics.com https://region1.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://www.googletagmanager.com",
+      "connect-src 'self' https://formsubmit.co https://*.formsubmit.co https://ntfy.sh https://zyxkvsueotnenupwjyax.supabase.co https://api.resend.com https://api.callmebot.com https://api.indexnow.org https://www.bing.com https://www.google-analytics.com https://region1.google-analytics.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://ep1.adtrafficquality.google https://ep2.adtrafficquality.google https://www.googletagmanager.com",
       "frame-src 'self' https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://www.google.com https://pagead2.googlesyndication.com",
       "frame-ancestors 'self'",
       "base-uri 'self'",

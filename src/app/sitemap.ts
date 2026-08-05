@@ -45,6 +45,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.65,
     },
+    // /google is noindex owner checklist — omit from sitemap
     {
       url: `${SITE_URL}/privacy`,
       lastModified: now,

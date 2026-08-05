@@ -350,11 +350,17 @@ export function buildJsonLd() {
         inLanguage: "he-IL",
         publisher: { "@id": orgId },
         copyrightHolder: { "@id": orgId },
-        potentialAction: {
-          "@type": "CommunicateAction",
-          name: "יצירת קשר לבניית אתר Aviya",
-          target: `${siteSeo.url}/contact`,
-        },
+        potentialAction: [
+          {
+            "@type": "CommunicateAction",
+            name: "יצירת קשר לבניית אתר Aviya",
+            target: `${siteSeo.url}/contact`,
+          },
+          {
+            "@type": "ReadAction",
+            target: siteSeo.url,
+          },
+        ],
       },
       {
         "@type": "WebPage",

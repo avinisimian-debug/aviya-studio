@@ -32,6 +32,7 @@ export function SiteChrome({
           <Link href="/guides">מדריכים</Link>
           <Link href="/services">שירותים</Link>
           <Link href="/promote">קידום</Link>
+          <Link href="/google">גוגל</Link>
           <Link href="/contact">יצירת קשר</Link>
           <a
             href={LANDING.whatsappUrl}
@@ -57,6 +58,7 @@ export function SiteChrome({
           <Link href="/guides">מדריכים</Link>
           <Link href="/services">שירותים</Link>
           <Link href="/promote">קידום</Link>
+          <Link href="/google">גוגל</Link>
           <Link href="/contact">יצירת קשר</Link>
           <Link href="/privacy">פרטיות</Link>
           <Link href="/accessibility">נגישות</Link>

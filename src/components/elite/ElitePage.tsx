@@ -1057,6 +1057,11 @@ function SeoResources() {
       t: "קידום ברשתות וביוטיוב",
       d: "פוסטים והאשטגים מוכנים",
     },
+    {
+      href: "/google",
+      t: "הופעה בגוגל",
+      d: "Search Console — הצעד הקריטי",
+    },
   ] as const;
 
   return (
