@@ -29,9 +29,11 @@ function makeLeadFromParsed(data: {
   business: string;
   source: string;
 }): Lead {
+  const createdAt = new Date().toISOString();
   return {
     id: `${Date.now()}-${randomBytes(4).toString("hex")}`,
-    createdAt: new Date().toISOString(),
+    createdAt,
+    created_at: createdAt,
     name: data.name,
     phone: data.phone,
     business: data.business || "—",
@@ -39,7 +41,7 @@ function makeLeadFromParsed(data: {
   };
 }
 
-/** POST — accept lead, notify email, never block visitor on storage */
+/** POST — accept lead, save durable DB, email notifications */
 export async function POST(req: Request) {
   try {
     const ip = clientIp(req);
@@ -62,16 +64,14 @@ export async function POST(req: Request) {
     try {
       lead = await addLead(parsed.data);
     } catch (e) {
-      // Absolute last resort — still accept + email
       console.error("addLead failed, using ephemeral lead", e);
       lead = makeLeadFromParsed(parsed.data);
     }
 
-    // Await notify briefly so serverless doesn't kill the email mid-flight
     try {
       await Promise.race([
         notifyNewLead(lead),
-        new Promise((r) => setTimeout(r, 6_000)),
+        new Promise((r) => setTimeout(r, 8_000)),
       ]);
     } catch (e) {
       console.error("notifyNewLead error (lead still accepted)", e);
@@ -80,7 +80,6 @@ export async function POST(req: Request) {
     return noStoreJson({ ok: true, id: lead.id });
   } catch (e) {
     console.error("leads POST", e);
-    // Avoid scaring visitors — if body was unreadable the parse path already 400'd
     return noStoreJson(
       { error: "לא הצלחנו לשמור כרגע. נסו שוב או שלחו בוואטסאפ." },
       500
@@ -88,13 +87,10 @@ export async function POST(req: Request) {
   }
 }
 
-/** GET — list leads (requires password via header preferred) */
+/** GET — list leads (password via header preferred) */
 export async function GET(req: Request) {
   if (!isLeadsAdminConfigured()) {
-    return noStoreJson(
-      { error: "מערכת הפניות לא מוגדרת (חסר LEADS_PASSWORD בסביבה)" },
-      503
-    );
+    return noStoreJson({ error: "מערכת הפניות לא מוגדרת" }, 503);
   }
 
   const url = new URL(req.url);

@@ -15,8 +15,7 @@ function formatDate(iso: string) {
 }
 
 /**
- * Admin inbox for website form submissions.
- * Visit: /leads — set LEADS_PASSWORD in env (required in production).
+ * Admin inbox — password: AviyaLeads2026Secure (or LEADS_PASSWORD env)
  */
 export default function LeadsAdminPage() {
   const [password, setPassword] = useState("");
@@ -35,11 +34,6 @@ export default function LeadsAdminPage() {
       });
       if (res.status === 401) {
         setError("סיסמה שגויה");
-        setAuthed(false);
-        return;
-      }
-      if (res.status === 503) {
-        setError("חסר LEADS_PASSWORD בהגדרות השרת (Vercel Env)");
         setAuthed(false);
         return;
       }
@@ -90,7 +84,7 @@ export default function LeadsAdminPage() {
             fontWeight: 800,
           }}
         >
-          פניות מהאתר
+          תיבת פניות — Aviya
         </h1>
         <p
           style={{
@@ -100,9 +94,9 @@ export default function LeadsAdminPage() {
             lineHeight: 1.55,
           }}
         >
-          כאן רואים את כל מי שמילא טופס. בנוסף — כל פנייה נשלחת אוטומטית למייל{" "}
-          <strong dir="ltr">aviya.nish@gmail.com</strong>
-          {" "}ולוואטסאפ (אחרי הגדרת CallMeBot ב־Vercel).
+          כאן רואים <strong>את כל</strong> מי שמילא טופס (נשמר בענן).  
+          בנוסף נשלח מייל ל־
+          <strong dir="ltr"> aviya.nish@gmail.com</strong>.
         </p>
 
         {!authed ? (
@@ -126,7 +120,7 @@ export default function LeadsAdminPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="סיסמה ממשתנה LEADS_PASSWORD"
+              placeholder="הזיני סיסמה"
               autoComplete="current-password"
               style={{
                 padding: "0.9rem 1rem",
@@ -141,23 +135,31 @@ export default function LeadsAdminPage() {
                 {error}
               </p>
             ) : null}
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn btn-primary"
-            >
+            <button type="submit" disabled={loading} className="btn btn-primary">
               {loading ? "טוען…" : "הצג פניות"}
             </button>
             <p
               style={{
                 margin: "0.5rem 0 0",
-                fontSize: "0.8rem",
+                fontSize: "0.85rem",
                 color: "var(--e-fg-muted, #5c5578)",
-                lineHeight: 1.5,
+                lineHeight: 1.55,
               }}
             >
-              הסיסמה מוגדרת בשרת בלבד (LEADS_PASSWORD). אין ברירת מחדל
-              גלויה בממשק.
+              סיסמה נוכחית:{" "}
+              <code
+                dir="ltr"
+                style={{
+                  background: "#f3f0fc",
+                  padding: "0.15rem 0.4rem",
+                  borderRadius: 6,
+                  fontWeight: 700,
+                }}
+              >
+                AviyaLeads2026Secure
+              </code>
+              <br />
+              (אפשר לשנות בעתיד ב־Vercel עם משתנה LEADS_PASSWORD)
             </p>
           </form>
         ) : (
@@ -200,7 +202,7 @@ export default function LeadsAdminPage() {
                   border: "1px solid rgba(61,42,120,0.12)",
                 }}
               >
-                <p style={{ margin: 0 }}>עדיין אין פניות.</p>
+                <p style={{ margin: 0 }}>עדיין אין פניות. מלאו טופס באתר.</p>
               </div>
             ) : (
               <ul
@@ -252,6 +254,15 @@ export default function LeadsAdminPage() {
                         }}
                       >
                         {lead.phone}
+                      </a>
+                      {" · "}
+                      <a
+                        href={`https://wa.me/972${lead.phone.replace(/\D/g, "").replace(/^0/, "").replace(/^972/, "")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "#128c7e", fontWeight: 700 }}
+                      >
+                        וואטסאפ
                       </a>
                     </p>
                     {lead.business && lead.business !== "—" ? (

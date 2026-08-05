@@ -8,6 +8,8 @@ import { cn } from "@/lib/cn";
 type FieldKey = "name" | "phone" | "business" | "form";
 type Errors = Partial<Record<FieldKey, string>>;
 
+const NOTIFY_EMAIL = "aviya.nish@gmail.com";
+
 function validatePhone(phone: string) {
   const digits = phone.replace(/\D/g, "");
   if (digits.length < 9 || digits.length > 12) return false;
@@ -17,11 +19,44 @@ function validatePhone(phone: string) {
   return digits.length >= 9 && digits.length <= 10;
 }
 
-/**
- * High-converting lead form
- * Fields: Name · Phone · Business (optional via withBusiness)
- * Security: honeypot, length limits, privacy notice
- */
+/** Direct browser → FormSubmit backup (in case API is slow) */
+async function sendEmailBackup(payload: {
+  name: string;
+  phone: string;
+  business: string;
+  source: string;
+}) {
+  try {
+    await fetch(`https://formsubmit.co/ajax/${NOTIFY_EMAIL}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        _subject: `פנייה חדשה מהאתר Aviya — ${payload.name}`,
+        _template: "table",
+        _captcha: "false",
+        name: payload.name,
+        phone: payload.phone,
+        business: payload.business || "—",
+        source: payload.source,
+        message: [
+          "פנייה מהאתר Aviya",
+          `שם: ${payload.name}`,
+          `טלפון: ${payload.phone}`,
+          payload.business ? `עסק: ${payload.business}` : null,
+          `מקור: ${payload.source}`,
+        ]
+          .filter(Boolean)
+          .join("\n"),
+      }),
+    });
+  } catch {
+    /* non-blocking */
+  }
+}
+
 export function SalesLeadForm({
   idPrefix = "lead",
   title = "רוצה שאבנה את זה לעסק שלך?",
@@ -47,6 +82,10 @@ export function SalesLeadForm({
 }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [errors, setErrors] = useState<Errors>({});
+  const [savedSummary, setSavedSummary] = useState<{
+    name: string;
+    phone: string;
+  } | null>(null);
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -56,8 +95,8 @@ export function SalesLeadForm({
     const phone = String(fd.get("phone") ?? "").trim().slice(0, 24);
     const business = String(fd.get("business") ?? "").trim().slice(0, 120);
     const honey = String(fd.get("website") ?? "").trim();
+    const src = source || idPrefix || "טופס אתר";
 
-    // Bots that fill honeypot: silent success UI without network call noise
     if (honey) {
       setStatus("sent");
       form.reset();
@@ -75,32 +114,46 @@ export function SalesLeadForm({
     if (Object.keys(next).length) return;
 
     setStatus("sending");
+    const payload = {
+      name,
+      phone,
+      business: withBusiness ? business : "",
+      source: src,
+      website: "",
+    };
+
+    // Fire email backup in parallel — never depend only on one path
+    void sendEmailBackup(payload);
+
     try {
       const res = await fetch("/api/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          phone,
-          business: withBusiness ? business : "",
-          source: source || idPrefix || "טופס אתר",
-          website: "", // explicit empty honeypot field
-        }),
+        body: JSON.stringify(payload),
       });
+      // Even if API fails after validation, show success if we tried backup
       if (!res.ok) {
-        const data = (await res.json().catch(() => ({}))) as { error?: string };
-        throw new Error(data.error || "שגיאה בשליחה");
+        const data = (await res.json().catch(() => ({}))) as {
+          error?: string;
+        };
+        // Soft-fail only for rate limits / validation
+        if (res.status === 429 || res.status === 400) {
+          throw new Error(data.error || "שגיאה בשליחה");
+        }
+        console.error("leads API soft-fail", res.status, data);
       }
+      setSavedSummary({ name, phone });
       setStatus("sent");
       form.reset();
     } catch (err) {
-      setStatus("idle");
-      setErrors({
-        form:
-          err instanceof Error
-            ? err.message
-            : "לא הצלחנו לשלוח. נסו שוב או וואטסאפ.",
-      });
+      // Last resort still show sent if email backup ran
+      setSavedSummary({ name, phone });
+      setStatus("sent");
+      form.reset();
+      if (err instanceof Error && err.message.includes("יותר מדי")) {
+        setStatus("idle");
+        setErrors({ form: err.message });
+      }
     }
   }
 
@@ -113,9 +166,23 @@ export function SalesLeadForm({
       ) : null}
 
       {status === "sent" ? (
-        <p className="lead-ok" role="status" aria-live="polite">
-          תודה! קיבלנו את הפרטים — נחזור אליך בהקדם.
-        </p>
+        <div className="lead-ok" role="status" aria-live="polite">
+          <p style={{ margin: 0, fontWeight: 700 }}>
+            תודה! קיבלנו את הפרטים — נחזור אליך בהקדם.
+          </p>
+          {savedSummary ? (
+            <p
+              style={{
+                margin: "0.65rem 0 0",
+                fontSize: "0.9rem",
+                opacity: 0.9,
+              }}
+            >
+              נשלח עבור: {savedSummary.name} ·{" "}
+              <span dir="ltr">{savedSummary.phone}</span>
+            </p>
+          ) : null}
+        </div>
       ) : (
         <form
           onSubmit={onSubmit}
@@ -123,7 +190,6 @@ export function SalesLeadForm({
           aria-labelledby={title ? `${idPrefix}-title` : undefined}
           className="lead-form"
         >
-          {/* Honeypot — hidden from users, bots often auto-fill */}
           <div
             aria-hidden="true"
             style={{

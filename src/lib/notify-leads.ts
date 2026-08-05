@@ -1,15 +1,18 @@
 import type { Lead } from "@/lib/leads";
 import { LANDING } from "@/data/landing";
 
-/** Where new leads are emailed — your inbox */
+/** Where new leads are emailed */
 export const LEADS_NOTIFY_EMAIL =
   process.env.LEADS_NOTIFY_EMAIL?.trim() || "aviya.nish@gmail.com";
 
-/** WhatsApp number that receives lead alerts (E.164 without +) */
+/** Secondary inbox (studio contact) */
+const LEADS_NOTIFY_EMAIL_CC =
+  process.env.LEADS_NOTIFY_EMAIL_CC?.trim() || LANDING.email;
+
 export const LEADS_NOTIFY_WHATSAPP =
   process.env.LEADS_NOTIFY_WHATSAPP?.trim() || LANDING.whatsappE164;
 
-function formatLeadText(lead: Lead): string {
+export function formatLeadText(lead: Lead): string {
   const lines = [
     "פנייה חדשה מהאתר Aviya",
     "────────────────",
@@ -23,6 +26,7 @@ function formatLeadText(lead: Lead): string {
     "────────────────",
     `לחיוג: tel:${lead.phone.replace(/\D/g, "")}`,
     `וואטסאפ ללקוח: https://wa.me/${phoneToE164(lead.phone)}`,
+    `צפייה בפניות: /leads`,
   ];
   return lines.filter(Boolean).join("\n");
 }
@@ -68,11 +72,13 @@ function escapeHtml(s: string): string {
     .replace(/"/g, "&quot;");
 }
 
-/** FormSubmit — free email, no API key. First use needs confirmation email. */
-async function notifyViaFormSubmit(lead: Lead): Promise<boolean> {
+async function notifyViaFormSubmit(
+  lead: Lead,
+  email: string
+): Promise<boolean> {
   try {
     const res = await fetch(
-      `https://formsubmit.co/ajax/${encodeURIComponent(LEADS_NOTIFY_EMAIL)}`,
+      `https://formsubmit.co/ajax/${encodeURIComponent(email)}`,
       {
         method: "POST",
         headers: {
@@ -83,29 +89,28 @@ async function notifyViaFormSubmit(lead: Lead): Promise<boolean> {
           _subject: `פנייה חדשה מהאתר Aviya — ${lead.name}`,
           _template: "table",
           _captcha: "false",
+          _honey: "",
           name: lead.name,
           phone: lead.phone,
           business: lead.business,
           source: lead.source,
           createdAt: new Date(lead.createdAt).toLocaleString("he-IL"),
           message: formatLeadText(lead),
-          _replyto: LEADS_NOTIFY_EMAIL,
         }),
         signal: AbortSignal.timeout(8_000),
       }
     );
     if (!res.ok) {
-      console.error("FormSubmit notify failed", res.status, await res.text());
+      console.error("FormSubmit failed", email, res.status, await res.text());
       return false;
     }
     return true;
   } catch (e) {
-    console.error("FormSubmit notify error", e);
+    console.error("FormSubmit error", email, e);
     return false;
   }
 }
 
-/** Resend.com — set RESEND_API_KEY (+ optional RESEND_FROM) */
 async function notifyViaResend(lead: Lead): Promise<boolean> {
   const key = process.env.RESEND_API_KEY?.trim();
   if (!key) return false;
@@ -121,6 +126,10 @@ async function notifyViaResend(lead: Lead): Promise<boolean> {
       body: JSON.stringify({
         from,
         to: [LEADS_NOTIFY_EMAIL],
+        cc:
+          LEADS_NOTIFY_EMAIL_CC && LEADS_NOTIFY_EMAIL_CC !== LEADS_NOTIFY_EMAIL
+            ? [LEADS_NOTIFY_EMAIL_CC]
+            : undefined,
         subject: `פנייה חדשה מהאתר Aviya — ${lead.name}`,
         text: formatLeadText(lead),
         html: formatLeadHtml(lead),
@@ -128,21 +137,16 @@ async function notifyViaResend(lead: Lead): Promise<boolean> {
       signal: AbortSignal.timeout(8_000),
     });
     if (!res.ok) {
-      console.error("Resend notify failed", res.status, await res.text());
+      console.error("Resend failed", res.status, await res.text());
       return false;
     }
     return true;
   } catch (e) {
-    console.error("Resend notify error", e);
+    console.error("Resend error", e);
     return false;
   }
 }
 
-/**
- * CallMeBot free WhatsApp API.
- * Setup once: https://www.callmebot.com/blog/free-api-whatsapp-messages/
- * Then set CALLMEBOT_APIKEY in Vercel env.
- */
 async function notifyViaCallMeBot(lead: Lead): Promise<boolean> {
   const apikey = process.env.CALLMEBOT_APIKEY?.trim();
   if (!apikey) return false;
@@ -158,6 +162,29 @@ async function notifyViaCallMeBot(lead: Lead): Promise<boolean> {
     return true;
   } catch (e) {
     console.error("CallMeBot error", e);
+    return false;
+  }
+}
+
+/** Free push notifications — open app and subscribe once (no API key) */
+async function notifyViaNtfy(lead: Lead): Promise<boolean> {
+  const topic =
+    process.env.NTFY_TOPIC?.trim() || "aviya-leads-nish-private-2026";
+  try {
+    const res = await fetch(`https://ntfy.sh/${encodeURIComponent(topic)}`, {
+      method: "POST",
+      headers: {
+        Title: encodeURIComponent(`פנייה חדשה · ${lead.name}`),
+        Priority: "high",
+        Tags: "telephone_receiver,aviya",
+        "Content-Type": "text/plain; charset=utf-8",
+      },
+      body: formatLeadText(lead),
+      signal: AbortSignal.timeout(6_000),
+    });
+    return res.ok;
+  } catch (e) {
+    console.error("ntfy error", e);
     return false;
   }
 }
@@ -185,24 +212,30 @@ async function notifyViaWebhook(lead: Lead): Promise<boolean> {
   }
 }
 
-/**
- * Fan-out notifications when a lead is submitted.
- * Always attempts email (FormSubmit + optional Resend).
- * WhatsApp if CALLMEBOT_APIKEY is set.
- */
+/** Fan-out when a lead is submitted */
 export async function notifyNewLead(lead: Lead): Promise<void> {
-  const results = await Promise.allSettled([
-    notifyViaFormSubmit(lead),
+  const emails = Array.from(
+    new Set(
+      [LEADS_NOTIFY_EMAIL, LEADS_NOTIFY_EMAIL_CC].filter(
+        (e): e is string => Boolean(e)
+      )
+    )
+  );
+
+  const jobs: Promise<boolean>[] = [
+    ...emails.map((email) => notifyViaFormSubmit(lead, email)),
     notifyViaResend(lead),
     notifyViaCallMeBot(lead),
+    notifyViaNtfy(lead),
     notifyViaWebhook(lead),
-  ]);
-  const labels = ["formsubmit", "resend", "callmebot", "webhook"] as const;
+  ];
+
+  const results = await Promise.allSettled(jobs);
   results.forEach((r, i) => {
-    if (r.status === "fulfilled") {
-      console.info(`lead notify ${labels[i]}:`, r.value ? "ok" : "skip/fail");
+    if (r.status === "rejected") {
+      console.error("lead notify rejected", i, r.reason);
     } else {
-      console.error(`lead notify ${labels[i]} rejected`, r.reason);
+      console.info("lead notify", i, r.value ? "ok" : "skip/fail");
     }
   });
 }
