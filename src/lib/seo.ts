@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { faqs, LANDING } from "@/data/landing";
+import { LANDING } from "@/data/landing";
+import { eliteFaqs } from "@/data/site-content";
 
 /**
  * Canonical production URL.
@@ -221,8 +222,8 @@ export function buildMetadata(): Metadata {
       distribution: "global",
       target: "all",
       "audience": "all",
-      "msapplication-TileColor": "#0b0b0e",
-      "theme-color": "#0b0b0e",
+      "msapplication-TileColor": "#3d2a78",
+      "theme-color": "#ece8f7",
     },
   };
 }
@@ -398,7 +399,7 @@ export function buildJsonLd() {
               areaServed: "IL",
               availableChannel: {
                 "@type": "ServiceChannel",
-                serviceUrl: `${siteSeo.url}/#contact`,
+                serviceUrl: `${siteSeo.url}/contact`,
               },
             },
             position: i + 1,
@@ -424,7 +425,7 @@ export function buildJsonLd() {
         potentialAction: {
           "@type": "CommunicateAction",
           name: "יצירת קשר לבניית אתר Aviya",
-          target: `${siteSeo.url}/#contact`,
+          target: `${siteSeo.url}/contact`,
         },
       },
       {
@@ -442,7 +443,7 @@ export function buildJsonLd() {
         },
         speakable: {
           "@type": "SpeakableSpecification",
-          cssSelector: [".sales-h1", ".sales-brand-proof", ".sales-strip-h"],
+          cssSelector: [".elite-h1", ".elite-lead", ".elite-h2"],
         },
         mainEntity: { "@id": bizId },
       },
@@ -459,21 +460,27 @@ export function buildJsonLd() {
           {
             "@type": "ListItem",
             position: 2,
-            name: "חנות דיגיטלית",
-            item: `${siteSeo.url}/#work`,
+            name: "תבניות",
+            item: `${siteSeo.url}/#gallery`,
           },
           {
             "@type": "ListItem",
             position: 3,
+            name: "אודות",
+            item: `${siteSeo.url}/about`,
+          },
+          {
+            "@type": "ListItem",
+            position: 4,
             name: "יצירת קשר",
-            item: `${siteSeo.url}/#contact`,
+            item: `${siteSeo.url}/contact`,
           },
         ],
       },
       {
         "@type": "FAQPage",
         "@id": `${siteSeo.url}/#faq`,
-        mainEntity: faqs.map((item) => ({
+        mainEntity: eliteFaqs.map((item) => ({
           "@type": "Question",
           name: item.q,
           acceptedAnswer: {
@@ -491,7 +498,7 @@ export function buildJsonLd() {
           position: i + 1,
           name: s.name,
           description: s.description,
-          url: `${siteSeo.url}/#how`,
+          url: `${siteSeo.url}/#process`,
         })),
       },
     ],

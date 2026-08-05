@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState, type ReactNode } from "react";
+import Link from "next/link";
 import { currentHebrewMonth, LANDING } from "@/data/landing";
 import { cn } from "@/lib/cn";
 
@@ -9,12 +10,17 @@ type Errors = Partial<Record<FieldKey, string>>;
 
 function validatePhone(phone: string) {
   const digits = phone.replace(/\D/g, "");
-  return digits.length >= 9 && digits.length <= 12;
+  if (digits.length < 9 || digits.length > 12) return false;
+  if (digits.startsWith("972") && digits.length >= 11) return true;
+  if (digits.startsWith("0") && digits.length >= 9 && digits.length <= 10)
+    return true;
+  return digits.length >= 9 && digits.length <= 10;
 }
 
 /**
  * High-converting lead form
  * Fields: Name · Phone · Business (optional via withBusiness)
+ * Security: honeypot, length limits, privacy notice
  */
 export function SalesLeadForm({
   idPrefix = "lead",
@@ -37,7 +43,6 @@ export function SalesLeadForm({
   source?: string;
   className?: string;
   variant?: "card" | "soft";
-  /** Name + Phone + Business (CRO default for agency pages) */
   withBusiness?: boolean;
 }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
@@ -47,13 +52,22 @@ export function SalesLeadForm({
     e.preventDefault();
     const form = e.currentTarget;
     const fd = new FormData(form);
-    const name = String(fd.get("name") ?? "").trim();
-    const phone = String(fd.get("phone") ?? "").trim();
-    const business = String(fd.get("business") ?? "").trim();
+    const name = String(fd.get("name") ?? "").trim().slice(0, 80);
+    const phone = String(fd.get("phone") ?? "").trim().slice(0, 24);
+    const business = String(fd.get("business") ?? "").trim().slice(0, 120);
+    const honey = String(fd.get("website") ?? "").trim();
+
+    // Bots that fill honeypot: silent success UI without network call noise
+    if (honey) {
+      setStatus("sent");
+      form.reset();
+      return;
+    }
 
     const next: Errors = {};
     if (name.length < 2) next.name = "נא למלא שם מלא";
-    if (!validatePhone(phone)) next.phone = "נא להזין טלפון תקין (9–12 ספרות)";
+    if (!validatePhone(phone))
+      next.phone = "נא להזין טלפון ישראלי תקין (למשל 05X…)";
     if (withBusiness && business.length < 2) {
       next.business = "נא למלא שם עסק";
     }
@@ -70,6 +84,7 @@ export function SalesLeadForm({
           phone,
           business: withBusiness ? business : "",
           source: source || idPrefix || "טופס אתר",
+          website: "", // explicit empty honeypot field
         }),
       });
       if (!res.ok) {
@@ -108,6 +123,29 @@ export function SalesLeadForm({
           aria-labelledby={title ? `${idPrefix}-title` : undefined}
           className="lead-form"
         >
+          {/* Honeypot — hidden from users, bots often auto-fill */}
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              left: "-10000px",
+              top: "auto",
+              width: 1,
+              height: 1,
+              overflow: "hidden",
+            }}
+          >
+            <label htmlFor={`${idPrefix}-website`}>אתר</label>
+            <input
+              id={`${idPrefix}-website`}
+              name="website"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              defaultValue=""
+            />
+          </div>
+
           <div className="lead-row">
             <div className={cn("field", errors.name && "field--error")}>
               <label htmlFor={`${idPrefix}-name`} className="field-label">
@@ -119,6 +157,7 @@ export function SalesLeadForm({
                 placeholder={namePh}
                 autoComplete="name"
                 required
+                maxLength={80}
                 aria-required="true"
                 aria-invalid={errors.name ? true : undefined}
                 aria-describedby={
@@ -149,6 +188,7 @@ export function SalesLeadForm({
                 autoComplete="tel"
                 dir="ltr"
                 required
+                maxLength={24}
                 aria-required="true"
                 aria-invalid={errors.phone ? true : undefined}
                 aria-describedby={
@@ -177,6 +217,7 @@ export function SalesLeadForm({
                   placeholder={businessPh}
                   autoComplete="organization"
                   required
+                  maxLength={120}
                   aria-required="true"
                   aria-invalid={errors.business ? true : undefined}
                   aria-describedby={
@@ -217,7 +258,8 @@ export function SalesLeadForm({
           </button>
 
           <p className="lead-micro">
-            בלי ספאם. בלי התחייבות. נחזור מהר — אתם מחליטים.
+            בלי ספאם. בלי התחייבות. הפרטים לפי{" "}
+            <Link href="/privacy">מדיניות הפרטיות</Link>.
           </p>
         </form>
       )}

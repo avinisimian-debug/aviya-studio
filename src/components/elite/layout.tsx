@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
 /** Max-width content shell */
@@ -191,16 +192,33 @@ export function Button({
   variant?: "primary" | "accent" | "ghost";
   className?: string;
 }) {
+  const reduce = useReducedMotion();
+  const cls = `elite-btn elite-btn--${variant} ${className}`.trim();
+
+  if (reduce) {
+    return (
+      <a href={href} className={cls}>
+        <span className="elite-btn-label">{children}</span>
+        <span className="elite-btn-arrow" aria-hidden>
+          ←
+        </span>
+      </a>
+    );
+  }
+
   return (
-    <a
+    <motion.a
       href={href}
-      className={`elite-btn elite-btn--${variant} ${className}`.trim()}
+      className={cls}
+      whileHover={{ y: -2, scale: 1.015 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 420, damping: 24 }}
     >
       <span className="elite-btn-label">{children}</span>
       <span className="elite-btn-arrow" aria-hidden>
         ←
       </span>
-    </a>
+    </motion.a>
   );
 }
 

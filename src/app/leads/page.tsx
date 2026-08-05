@@ -16,8 +16,7 @@ function formatDate(iso: string) {
 
 /**
  * Admin inbox for website form submissions.
- * Visit: /leads
- * Default password: aviya2026 (override with LEADS_PASSWORD env)
+ * Visit: /leads — set LEADS_PASSWORD in env (required in production).
  */
 export default function LeadsAdminPage() {
   const [password, setPassword] = useState("");
@@ -26,34 +25,37 @@ export default function LeadsAdminPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const load = useCallback(
-    async (pwd: string) => {
-      setLoading(true);
-      setError("");
-      try {
-        const res = await fetch(
-          `/api/leads?password=${encodeURIComponent(pwd)}`
-        );
-        if (res.status === 401) {
-          setError("סיסמה שגויה");
-          setAuthed(false);
-          return;
-        }
-        if (!res.ok) {
-          setError("שגיאה בטעינת הפניות");
-          return;
-        }
-        const data = (await res.json()) as { leads: Lead[] };
-        setLeads(data.leads ?? []);
-        setAuthed(true);
-      } catch {
-        setError("לא ניתן להתחבר לשרת");
-      } finally {
-        setLoading(false);
+  const load = useCallback(async (pwd: string) => {
+    setLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/leads", {
+        headers: { "x-leads-password": pwd },
+        cache: "no-store",
+      });
+      if (res.status === 401) {
+        setError("סיסמה שגויה");
+        setAuthed(false);
+        return;
       }
-    },
-    []
-  );
+      if (res.status === 503) {
+        setError("חסר LEADS_PASSWORD בהגדרות השרת (Vercel Env)");
+        setAuthed(false);
+        return;
+      }
+      if (!res.ok) {
+        setError("שגיאה בטעינת הפניות");
+        return;
+      }
+      const data = (await res.json()) as { leads: Lead[] };
+      setLeads(data.leads ?? []);
+      setAuthed(true);
+    } catch {
+      setError("לא ניתן להתחבר לשרת");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   function onLogin(e: FormEvent) {
     e.preventDefault();
@@ -64,8 +66,8 @@ export default function LeadsAdminPage() {
     <div
       style={{
         minHeight: "100dvh",
-        background: "var(--bg)",
-        color: "var(--fg)",
+        background: "var(--e-bg, #ece8f7)",
+        color: "var(--e-fg, #1a1430)",
         padding: "2rem 1.25rem 4rem",
         fontFamily: "var(--font-heebo), system-ui, sans-serif",
       }}
@@ -74,7 +76,7 @@ export default function LeadsAdminPage() {
         <a
           href="/"
           style={{
-            color: "var(--fg-muted)",
+            color: "var(--e-fg-muted, #5c5578)",
             fontSize: "0.9rem",
             fontWeight: 600,
           }}
@@ -90,8 +92,14 @@ export default function LeadsAdminPage() {
         >
           פניות מהאתר
         </h1>
-        <p style={{ margin: 0, color: "var(--fg-muted)", fontSize: "0.95rem" }}>
-          כאן מופיעים כל הטפסים שנשלחו מהאתר (שם וטלפון).
+        <p
+          style={{
+            margin: 0,
+            color: "var(--e-fg-muted, #5c5578)",
+            fontSize: "0.95rem",
+          }}
+        >
+          טפסים שנשלחו מהאתר (שם, טלפון, עסק, מקור).
         </p>
 
         {!authed ? (
@@ -101,8 +109,8 @@ export default function LeadsAdminPage() {
               marginTop: "2rem",
               padding: "1.35rem",
               borderRadius: "1rem",
-              border: "1px solid var(--line)",
-              background: "var(--bg-card)",
+              border: "1px solid rgba(61,42,120,0.12)",
+              background: "#fff",
               display: "flex",
               flexDirection: "column",
               gap: "0.75rem",
@@ -115,18 +123,18 @@ export default function LeadsAdminPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="הכניסו סיסמה"
+              placeholder="סיסמה ממשתנה LEADS_PASSWORD"
               autoComplete="current-password"
               style={{
                 padding: "0.9rem 1rem",
                 borderRadius: "0.65rem",
-                border: "none",
+                border: "1px solid rgba(61,42,120,0.15)",
                 fontSize: "1rem",
                 color: "#111",
               }}
             />
             {error ? (
-              <p style={{ margin: 0, color: "var(--danger)", fontSize: "0.9rem" }}>
+              <p style={{ margin: 0, color: "#b42318", fontSize: "0.9rem" }}>
                 {error}
               </p>
             ) : null}
@@ -141,13 +149,12 @@ export default function LeadsAdminPage() {
               style={{
                 margin: "0.5rem 0 0",
                 fontSize: "0.8rem",
-                color: "var(--fg-muted)",
+                color: "var(--e-fg-muted, #5c5578)",
                 lineHeight: 1.5,
               }}
             >
-              ברירת מחדל: <code>aviya2026</code>
-              <br />
-              אפשר לשנות עם משתנה סביבה <code>LEADS_PASSWORD</code>
+              הסיסמה מוגדרת בשרת בלבד (LEADS_PASSWORD). אין ברירת מחדל
+              גלויה בממשק.
             </p>
           </form>
         ) : (
@@ -169,7 +176,11 @@ export default function LeadsAdminPage() {
                 type="button"
                 onClick={() => void load(password)}
                 className="btn btn-primary"
-                style={{ width: "auto", minHeight: "2.5rem", padding: "0.5rem 1rem" }}
+                style={{
+                  width: "auto",
+                  minHeight: "2.5rem",
+                  padding: "0.5rem 1rem",
+                }}
                 disabled={loading}
               >
                 רענון
@@ -178,10 +189,15 @@ export default function LeadsAdminPage() {
 
             {leads.length === 0 ? (
               <div
-                className="card"
-                style={{ textAlign: "center", padding: "2rem" }}
+                style={{
+                  textAlign: "center",
+                  padding: "2rem",
+                  background: "#fff",
+                  borderRadius: "1rem",
+                  border: "1px solid rgba(61,42,120,0.12)",
+                }}
               >
-                <p className="p">עדיין אין פניות. מלאו טופס באתר כדי לבדוק.</p>
+                <p style={{ margin: 0 }}>עדיין אין פניות.</p>
               </div>
             ) : (
               <ul
@@ -195,7 +211,15 @@ export default function LeadsAdminPage() {
                 }}
               >
                 {leads.map((lead) => (
-                  <li key={lead.id} className="card">
+                  <li
+                    key={lead.id}
+                    style={{
+                      background: "#fff",
+                      borderRadius: "1rem",
+                      border: "1px solid rgba(61,42,120,0.12)",
+                      padding: "1.1rem 1.2rem",
+                    }}
+                  >
                     <div
                       style={{
                         display: "flex",
@@ -208,7 +232,7 @@ export default function LeadsAdminPage() {
                       <span
                         style={{
                           fontSize: "0.8rem",
-                          color: "var(--fg-muted)",
+                          color: "var(--e-fg-muted, #5c5578)",
                         }}
                       >
                         {formatDate(lead.createdAt)}
@@ -218,7 +242,7 @@ export default function LeadsAdminPage() {
                       <a
                         href={`tel:${lead.phone}`}
                         style={{
-                          color: "var(--accent)",
+                          color: "#5b2fb8",
                           fontWeight: 700,
                           direction: "ltr",
                           display: "inline-block",
@@ -227,14 +251,25 @@ export default function LeadsAdminPage() {
                         {lead.phone}
                       </a>
                     </p>
+                    {lead.business && lead.business !== "—" ? (
+                      <p
+                        style={{
+                          margin: "0.35rem 0 0",
+                          fontWeight: 600,
+                          fontSize: "0.95rem",
+                        }}
+                      >
+                        עסק: {lead.business}
+                      </p>
+                    ) : null}
                     <p
                       style={{
                         margin: "0.35rem 0 0",
-                        color: "var(--fg-muted)",
+                        color: "var(--e-fg-muted, #5c5578)",
                         fontSize: "0.92rem",
                       }}
                     >
-                      {lead.source || "אתר"}
+                      מקור: {lead.source || "אתר"}
                     </p>
                   </li>
                 ))}

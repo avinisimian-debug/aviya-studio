@@ -1,6 +1,22 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useInView,
+  useReducedMotion,
+} from "framer-motion";
+import { useRef } from "react";
+import {
+  ArrowUpRight,
+  Gauge,
+  LayoutTemplate,
+  ShieldCheck,
+  Sparkles,
+  Zap,
+} from "lucide-react";
 import {
   Button,
   Container,
@@ -9,32 +25,109 @@ import {
   SectionHead,
   Split,
 } from "@/components/elite/layout";
+import {
+  eliteEase,
+  Reveal,
+  RevealItem,
+  RevealStagger,
+} from "@/components/elite/Reveal";
 import { SalesLeadForm } from "@/components/landing/SalesLeadForm";
-import { eliteMedia } from "@/data/elite-media";
+import { eliteMedia, eliteTemplates } from "@/data/elite-media";
+import { currentHebrewMonth, LANDING } from "@/data/landing";
+import { aboutPage, eliteFaqs } from "@/data/site-content";
 
 /* ═══════════════════════════════════════════════════════════
-   Aviya — Direct-Response conversion page
-   High-ticket agency voice · Hebrew · sharp · confident
-   Visual: Awwwards-level media polish
+   Aviya — product-first conversion craft · high-end Hebrew
    ═══════════════════════════════════════════════════════════ */
 
 const CTA_PRIMARY = "רוצה שנחזור אליך?";
-const CTA_SECONDARY = "למה מאבדים לקוחות בלי אתר";
 const NAV_CONTACT = "השארת פרטים";
-const FORM_HINT_HERO = (
+const FORM_CTA = "אני רוצה אתר / חנות שמביאה לקוחות";
+
+const FORM_TITLE_HERO = (
   <>
-    רק שם, טלפון ושם עסק.
-    <br />
-    <strong>נחזור בהקדם — בלי התחייבות.</strong>
+    לפרטים נוספים על אתר או חנות דיגיטלית <strong>לעסק שלך</strong>
   </>
 );
-const FORM_HINT_FINAL = (
+const FORM_TITLE_FINAL = (
   <>
-    מלאו 3 שדות קצרים.
-    <br />
-    <strong>אנחנו חוזרים. אתם מחליטים.</strong>
+    מלאו פרטים קצרים — <strong>נחזור אליכם</strong>
   </>
 );
+
+const MARQUEE = [
+  "אתר שמביא לקוחות",
+  "חנות דיגיטלית",
+  "מובייל קטלני",
+  "בבעלותכם 100%",
+  "SEO בסיסי",
+  "המרה בקיפול",
+  "עיצוב ברמת מותג",
+  "עלייה תוך ימים",
+];
+
+const CRAFT = [
+  {
+    icon: LayoutTemplate,
+    title: "מערכת עיצוב, לא דף יחיד",
+    body: "טיפוגרפיה, רווחים, צבעים ורכיבים עובדים יחד — הכל מרגיש כאילו נולד באותו רגע, לא תבנית מודבקת.",
+  },
+  {
+    icon: Gauge,
+    title: "מהיר. חד. נטען בשנייה",
+    body: "אם האתר איטי — אתם משלמים בלקוחות. קוד נקי, תמונות חכמות, חוויה חלקה גם ב־4G.",
+  },
+  {
+    icon: Zap,
+    title: "נתיב המרה ברור",
+    body: "כפתור אחד. מסר אחד. ללא בלגן. המבקר מבין מה לעשות — בלי לשאול ״מה עכשיו?״.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "אמון שנבנה בשניות",
+    body: "העולם שופט לפי פרטים. מיקרו-טיפוגרפיה, הוכחות, והרגשה של מוצר — לא אתר ״גם לי יש״.",
+  },
+] as const;
+
+function CountUp({
+  to,
+  suffix = "",
+  duration = 1.4,
+}: {
+  to: number;
+  suffix?: string;
+  duration?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.6 });
+  const reduce = useReducedMotion();
+  const [val, setVal] = useState(reduce ? to : 0);
+
+  useEffect(() => {
+    if (!inView) return;
+    if (reduce) {
+      setVal(to);
+      return;
+    }
+    let raf = 0;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const t = Math.min(1, (now - start) / (duration * 1000));
+      const eased = 1 - Math.pow(1 - t, 3);
+      setVal(Math.round(to * eased));
+      if (t < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, to, duration, reduce]);
+
+  return (
+    <span ref={ref}>
+      {val}
+      {suffix}
+    </span>
+  );
+}
 
 function Progress() {
   const [p, setP] = useState(0);
@@ -75,85 +168,278 @@ function Nav() {
     <header className={`elite-nav${scrolled ? " is-scrolled" : ""}`}>
       <div className="elite-nav-inner">
         <a href="#top" className="elite-nav-brand">
-          AVIYA
+          <Image
+            src={LANDING.logoSrc}
+            alt="Aviya"
+            width={140}
+            height={40}
+            className="elite-nav-logo"
+            priority
+          />
         </a>
         <nav className="elite-nav-links" aria-label="ניווט ראשי">
-          <a href="#problem">המחיר של אין אתר</a>
-          <a href="#solution">הפתרון</a>
+          <a href="#gallery">תבניות</a>
+          <a href="#about">אודות</a>
+          <a href="#craft">רמה</a>
           <a href="#process">תהליך</a>
-          <a href="#contact">{NAV_CONTACT}</a>
+          <a href="/contact">{NAV_CONTACT}</a>
         </nav>
-        <Button href="#contact" variant="primary">
-          {CTA_PRIMARY}
-        </Button>
+        <div className="elite-nav-actions">
+          <a
+            href={LANDING.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="elite-nav-wa"
+          >
+            וואטסאפ
+          </a>
+          <Button href="#contact" variant="primary">
+            {CTA_PRIMARY}
+          </Button>
+        </div>
       </div>
     </header>
   );
 }
 
-/** 1 — HERO */
+function TemplateShowcase() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const n = eliteTemplates.length;
+
+  useEffect(() => {
+    if (paused) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % n);
+    }, 3400);
+    return () => window.clearInterval(id);
+  }, [paused, n]);
+
+  return (
+    <div
+      id="templates"
+      className="elite-stage"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocusCapture={() => setPaused(true)}
+      onBlurCapture={(e) => {
+        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
+          setPaused(false);
+        }
+      }}
+    >
+      <div className="elite-stage-oval" aria-hidden />
+      <div className="elite-stage-glow" aria-hidden />
+
+      <p className="elite-templates-kicker">
+        <Sparkles size={12} aria-hidden />
+        {n} כיווני עיצוב · ברמת מותג
+      </p>
+
+      <div className="elite-templates" role="region" aria-label="תצוגת תבניות אתר">
+        {eliteTemplates.map((tpl, i) => {
+          let offset = i - active;
+          if (offset > n / 2) offset -= n;
+          if (offset < -n / 2) offset += n;
+          const abs = Math.abs(offset);
+          if (abs > 2) return null;
+
+          const slot =
+            offset === 0
+              ? "is-center"
+              : offset === -1
+                ? "is-left"
+                : offset === 1
+                  ? "is-right"
+                  : offset === -2
+                    ? "is-far-left"
+                    : "is-far-right";
+
+          return (
+            <button
+              key={tpl.id}
+              type="button"
+              className={`elite-template ${slot}`}
+              onClick={() => setActive(i)}
+              aria-pressed={i === active}
+              aria-label={`${tpl.label} — ${tpl.tag}`}
+            >
+              <div className="elite-template-chrome" aria-hidden>
+                <span />
+                <span />
+                <span />
+                <p>{tpl.domain}</p>
+              </div>
+              <div className="elite-template-screen">
+                <Image
+                  src={tpl.src}
+                  alt={tpl.alt}
+                  fill
+                  sizes="(max-width: 960px) 70vw, 420px"
+                  priority={i === 0 || i === active}
+                  className="elite-template-img"
+                />
+                <div
+                  className={`elite-template-ui elite-template-ui--${tpl.id}`}
+                  aria-hidden
+                >
+                  <span className="elite-template-ui-nav" />
+                  <span className="elite-template-ui-hero" />
+                  <span className="elite-template-ui-row" />
+                </div>
+              </div>
+              <div className="elite-template-meta">
+                <span className="elite-template-tag">{tpl.tag}</span>
+                <span className="elite-template-name">{tpl.label}</span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      <div className="elite-template-dots" role="tablist" aria-label="בחירת תבנית">
+        {eliteTemplates.map((tpl, i) => (
+          <button
+            key={tpl.id}
+            type="button"
+            role="tab"
+            aria-selected={i === active}
+            className={`elite-template-dot${i === active ? " is-active" : ""}`}
+            onClick={() => setActive(i)}
+            aria-label={tpl.label}
+          />
+        ))}
+      </div>
+
+      <ul className="elite-template-pills" aria-label="סוגי תבניות">
+        {eliteTemplates.map((tpl, i) => (
+          <li key={tpl.id}>
+            <button
+              type="button"
+              className={`elite-template-pill${i === active ? " is-active" : ""}`}
+              onClick={() => setActive(i)}
+            >
+              {tpl.label}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <div className="elite-float elite-float--a">
+        <strong>{n}</strong>
+        <span>כיווני עיצוב</span>
+      </div>
+      <div className="elite-float elite-float--b">
+        <strong>מותאם</strong>
+        <span>לעסק שלך</span>
+      </div>
+    </div>
+  );
+}
+
 function Hero() {
   return (
     <Section id="top" className="elite-hero elite-section--flush" tight>
-      <div className="elite-hero-bg" aria-hidden />
+      <div className="elite-hero-bg" aria-hidden>
+        <div className="elite-hero-mesh" />
+        <div className="elite-hero-orb elite-hero-orb--a" />
+        <div className="elite-hero-orb elite-hero-orb--b" />
+        <div className="elite-hero-orb elite-hero-orb--c" />
+        <div className="elite-hero-noise" />
+      </div>
       <Container>
         <div className="elite-hero-grid">
-          <div className="elite-hero-copy">
-            <p className="elite-kicker">בניית אתרים לעסקים · Aviya</p>
+          <div className="elite-hero-copy elite-rise">
+            <div className="elite-status">
+              <i className="elite-status-dot" aria-hidden />
+              <span>זמינים לפרויקטים · {currentHebrewMonth()}</span>
+            </div>
+            <p className="elite-qualifier">
+              לבעלי עסקים, מותגים וחנויות שכבר עובדים — ורוצים נוכחות דיגיטלית
+              שמביאה לקוחות ישירים:
+            </p>
             <h1 className="elite-h1">
-              העסק שלך מפסיד לקוחות — בכל יום שאין לו אתר שמוכר בשבילו
+              האתר שגורם ללקוחות{" "}
+              <em className="elite-h1-em">לבחור בכם</em>
+              <br />
+              — לא במתחרה.
             </h1>
             <p className="elite-lead">
-              אנחנו בונים אתרים מודרניים שממירים: מסר חד, אמון בשניות, ומסלול ברור
-              לפנייה. לא ״עוד אתר״. מכונת מכירות שעובדת בזמן שאתם בעבודה.
+              מסר חד, מהירות, ופרטים שהעולם מרגיש. אתר שמביא פניות — או חנות
+              דיגיטלית שמוכרת מהיום הראשון.
             </p>
-            <div className="elite-btn-row">
+
+            <ul className="elite-metrics" aria-label="סימני אמון">
+              <li>
+                <strong>
+                  <CountUp to={eliteTemplates.length} />
+                </strong>
+                <span>כיווני עיצוב</span>
+              </li>
+              <li>
+                <strong>
+                  <CountUp to={14} />
+                </strong>
+                <span>ימים לעלייה</span>
+              </li>
+              <li>
+                <strong>
+                  <CountUp to={100} suffix="%" />
+                </strong>
+                <span>בעלות שלכם</span>
+              </li>
+            </ul>
+
+            <div className="elite-hero-ctas">
               <Button href="#contact" variant="accent">
                 {CTA_PRIMARY}
               </Button>
-              <Button href="#problem" variant="ghost">
-                {CTA_SECONDARY}
-              </Button>
+              <a href="#gallery" className="elite-link-quiet">
+                לצפייה בתבניות
+                <ArrowUpRight size={16} aria-hidden />
+              </a>
             </div>
+
             <div className="elite-hero-form-wrap" id="hero-form">
               <SalesLeadForm
                 idPrefix="hero"
                 source="hero"
-                withBusiness
-                title={FORM_HINT_HERO}
-                cta="שלחו — ונחזור אליכם"
-                namePh="שם מלא"
-                phonePh="טלפון"
-                businessPh="שם העסק"
+                title={FORM_TITLE_HERO}
+                cta={FORM_CTA}
+                namePh="איך קוראים לך?"
+                phonePh="מה המספר שלך?"
                 className="elite-lead-form"
               />
             </div>
           </div>
 
-          <div className="elite-hero-visual">
-            <div className="elite-media-float">
-              <MediaFrame
-                variant="browser"
-                domain="yourbrand.co.il"
-                label="תצוגת מוצר — דשבורד המרה"
-                src={eliteMedia.heroDashboard}
-                alt="דשבורד אנליטיקה מודרני — צמיחה דיגיטלית"
-                priority
-              />
-              <div className="elite-float-chip elite-float-chip--a" aria-hidden>
-                + לידים
-              </div>
-              <div className="elite-float-chip elite-float-chip--b" aria-hidden>
-                24/7
-              </div>
-            </div>
+          <div className="elite-hero-visual elite-rise elite-rise--delay">
+            <TemplateShowcase />
             <p className="elite-hero-cap">
-              אתר ברמת מותג · בנוי להמרה · בבעלותכם המלאה
+              עד {LANDING.monthlyCap} עסקים בחודש · מקומות אחרונים ל
+              {currentHebrewMonth()}
             </p>
           </div>
         </div>
       </Container>
     </Section>
+  );
+}
+
+function Marquee() {
+  const loop = [...MARQUEE, ...MARQUEE];
+  return (
+    <div className="elite-marquee" aria-hidden>
+      <div className="elite-marquee-track">
+        {loop.map((t, i) => (
+          <span key={`${t}-${i}`} className="elite-marquee-item">
+            {t}
+            <i />
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -163,15 +449,15 @@ function TrustStrip() {
       <Container>
         <div className="elite-trust-inner">
           <p className="elite-trust-label">
-            לעסקים שכבר עובדים — ולא יכולים להרשות לעצמם להיראות ״לא רציניים״
-            אונליין
+            נבנה לעסקים שכבר עובדים — ולא יכולים להרשות לעצמם להיראות ״לא
+            רציניים״ אונליין
           </p>
           <ul className="elite-trust-row">
-            <li>שירותים מקצועיים</li>
+            <li>שירותים</li>
             <li>קליניקות</li>
             <li>B2B</li>
             <li>קמעונאות</li>
-            <li>מותגים מקומיים</li>
+            <li>מותגים</li>
           </ul>
         </div>
       </Container>
@@ -179,92 +465,299 @@ function TrustStrip() {
   );
 }
 
-/** 2 — THE PROBLEM */
-function Problem() {
+function Gallery() {
   return (
-    <Section id="problem" tone="muted">
+    <Section id="gallery" className="elite-gallery-section">
       <Container>
-        <Split
-          className="elite-split--elevated"
-          media={
-            <div className="elite-pain-visual">
-              <MediaFrame
-                variant="wide"
-                label="רגע האמת בגוגל"
-                src={eliteMedia.analytics}
-                alt="מסך אנליטיקה עסקי — מה הלקוח רואה כשמחפש אתכם"
-              />
-              <p className="elite-pain-caption">
-                רגע האמת: עשר שניות בגוגל — והעסקה כבר הוכרעה.
-              </p>
-            </div>
-          }
-        >
-          <p className="elite-kicker">המחיר האמיתי</p>
-          <h2 className="elite-h2">
-            בלי אתר מודרני — אתם לא ״חוסכים״. אתם משלמים בלקוחות
-          </h2>
-          <p className="elite-p">
-            הלקוח הרציני בודק אתכם לפני שהוא מתקשר. מה שהוא מוצא (או לא מוצא)
-            קובע אם תקבלו שיחה — או שהמתחרה יקבל אותה.
-          </p>
-
-          <ol className="elite-pain-list">
-            <li>
-              <span className="elite-pain-n" aria-hidden>
-                01
-              </span>
-              <div>
-                <h3>אמון מתרסק בשנייה</h3>
-                <p>
-                  מחפשים אתכם — ומגיעים לכלום, לפייסבוק ישן, או לאתר מת של
-                  2017. המסר שאתם משדרים: ״אולי לא שווה לסמוך.״
-                </p>
-              </div>
-            </li>
-            <li>
-              <span className="elite-pain-n" aria-hidden>
-                02
-              </span>
-              <div>
-                <h3>תלויים באלגוריתם — בלי נכס</h3>
-                <p>
-                  אינסטגרם ופייסבוק משתנים בלי לשאול. חשיפה יורדת — ומכירות
-                  איתן. אתר שלכם הוא נכס. רשתות הן שכירות.
-                </p>
-              </div>
-            </li>
-            <li>
-              <span className="elite-pain-n" aria-hidden>
-                03
-              </span>
-              <div>
-                <h3>המתחרה נראה יותר מקצועי — והוא זוכה</h3>
-                <p>
-                  אותו שירות. לעיתים אפילו מחיר גבוה יותר. אבל האתר שלו משדר
-                  רצינות. שלכם — לא. ההחלטה של הלקוח כבר נגמרה.
-                </p>
-              </div>
-            </li>
-          </ol>
-        </Split>
+        <Reveal>
+          <SectionHead
+            kicker="גלריית כיוונים"
+            title="לא תבנית אחת. שפה שלמה של אתרים."
+            lead="כל כיוון נבנה כרמה של מותג — אתם בוחרים את האופי, אנחנו בונים את המערכת שממירה."
+          />
+        </Reveal>
+        <RevealStagger className="elite-gallery-grid">
+          {eliteTemplates.map((tpl, i) => (
+            <RevealItem key={tpl.id} className="elite-gallery-card">
+              <article>
+                <div className="elite-gallery-frame">
+                  <div className="elite-gallery-chrome" aria-hidden>
+                    <span />
+                    <span />
+                    <span />
+                    <p>{tpl.domain}</p>
+                  </div>
+                  <div className="elite-gallery-screen">
+                    <Image
+                      src={tpl.src}
+                      alt={tpl.alt}
+                      fill
+                      sizes="(max-width: 700px) 92vw, (max-width: 1100px) 45vw, 360px"
+                      className="elite-gallery-img"
+                      priority={i < 2}
+                    />
+                  </div>
+                </div>
+                <div className="elite-gallery-body">
+                  <span className="elite-gallery-tag">{tpl.tag}</span>
+                  <h3>{tpl.label}</h3>
+                </div>
+              </article>
+            </RevealItem>
+          ))}
+        </RevealStagger>
+        <Reveal>
+          <div className="elite-gallery-cta">
+            <Button href="#contact" variant="primary">
+              רוצה כיוון מותאם לעסק שלך?
+            </Button>
+          </div>
+        </Reveal>
       </Container>
     </Section>
   );
 }
 
-/** 3 — SOLUTION + VALUE (Before / After + 24/7 salesperson) */
+function Voices() {
+  const items = [
+    {
+      q: "סוף־סוף אתר שנראה כמו העסק שלנו באמת — ולא כמו עמוד פייסבוק.",
+      a: "בעלת קליניקה · שירותים",
+    },
+    {
+      q: "תוך שבועיים עלה אתר שמביא פניות. הלקוחות מגיעים כבר מוכנים.",
+      a: "עסק B2B · ייעוץ",
+    },
+    {
+      q: "החנות אונליין מרגישה כמו מותג — לא כמו קטלוג חובבני.",
+      a: "קמעונאות · אופנה",
+    },
+  ] as const;
+
+  return (
+    <Section id="voices" className="elite-voices-section">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="קולות מהשטח"
+            title="ככה מרגיש אתר ברמה"
+            lead="המטרה לא ״יש לנו אתר״. המטרה: אמון, פניות, והרגשה של מותג."
+          />
+        </Reveal>
+        <RevealStagger className="elite-voices-grid">
+          {items.map((item) => (
+            <RevealItem key={item.a} className="elite-voice-card">
+              <blockquote>
+                <p>״{item.q}״</p>
+                <footer>{item.a}</footer>
+              </blockquote>
+            </RevealItem>
+          ))}
+        </RevealStagger>
+      </Container>
+    </Section>
+  );
+}
+
+function Faq() {
+  const [open, setOpen] = useState(0);
+  const items = eliteFaqs;
+
+  return (
+    <Section id="faq" tone="muted" className="elite-faq-section">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="שאלות קצרות"
+            title="בלי ערפל. תשובות ברורות."
+          />
+        </Reveal>
+        <Reveal>
+          <div className="elite-faq-list">
+            {items.map((item, i) => {
+              const isOpen = open === i;
+              return (
+                <div
+                  key={item.q}
+                  className={`elite-faq-item${isOpen ? " is-open" : ""}`}
+                >
+                  <button
+                    type="button"
+                    className="elite-faq-q"
+                    aria-expanded={isOpen}
+                    onClick={() => setOpen(isOpen ? -1 : i)}
+                  >
+                    <span>{item.q}</span>
+                    <span className="elite-faq-icon" aria-hidden>
+                      {isOpen ? "−" : "+"}
+                    </span>
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen ? (
+                      <motion.div
+                        key="a"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.32, ease: eliteEase }}
+                        className="elite-faq-panel"
+                      >
+                        <p className="elite-faq-a">{item.a}</p>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
+/** Linear-style craft pillars — bento */
+function Craft() {
+  return (
+    <Section id="craft" className="elite-craft-section">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="ברמה של המובילים"
+            title="השפה של האתרים הגדולים בעולם — מותאמת לעסק שלך"
+            lead="אוויר, טיפוגרפיה חדה, מוצר במרכז, ותנועה שמספרת סיפור. לא ״אתר ג׳נרי״ — מערכת שמכבדת את המותג שלכם."
+          />
+        </Reveal>
+
+        <RevealStagger className="elite-bento">
+          {CRAFT.map((item) => {
+            const Icon = item.icon;
+            return (
+              <RevealItem key={item.title} className="elite-bento-card">
+                <div className="elite-bento-icon" aria-hidden>
+                  <Icon size={20} strokeWidth={1.6} />
+                </div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </RevealItem>
+            );
+          })}
+          <RevealItem className="elite-bento-card elite-bento-card--wide">
+            <p className="elite-bento-wide-kicker">מה מקבלים בפועל</p>
+            <ul className="elite-bento-stats">
+              <li>
+                <strong>01</strong>
+                <span>מסר מעל הקיפול — ברור ב־3 שניות</span>
+              </li>
+              <li>
+                <strong>02</strong>
+                <span>מבנה המרה + וואטסאפ / טופס / שיחה</span>
+              </li>
+              <li>
+                <strong>03</strong>
+                <span>תבניות עיצוב פרימיום — מותאמות לכם</span>
+              </li>
+              <li>
+                <strong>04</strong>
+                <span>בעלות מלאה. בלי ״חתונה״ עם מערכת סגורה</span>
+              </li>
+            </ul>
+          </RevealItem>
+        </RevealStagger>
+      </Container>
+    </Section>
+  );
+}
+
+function Problem() {
+  return (
+    <Section id="problem" tone="muted">
+      <Container>
+        <Reveal>
+          <Split
+            className="elite-split--elevated"
+            media={
+              <div className="elite-pain-visual">
+                <MediaFrame
+                  variant="browser"
+                  domain="google.com/search"
+                  label="רגע האמת בגוגל"
+                  src={eliteMedia.analytics}
+                  alt="מסך אנליטיקה עסקי — מה הלקוח רואה כשמחפש אתכם"
+                />
+                <p className="elite-pain-caption">
+                  רגע האמת: עשר שניות בגוגל — והעסקה כבר הוכרעה.
+                </p>
+              </div>
+            }
+          >
+            <p className="elite-kicker">המחיר האמיתי</p>
+            <h2 className="elite-h2">
+              בלי אתר מודרני — אתם לא ״חוסכים״. אתם משלמים בלקוחות
+            </h2>
+            <p className="elite-p">
+              הלקוח הרציני בודק אתכם לפני שהוא מתקשר. מה שהוא מוצא (או לא מוצא)
+              קובע אם תקבלו שיחה — או שהמתחרה יקבל אותה.
+            </p>
+
+            <ol className="elite-pain-list">
+              <li>
+                <span className="elite-pain-n" aria-hidden>
+                  01
+                </span>
+                <div>
+                  <h3>אמון מתרסק בשנייה</h3>
+                  <p>
+                    מחפשים אתכם — ומגיעים לכלום, לפייסבוק ישן, או לאתר מת של
+                    2017. המסר: ״אולי לא שווה לסמוך.״
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span className="elite-pain-n" aria-hidden>
+                  02
+                </span>
+                <div>
+                  <h3>תלויים באלגוריתם — בלי נכס</h3>
+                  <p>
+                    אינסטגרם משתנה בלי לשאול. אתר שלכם הוא נכס. רשתות הן שכירות.
+                  </p>
+                </div>
+              </li>
+              <li>
+                <span className="elite-pain-n" aria-hidden>
+                  03
+                </span>
+                <div>
+                  <h3>המתחרה נראה יותר מקצועי — והוא זוכה</h3>
+                  <p>
+                    אותו שירות. לפעמים מחיר גבוה יותר. האתר שלו מנצח אתכם בשיפוט
+                    הראשון.
+                  </p>
+                </div>
+              </li>
+            </ol>
+          </Split>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
 function Solution() {
   return (
     <Section id="solution">
       <Container>
-        <SectionHead
-          kicker="הפתרון"
-          title="מהקצה הנכון: אתר שמוכר — 24 שעות ביממה"
-          lead="לא עיצוב יפה ש״יש לכם אתר״. מערכת שמביאה פניות כשאתם ישנים, בנסיעה, ובפגישות."
-        />
+        <Reveal>
+          <SectionHead
+            kicker="הפתרון"
+            title="אתר שמוכר — 24 שעות ביממה"
+            lead="לא ״יש לי אתר״. מערכת שמביאה פניות כשאתם ישנים, בנסיעה, ובפגישות."
+          />
+        </Reveal>
 
-        <div className="elite-ba" aria-label="לפני ואחרי">
+        <Reveal>
+          <div className="elite-ba" aria-label="לפני ואחרי">
           <div className="elite-ba-col elite-ba-before">
             <p className="elite-ba-label">לפני</p>
             <ul>
@@ -283,10 +776,11 @@ function Solution() {
               <li>נכס בבעלותכם — לא תלוי באלגוריתם</li>
             </ul>
           </div>
-        </div>
+          </div>
+        </Reveal>
 
-        <div className="elite-value-grid">
-          <article className="elite-surface elite-value-card elite-img-card">
+        <RevealStagger className="elite-value-grid">
+          <RevealItem className="elite-surface elite-value-card elite-img-card">
             <div className="elite-img-card-media">
               <MediaFrame
                 variant="default"
@@ -295,14 +789,13 @@ function Solution() {
               />
             </div>
             <div className="elite-img-card-body">
-              <h3>איש מכירות שלא עוזב את המשמרת</h3>
+              <h3>איש מכירות שלא עוזב</h3>
               <p>
-                האתר מסביר, משכנע, וסוגר פנייה — גם ב־02:00. בלי חופשות. בלי
-                ״אחזור אליך.״
+                האתר מסביר, משכנע, וסוגר פנייה — גם ב־02:00. בלי חופשות.
               </p>
             </div>
-          </article>
-          <article className="elite-surface elite-value-card elite-img-card">
+          </RevealItem>
+          <RevealItem className="elite-surface elite-value-card elite-img-card">
             <div className="elite-img-card-media">
               <MediaFrame
                 variant="default"
@@ -311,14 +804,13 @@ function Solution() {
               />
             </div>
             <div className="elite-img-card-body">
-              <h3>אמון לפני השיחה הראשונה</h3>
+              <h3>אמון לפני השיחה</h3>
               <p>
-                הוכחות, תהליך, מסר מקצועי. הלקוח מגיע אליכם כבר חצי־משוכנע — לא
-                סקפטי.
+                הוכחות, תהליך, מסר מקצועי. הלקוח מגיע חצי־משוכנע.
               </p>
             </div>
-          </article>
-          <article className="elite-surface elite-value-card elite-img-card">
+          </RevealItem>
+          <RevealItem className="elite-surface elite-value-card elite-img-card">
             <div className="elite-img-card-media">
               <MediaFrame
                 variant="default"
@@ -327,24 +819,23 @@ function Solution() {
               />
             </div>
             <div className="elite-img-card-body">
-              <h3>השקעה, לא הוצאה שורפת</h3>
+              <h3>השקעה, לא בזבוז</h3>
               <p>
-                אתר שמביא לידים משלם על עצמו. אתר שלא — עולה לכם בכל לקוח שהלך
-                למתחרה.
+                אתר שמביא לידים משלם על עצמו. אתר שלא — עולה בכל לקוח שבורח.
               </p>
             </div>
-          </article>
-        </div>
+          </RevealItem>
+        </RevealStagger>
 
-        {/* Editorial split: craft proof */}
-        <div className="elite-story-block">
+        <Reveal>
+          <div className="elite-story-block">
           <Split
             reverse
             className="elite-split--elevated"
             media={
               <MediaFrame
                 variant="browser"
-                domain="studio.aviya"
+                domain="yourbrand.co.il"
                 label="תצוגת אתר ברמת מותג"
                 src={eliteMedia.workspace}
                 alt="סביבת עבודה מודרנית — נוכחות דיגיטלית ברמה"
@@ -363,90 +854,210 @@ function Solution() {
               </Button>
             </div>
           </Split>
-        </div>
-
-        <div className="elite-solution-cta">
-          <Button href="#contact" variant="accent">
-            {CTA_PRIMARY}
-          </Button>
-          <p className="elite-solution-micro">
-            3 שדות. בלי לחץ. אנחנו חוזרים — אתם מחליטים.
-          </p>
-        </div>
+          </div>
+        </Reveal>
       </Container>
     </Section>
   );
 }
 
-/** Supporting — process (tight, professional) */
+function About() {
+  return (
+    <Section id="about" className="elite-about-section">
+      <Container>
+        <Reveal>
+          <Split
+            className="elite-split--elevated"
+            media={
+              <MediaFrame
+                variant="default"
+                src={eliteMedia.proof}
+                alt="צוות מקצועי בעבודה — Aviya סטודיו"
+              />
+            }
+          >
+            <p className="elite-kicker">{aboutPage.kicker}</p>
+            <h2 className="elite-h2">{aboutPage.title}</h2>
+            <p className="elite-lead">{aboutPage.lead}</p>
+            <p className="elite-p">{aboutPage.story[0]}</p>
+            <p className="elite-p">{aboutPage.story[1]}</p>
+            <ul className="elite-about-pillars">
+              {aboutPage.pillars.map((p) => (
+                <li key={p.t}>
+                  <strong>{p.t}</strong>
+                  <span>{p.d}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="elite-btn-row">
+              <Button href="/about" variant="primary">
+                עוד עלינו
+              </Button>
+              <Button href="#contact" variant="ghost">
+                {CTA_PRIMARY}
+              </Button>
+            </div>
+          </Split>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
+/** Product demo reel — animated UI storyboard (no external video dependency) */
+function ProductDemo() {
+  const beats = [
+    { t: "01 · מסר מעל הקיפול", d: "הלקוח מבין תוך שניות מי אתם ומה לקחת." },
+    { t: "02 · אמון והוכחות", d: "תהליך, ביקורות, תמונות — נראה רציני." },
+    { t: "03 · קריאה לפעולה", d: "וואטסאפ / טופס / שיחה — מסלול אחד ברור." },
+    { t: "04 · מובייל קודם", d: "רוב ההחלטות קורות בטלפון. כאן זה מנצח." },
+  ] as const;
+  const [beat, setBeat] = useState(0);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = window.setInterval(() => {
+      setBeat((b) => (b + 1) % beats.length);
+    }, 3200);
+    return () => window.clearInterval(id);
+  }, [beats.length]);
+
+  return (
+    <Section id="demo" className="elite-demo-section" tone="muted">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="איך אתר ברמה מרגיש"
+            title="סיור קצר בחוויית המרה"
+            lead="בלי סרטון כבד — סיפור ויזואלי ברור: מה הלקוח רואה, ומה גורם לו לפנות."
+          />
+        </Reveal>
+        <Reveal>
+          <div className="elite-demo">
+            <div className="elite-demo-stage" aria-hidden>
+              <div className="elite-demo-chrome">
+                <span />
+                <span />
+                <span />
+                <p>yourbrand.co.il</p>
+              </div>
+              <div className="elite-demo-screen">
+                <Image
+                  src={eliteMedia.laptopUi}
+                  alt=""
+                  fill
+                  sizes="(max-width: 900px) 92vw, 640px"
+                  className="elite-demo-bg"
+                />
+                <div className={`elite-demo-layer is-beat-${beat}`}>
+                  <div className="elite-demo-nav-bar" />
+                  <div className="elite-demo-hero-block">
+                    <i />
+                    <i />
+                    <b />
+                  </div>
+                  <div className="elite-demo-cards">
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                  <div className="elite-demo-cta-bar" />
+                </div>
+              </div>
+            </div>
+            <ol className="elite-demo-beats">
+              {beats.map((item, i) => (
+                <li key={item.t} className={i === beat ? "is-active" : ""}>
+                  <button type="button" onClick={() => setBeat(i)}>
+                    <strong>{item.t}</strong>
+                    <span>{item.d}</span>
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
 function Process() {
+  const steps = [
+    {
+      t: "משאירים פרטים",
+      b: "שם וטלפון. חוזרים להבין כיוון — בלי התחייבות ובלי ז׳רגון.",
+    },
+    {
+      t: "בנייה ברמה",
+      b: "עיצוב, מבנה המרה, מובייל, SEO. נראה כמו מותג — מתנהג כמו מכונת פניות.",
+    },
+    {
+      t: "השקה + שליטה",
+      b: "עולים לאוויר. אתם מקבלים לקוחות. הבעלות 100% שלכם.",
+    },
+  ] as const;
+
   return (
     <Section id="process" tone="muted">
       <Container>
-        <SectionHead
-          kicker="איך זה עובד"
-          title="פשוט. מהיר. בלי פרויקט אינסופי."
-          lead="אתם בעסק. אנחנו בבנייה. עולים לאוויר עם מערכת שמוכנה לקבל לקוחות."
-        />
-        <ol className="elite-steps">
-          <li>
-            <h3>משאירים פרטים</h3>
-            <p>
-              שם, טלפון ושם עסק. אנחנו חוזרים להבין את הכיוון — בלי התחייבות
-              ובלי ז׳רגון.
-            </p>
-          </li>
-          <li>
-            <h3>בנייה ברמה</h3>
-            <p>
-              עיצוב, מבנה המרה, מובייל, SEO בסיסי. האתר נראה כמו מותג ומתנהג כמו
-              מכונת פניות.
-            </p>
-          </li>
-          <li>
-            <h3>השקה + שליטה</h3>
-            <p>
-              עולים לאוויר. אתם יודעים לקבל לקוחות. הבעלות 100% שלכם.
-            </p>
-          </li>
-        </ol>
+        <Reveal>
+          <SectionHead
+            kicker="איך זה עובד"
+            title="פשוט. מהיר. בלי פרויקט אינסופי."
+            lead="אתם בעסק. אנחנו בבנייה. עולים לאוויר עם מערכת שמוכנה לקבל לקוחות."
+          />
+        </Reveal>
+        <RevealStagger className="elite-steps elite-steps--cards">
+          {steps.map((s, i) => (
+            <RevealItem key={s.t} className="elite-step-card">
+              <span className="elite-step-n" aria-hidden>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3>{s.t}</h3>
+              <p>{s.b}</p>
+            </RevealItem>
+          ))}
+        </RevealStagger>
       </Container>
     </Section>
   );
 }
 
-/** 4 — FINAL CTA */
 function FinalCta() {
   return (
-    <Section id="contact" tone="inverse">
+    <Section id="contact" tone="inverse" className="elite-final-section">
+      <div className="elite-final-aurora" aria-hidden />
       <Container>
-        <div className="elite-final">
-          <p className="elite-kicker">רגע אחד</p>
-          <h2 className="elite-h2">
-            עוד יום בלי אתר שעובד — זה עוד יום שמשלמים למתחרה
-          </h2>
-          <p className="elite-lead">
-            אל תתנו ל״אחר כך״ לסגור לכם עסקאות. השאירו פרטים — נחזור אליכם מהר,
-            ברור, בלי לחץ.
-          </p>
-          <div className="elite-final-form-wrap">
-            <SalesLeadForm
-              idPrefix="final"
-              source="final"
-              variant="soft"
-              withBusiness
-              title={FORM_HINT_FINAL}
-              cta="שלחו — ונחזור אליכם"
-              namePh="שם מלא"
-              phonePh="טלפון"
-              businessPh="שם העסק"
-              className="elite-lead-form elite-lead-form--dark"
-            />
+        <Reveal>
+          <div className="elite-final">
+            <p className="elite-kicker">רגע אחד</p>
+            <h2 className="elite-h2">
+              עוד יום בלי אתר שעובד — זה עוד יום שמשלמים למתחרה
+            </h2>
+            <p className="elite-lead">
+              אל תתנו ל״אחר כך״ לסגור לכם עסקאות. השאירו פרטים — נחזור מהר, ברור,
+              בלי לחץ.
+            </p>
+            <div className="elite-final-form-wrap">
+              <SalesLeadForm
+                idPrefix="final"
+                source="final"
+                variant="soft"
+                withBusiness
+                title={FORM_TITLE_FINAL}
+                cta="שלחו — ונחזור אליכם"
+                namePh="איך קוראים לך?"
+                phonePh="מה המספר שלך?"
+                businessPh="שם העסק"
+                className="elite-lead-form elite-lead-form--dark"
+              />
+            </div>
+            <p className="elite-final-reassure">
+              בלי ספאם. בלי חיוב. רק שיחה אם זה מתאים לשני הצדדים.
+            </p>
           </div>
-          <p className="elite-final-reassure">
-            בלי ספאם. בלי חיוב. רק שיחה אם זה מתאים לשני הצדדים.
-          </p>
-        </div>
+        </Reveal>
       </Container>
     </Section>
   );
@@ -459,21 +1070,58 @@ function Footer() {
         <div className="elite-footer-inner">
           <p className="elite-footer-brand">AVIYA</p>
           <p className="elite-footer-meta">
-            אתרים שמביאים לקוחות. בעלות מלאה. רמה של מותג.
+            אתרים שנראים כמו מוצר. ממירים כמו מכונה. בבעלותכם.
           </p>
           <div className="elite-footer-links">
             <a href="#top">למעלה</a>
-            <a href="#problem">הבעיה</a>
-            <a href="#solution">הפתרון</a>
+            <a href="#gallery">תבניות</a>
+            <a href="#about">אודות</a>
+            <a href="/about">עמוד אודות</a>
+            <a href="/contact">יצירת קשר</a>
+            <a href="#faq">שאלות</a>
+            <a href="/privacy">פרטיות</a>
             <a href="/accessibility">נגישות</a>
-            <a href="mailto:studio.aviya1@gmail.com">studio.aviya1@gmail.com</a>
+            <a
+              href={LANDING.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              וואטסאפ
+            </a>
+            <a href={LANDING.emailUrl}>מייל</a>
+            <a
+              href={LANDING.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              אינסטגרם
+            </a>
           </div>
           <p className="elite-footer-meta">
-            © {new Date().getFullYear()} Aviya
+            © {new Date().getFullYear()} Aviya · studio.aviya1
           </p>
         </div>
       </Container>
     </footer>
+  );
+}
+
+function FloatingWhatsapp() {
+  return (
+    <a
+      href={LANDING.whatsappUrl}
+      className="elite-fab-wa"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="פתיחת וואטסאפ עם Aviya"
+    >
+      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden>
+        <path
+          fill="currentColor"
+          d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+        />
+      </svg>
+    </a>
   );
 }
 
@@ -497,14 +1145,22 @@ export default function ElitePage() {
       <Nav />
       <main id="main">
         <Hero />
+        <Marquee />
         <TrustStrip />
+        <Gallery />
+        <ProductDemo />
+        <Craft />
         <Problem />
         <Solution />
+        <About />
+        <Voices />
         <Process />
+        <Faq />
         <FinalCta />
       </main>
       <Footer />
       <MobileCta />
+      <FloatingWhatsapp />
     </div>
   );
 }

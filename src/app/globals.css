@@ -2,6 +2,7 @@
 @config "../../tailwind.config.mjs";
 @import "../styles/tokens.css";
 @import "../styles/elite.css";
+@import "../styles/site-chrome.css";
 @import "../styles/a11y.css";
 
 /* Elite conversion landing shell. Legacy sales CSS available if needed:
