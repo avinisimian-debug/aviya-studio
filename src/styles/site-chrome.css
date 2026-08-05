@@ -832,3 +832,50 @@
   color: var(--e-accent-deep, #5b2fb8);
   text-decoration: none;
 }
+
+/* Promote / social kit */
+.share-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.copy-card {
+  margin: 1.25rem 0;
+  padding: 1.15rem 1.1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(61, 42, 120, 0.1);
+}
+
+.copy-card h3 {
+  margin: 0 0 0.65rem;
+  font-size: 1.05rem;
+}
+
+.copy-platform {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--e-fg-muted, #5c5578);
+}
+
+.copy-block {
+  margin: 0.5rem 0 0;
+  padding: 0.9rem 1rem;
+  border-radius: 0.75rem;
+  background: #1a1430;
+  color: #f3f0fc;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+  font-family: ui-monospace, "Cascadia Code", monospace;
+}
+
+.site-prose h3 {
+  margin: 1.5rem 0 0.45rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+}

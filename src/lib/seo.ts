@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { LANDING } from "@/data/landing";
 import { eliteFaqs } from "@/data/site-content";
+import { allSeoKeywords } from "@/data/seo-keywords";
 
 /**
  * Canonical production URL.
@@ -42,88 +43,15 @@ export const SITE_URL = resolveSiteUrl();
 export const siteSeo = {
   url: SITE_URL,
   locale: "he_IL",
-  /** Brand + core service — wins "Aviya בניית אתרים" type queries once indexed */
-  title: "Aviya | בניית אתרים וחנויות דיגיטליות | אביה סטודיו",
+  title:
+    "Aviya | בניית אתרים לעסקים · חנויות דיגיטליות · אתר תדמית | אביה סטודיו ישראל",
   titleShort: "Aviya | אביה סטודיו",
   description:
-    "Aviya (אביה) — סטודיו לבניית אתרים בישראל: אתרים שמביאים לקוחות ישירים (שירותים, קליניקות, B2B) וחנויות דיגיטליות. עיצוב יוקרתי, המרה, SEO. studio.aviya1 · 055-557-3090",
+    "Aviya (אביה) — סטודיו לבניית אתרים בישראל: אתרים שמביאים לקוחות (שירותים, קליניקות, B2B), חנויות דיגיטליות, דפי נחיתה ו-SEO. תל אביב, מרכז וכל הארץ. 055-557-3090 · studio.aviya1",
   ogDescription:
-    "Aviya — בניית אתרים שמביאים לקוחות וחנויות שמוכרות. אביה סטודיו דיגיטלי בישראל.",
-  /** Focus keywords for meta + content (natural language SEO) */
-  keywords: [
-    // Brand (people search these)
-    "Aviya",
-    "AVIYA",
-    "aviya",
-    "אביה",
-    "אביה סטודיו",
-    "אביה בניית אתרים",
-    "Aviya studio",
-    "Aviya בניית אתרים",
-    "studio aviya",
-    "studio.aviya1",
-    // Core services
-    "בניית אתרים",
-    "בניית אתרים לעסקים",
-    "בניית אתרים מקצועיים",
-    "בניית אתרים בישראל",
-    "עיצוב אתרים",
-    "עיצוב אתרים מקצועי",
-    "סטודיו דיגיטלי",
-    "סטודיו לבניית אתרים",
-    "חברת בניית אתרים",
-    // Ecommerce / shops
-    "חנות אינטרנטית",
-    "חנויות אינטרנטיות",
-    "בניית חנות אונליין",
-    "בניית חנות דיגיטלית",
-    "חנויות דיגיטליות",
-    "אתר מכירות",
-    "אתר למכירת מוצרים",
-    "חנות וירטואלית",
-    "אתר e-commerce",
-    "הקמת חנות אונליין",
-    // Audience
-    "אתר לחנות פיזית",
-    "אתר לעסק",
-    "אתר לעסקים קטנים",
-    "אתר תדמית",
-    "אתר תדמית מקצועי",
-    "אתר תדמית לעסק",
-    "אתר תדמית מורחב",
-    "דף נחיתה",
-    "דף נחיתה מקצועי",
-    "דפי נחיתה",
-    "אתר One Page",
-    "אתר עמוד אחד",
-    "שדרוג אתר קיים",
-    "עיצוב מחדש לאתר",
-    "בדיקת אתר",
-    "תחזוקת אתרים",
-    // Conversion / growth
-    "אתר שמביא לקוחות",
-    "אתר שממיר",
-    "המרת לידים",
-    "שיווק דיגיטלי",
-    "נוכחות דיגיטלית",
-    "אתרים שמכניסים לקוחות",
-    // SEO
-    "קידום אתרים",
-    "קידום אורגני",
-    "SEO",
-    "אופטימיזציה לגוגל",
-    "קידום בגוגל",
-    // Tech / trust
-    "אתר רספונסיבי",
-    "אתר מותאם למובייל",
-    "סליקת אשראי באתר",
-    "אתר עם נגישות",
-    "Next.js",
-    // Local
-    "ישראל",
-    "בניית אתרים בתל אביב",
-    "בניית אתרים במרכז",
-  ],
+    "Aviya — בניית אתרים שמביאים לקוחות וחנויות שמוכרות. עיצוב יוקרתי, המרה, בעלות מלאה. אביה סטודיו דיגיטלי בישראל.",
+  /** Full cluster — related business intent only */
+  keywords: allSeoKeywords,
   ogImagePath: "/opengraph-image",
   email: LANDING.email,
   phone: "+972-55-557-3090",
@@ -535,6 +463,18 @@ export function buildJsonLd() {
             position: 4,
             name: "SEO בסיסי לעסקים",
             url: `${siteSeo.url}/guides/seo-basics-for-business`,
+          },
+          {
+            "@type": "ListItem",
+            position: 5,
+            name: "אתר לקליניקה",
+            url: `${siteSeo.url}/guides/website-for-clinic`,
+          },
+          {
+            "@type": "ListItem",
+            position: 6,
+            name: "שירותי בניית אתרים",
+            url: `${siteSeo.url}/services`,
           },
         ],
       },

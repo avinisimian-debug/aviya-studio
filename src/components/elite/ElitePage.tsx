@@ -181,8 +181,8 @@ function Nav() {
         <nav className="elite-nav-links" aria-label="ניווט ראשי">
           <a href="#gallery">תבניות</a>
           <a href="/guides">מדריכים</a>
+          <a href="/services">שירותים</a>
           <a href="#about">אודות</a>
-          <a href="#process">תהליך</a>
           <a href="/contact">{NAV_CONTACT}</a>
         </nav>
         <div className="elite-nav-actions">
@@ -1043,9 +1043,19 @@ function SeoResources() {
       d: "סליקה, מובייל וחוויית קנייה",
     },
     {
-      href: "/guides/seo-basics-for-business",
-      t: "SEO בסיסי",
-      d: "יסודות קידום בגוגל לעסקים",
+      href: "/guides/website-for-clinic",
+      t: "אתר לקליניקה",
+      d: "אמון, תהליך ופניות",
+    },
+    {
+      href: "/services",
+      t: "כל השירותים",
+      d: "תדמית · חנות · נחיתה · SEO",
+    },
+    {
+      href: "/promote",
+      t: "קידום ברשתות וביוטיוב",
+      d: "פוסטים והאשטגים מוכנים",
     },
   ] as const;
 
@@ -1133,6 +1143,8 @@ function Footer() {
             <a href="#about">אודות</a>
             <a href="/about">עמוד אודות</a>
             <a href="/guides">מדריכים</a>
+            <a href="/services">שירותים</a>
+            <a href="/promote">קידום</a>
             <a href="/contact">יצירת קשר</a>
             <a href="#faq">שאלות</a>
             <a href="/privacy">פרטיות</a>
