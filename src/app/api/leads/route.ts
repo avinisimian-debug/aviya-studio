@@ -4,9 +4,11 @@ import {
   getLeadsPassword,
   isLeadsAdminConfigured,
   readLeads,
+  type Lead,
 } from "@/lib/leads";
 import { notifyNewLead } from "@/lib/notify-leads";
 import { clientIp, parseLeadBody, rateLimit } from "@/lib/security";
+import { randomBytes } from "crypto";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,7 +23,23 @@ function noStoreJson(data: unknown, status = 200) {
   });
 }
 
-/** POST — save a new lead from the website form */
+function makeLeadFromParsed(data: {
+  name: string;
+  phone: string;
+  business: string;
+  source: string;
+}): Lead {
+  return {
+    id: `${Date.now()}-${randomBytes(4).toString("hex")}`,
+    createdAt: new Date().toISOString(),
+    name: data.name,
+    phone: data.phone,
+    business: data.business || "—",
+    source: data.source || "אתר",
+  };
+}
+
+/** POST — accept lead, notify email, never block visitor on storage */
 export async function POST(req: Request) {
   try {
     const ip = clientIp(req);
@@ -40,14 +58,33 @@ export async function POST(req: Request) {
       return noStoreJson({ error: parsed.error }, parsed.status);
     }
 
-    const lead = await addLead(parsed.data);
-    // Email + WhatsApp (+ optional webhook) — do not block the visitor
-    void notifyNewLead(lead);
+    let lead: Lead;
+    try {
+      lead = await addLead(parsed.data);
+    } catch (e) {
+      // Absolute last resort — still accept + email
+      console.error("addLead failed, using ephemeral lead", e);
+      lead = makeLeadFromParsed(parsed.data);
+    }
+
+    // Await notify briefly so serverless doesn't kill the email mid-flight
+    try {
+      await Promise.race([
+        notifyNewLead(lead),
+        new Promise((r) => setTimeout(r, 6_000)),
+      ]);
+    } catch (e) {
+      console.error("notifyNewLead error (lead still accepted)", e);
+    }
 
     return noStoreJson({ ok: true, id: lead.id });
   } catch (e) {
     console.error("leads POST", e);
-    return noStoreJson({ error: "שגיאה בשמירה" }, 500);
+    // Avoid scaring visitors — if body was unreadable the parse path already 400'd
+    return noStoreJson(
+      { error: "לא הצלחנו לשמור כרגע. נסו שוב או שלחו בוואטסאפ." },
+      500
+    );
   }
 }
 
@@ -61,7 +98,6 @@ export async function GET(req: Request) {
   }
 
   const url = new URL(req.url);
-  // Prefer header — query param kept only for backward compat, rate-limited hard
   const password =
     req.headers.get("x-leads-password") ||
     url.searchParams.get("password") ||
@@ -73,7 +109,6 @@ export async function GET(req: Request) {
   }
 
   if (!password || password !== getLeadsPassword()) {
-    // Uniform response + small delay signal for brute force
     return noStoreJson({ error: "סיסמה שגויה" }, 401);
   }
 
