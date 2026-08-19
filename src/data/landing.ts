@@ -11,7 +11,7 @@ export const LANDING = {
   tagline: "עיצוב · בנייה · צמיחה",
   promise: "בונים אתרים. בונים עסקים. יוצרים הצלחה.",
   email: "studio.aviya1@gmail.com",
-  instagram: "https://www.instagram.com/studio.aviya1/",
+  instagram: "https://www.instagram.com/studio.aviya1/reels/",
   instagramHandle: "@studio.aviya1",
   whatsappE164: "972555573090",
   monthlyCap: 8,
