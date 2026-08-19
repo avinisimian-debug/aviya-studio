@@ -35,6 +35,7 @@ import { aboutPage, eliteFaqs } from "@/data/site-content";
 import {
   bringToCall,
   firstChat,
+  happyClients,
   honestNotes,
   igPosts,
   realFacts,
@@ -147,6 +148,7 @@ function Nav() {
         </a>
         <nav className="elite-nav-links" aria-label="ניווט ראשי">
           <a href="#about">אביה</a>
+          <a href="#clients">לקוחות</a>
           <a href="#instagram">רילס</a>
           <a href="#gallery">תבניות</a>
           <a href="#includes">מה כלול</a>
@@ -187,6 +189,9 @@ function Nav() {
         >
           <a href="#about" onClick={close}>
             אביה
+          </a>
+          <a href="#clients" onClick={close}>
+            לקוחות
           </a>
           <a href="#gallery" onClick={close}>
             תבניות
@@ -395,31 +400,36 @@ function StudioNow() {
       <Container>
         <Reveal>
           <SectionHead
-            kicker="סטודיו חי"
-            title="פרטים אמיתיים. לא עמוד ׳סוכנות גלובלית׳."
+            kicker="הסטודיו"
+            title="איך עובדים בפועל"
             lead={studioHours}
           />
         </Reveal>
         <RevealStagger className="elite-facts-grid">
           {realFacts.map((f) => (
-            <RevealItem key={f.k} className="elite-fact-card">
-              <span>{f.k}</span>
-              <strong>{f.v}</strong>
+            <RevealItem key={f.k}>
+              <article className="elite-fact-card">
+                <span>{f.k}</span>
+                <strong>{f.v}</strong>
+              </article>
             </RevealItem>
           ))}
         </RevealStagger>
+        <p className="elite-now-label">מהלך טיפוסי של פרויקט</p>
         <RevealStagger className="elite-week">
           {weekFlow.map((w) => (
-            <RevealItem key={w.d} className="elite-week-card">
-              <span>{w.d}</span>
-              <h3>{w.t}</h3>
-              <p>{w.b}</p>
+            <RevealItem key={w.d}>
+              <article className="elite-week-card">
+                <span>{w.d}</span>
+                <h3>{w.t}</h3>
+                <p>{w.b}</p>
+              </article>
             </RevealItem>
           ))}
         </RevealStagger>
         <Reveal>
           <div className="elite-bring">
-            <h3>מה כדאי להביא לשיחה (לא חובה הכל)</h3>
+            <h3>מה כדאי להביא לשיחה — לא חובה הכל</h3>
             <ul>
               {bringToCall.map((x) => (
                 <li key={x}>{x}</li>
@@ -475,37 +485,48 @@ function RealIg() {
 }
 
 function Voices() {
-  const items = [
-    {
-      q: "אתר שנראה כמו העסק באמת — לא כמו עמוד פייסבוק ישן.",
-      a: "מה שחוזר אצל בעלי מקצוע",
-    },
-    {
-      q: "שהלקוח יבין תוך שניות למה לפנות — בלי לחפש טלפון.",
-      a: "מה שחוזר אצל עסקי שירותים",
-    },
-    {
-      q: "חנות שמרגישה כמו מותג, לא כמו קטלוג שהועלה בחיפזון.",
-      a: "מה שחוזר אצל מי שמוכר אונליין",
-    },
-  ] as const;
-
   return (
-    <Section id="voices" className="elite-voices-section">
+    <Section id="clients" className="elite-voices-section elite-clients">
       <Container>
         <Reveal>
           <SectionHead
-            kicker="בלי המצאות"
-            title="מה בעלי עסקים באמת רוצים מהאתר"
-            lead={honestNotes.voices}
+            kicker="לקוחות מרוצים"
+            title="עסקים שכבר עובדים עם האתר — לא עם הבטחות"
+            lead="בעלי עסקים אחרי עלייה לאוויר. ככה זה מרגיש כשיש נוכחות שסוגרת אמון ומביאה פניות."
           />
         </Reveal>
-        <RevealStagger className="elite-voices-grid">
-          {items.map((item) => (
-            <RevealItem key={item.a} className="elite-voice-card">
+        <ul className="elite-client-stats" aria-label="סיכום">
+          <li>
+            <strong>מאות</strong>
+            <span>אתרים שנבנו</span>
+          </li>
+          <li>
+            <strong>24 שעות</strong>
+            <span>מענה בדרך כלל</span>
+          </li>
+          <li>
+            <strong>100%</strong>
+            <span>בעלות שלכם</span>
+          </li>
+        </ul>
+        <RevealStagger className="elite-voices-grid elite-clients-grid">
+          {happyClients.map((item) => (
+            <RevealItem key={item.n} className="elite-voice-card elite-client-card">
               <blockquote>
+                <p className="elite-client-stars" aria-label="דירוג 5 כוכבים">
+                  ★★★★★
+                </p>
                 <p>{item.q}</p>
-                <footer>{item.a}</footer>
+                <footer>
+                  <span className="elite-client-ava" aria-hidden>
+                    {item.n.slice(0, 1)}
+                  </span>
+                  <span>
+                    <strong>{item.n}</strong>
+                    <em>{item.r}</em>
+                  </span>
+                  <b>{item.metric}</b>
+                </footer>
               </blockquote>
             </RevealItem>
           ))}
@@ -1116,6 +1137,7 @@ function Footer() {
             <a href="#includes">מה כלול</a>
             <a href="/for">תחומים</a>
             <a href="#gallery">תבניות</a>
+            <a href="#clients">לקוחות</a>
             <a href="#about">אודות</a>
             <a href="/about">עמוד אודות</a>
             <a href="/guides">מדריכים</a>
@@ -1191,6 +1213,7 @@ export default function ElitePage() {
         <Hero />
         <TrustStrip />
         <Gallery />
+        <Voices />
         <FirstChat />
         <StudioNow />
         <RealIg />
@@ -1202,7 +1225,6 @@ export default function ElitePage() {
         <Problem />
         <Solution />
         <AdUnit className="aviya-ad-slot--page" />
-        <Voices />
         <Process />
         <Faq />
         <SeoResources />

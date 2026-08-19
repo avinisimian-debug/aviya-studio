@@ -43,6 +43,7 @@ export function AccessibilityWidget() {
         aria-expanded={open}
         aria-controls={panelId}
         aria-haspopup="dialog"
+        aria-label="נגישות"
         onClick={() => setOpen((v) => !v)}
       >
         <span className="a11y-fab-icon" aria-hidden>
