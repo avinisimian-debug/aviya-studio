@@ -199,6 +199,7 @@ function Nav() {
           />
         </a>
         <nav className="elite-nav-links" aria-label="ניווט ראשי">
+          <a href="#about">אביה</a>
           <a href="#gallery">תבניות</a>
           <a href="#includes">מה כלול</a>
           <a href="/for">למי זה</a>
