@@ -39,6 +39,7 @@ import { AdUnit } from "@/components/ads/AdUnit";
 import { eliteMedia, eliteTemplates } from "@/data/elite-media";
 import { currentHebrewMonth, LANDING } from "@/data/landing";
 import { aboutPage, eliteFaqs } from "@/data/site-content";
+import { NeedPicker } from "@/components/elite/NeedPicker";
 import {
   studioFitNo,
   studioFitYes,
@@ -446,6 +447,12 @@ function Hero() {
                 אינסטגרם {LANDING.instagramHandle}
               </a>
             </div>
+            <NeedPicker />
+            <ul className="comfort-row" aria-label="למה זה נוח">
+              <li>מענה תוך 24 שעות</li>
+              <li>בלי ספאם · בלי לחץ</li>
+              <li>בעלות מלאה שלכם</li>
+            </ul>
           </div>
 
           <div className="elite-hero-visual elite-rise elite-rise--delay" id="about">

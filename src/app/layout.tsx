@@ -6,6 +6,7 @@ import { CookieConsent } from "@/components/ads/CookieConsent";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { GoogleMarketingScripts } from "@/components/seo/GoogleMarketingScripts";
 import { JsonLd } from "@/components/seo/JsonLd";
+import { SmartAssist } from "@/components/elite/SmartAssist";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
 
@@ -63,6 +64,7 @@ export default function RootLayout({
         <GoogleMarketingScripts />
         <JsonLd />
         <AppProviders>{children}</AppProviders>
+        <SmartAssist />
         <CookieConsent />
         <Analytics />
         <SpeedInsights />

@@ -4,6 +4,8 @@ import { FormEvent, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { currentHebrewMonth, LANDING } from "@/data/landing";
 import { cn } from "@/lib/cn";
+import { needLabel, readNeed } from "@/lib/need";
+import { NeedPicker } from "@/components/elite/NeedPicker";
 
 type FieldKey = "name" | "phone" | "business" | "form";
 type Errors = Partial<Record<FieldKey, string>>;
@@ -95,7 +97,9 @@ export function SalesLeadForm({
     const phone = String(fd.get("phone") ?? "").trim().slice(0, 24);
     const business = String(fd.get("business") ?? "").trim().slice(0, 120);
     const honey = String(fd.get("website") ?? "").trim();
-    const src = source || idPrefix || "טופס אתר";
+    const srcBase = source || idPrefix || "טופס אתר";
+    const need = readNeed();
+    const src = need ? `${srcBase} · ${needLabel(need)}` : srcBase;
 
     if (honey) {
       setStatus("sent");
@@ -190,6 +194,8 @@ export function SalesLeadForm({
           aria-labelledby={title ? `${idPrefix}-title` : undefined}
           className="lead-form"
         >
+          <NeedPicker />
+          <p className="lead-comfort">שדות קצרים. בלי ספאם. חוזרים אליכם.</p>
           <div
             aria-hidden="true"
             style={{
