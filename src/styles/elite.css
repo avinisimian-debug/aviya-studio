@@ -3547,4 +3547,136 @@ html[dir="rtl"] .elite-marquee-track {
   color: var(--e-accent-deep);
 }
 
+.elite-honest-note {
+  margin: 1.25rem auto 0;
+  max-width: 36rem;
+  text-align: center;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--e-fg-muted);
+}
+
+.wa-thread {
+  max-width: 26rem;
+  margin-inline: auto;
+  padding: 1rem 1rem 1.2rem;
+  border-radius: 1.2rem;
+  background: #ece5dd;
+  border: 1px solid var(--e-line);
+}
+
+.wa-thread-head {
+  margin: 0 0 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-align: center;
+  color: #075e54;
+}
+
+.wa-bubble {
+  margin: 0 0 0.5rem;
+  max-width: 88%;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.75rem;
+  font-size: 0.88rem;
+  line-height: 1.45;
+}
+
+.wa-bubble--them {
+  background: #fff;
+  margin-inline-end: auto;
+}
+
+.wa-bubble--aviya {
+  background: #d9fdd3;
+  margin-inline-start: auto;
+}
+
+.wa-thread-cta {
+  display: block;
+  margin: 0.85rem 0 0;
+  text-align: center;
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #075e54;
+}
+
+.elite-facts-grid,
+.elite-week,
+.elite-ig-grid {
+  display: grid;
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 720px) {
+  .elite-facts-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .elite-week,
+  .elite-ig-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .elite-week {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.elite-fact-card,
+.elite-week-card,
+.elite-ig-card,
+.elite-bring {
+  background: #fff;
+  border: 1px solid var(--e-line);
+  border-radius: var(--e-radius);
+  padding: 1rem 1.05rem;
+}
+
+.elite-fact-card span,
+.elite-week-card span {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--e-accent);
+  margin-bottom: 0.35rem;
+}
+
+.elite-fact-card strong,
+.elite-week-card h3,
+.elite-ig-card strong,
+.elite-bring h3 {
+  margin: 0;
+  font-size: 0.98rem;
+}
+
+.elite-week-card p,
+.elite-ig-card span,
+.elite-bring li {
+  margin: 0.35rem 0 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--e-fg-muted);
+}
+
+.elite-ig-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+  min-height: 100%;
+}
+
+.elite-bring {
+  margin-top: 1.25rem;
+}
+
+.elite-bring ul {
+  margin: 0.65rem 0 0;
+  padding-inline-start: 1.1rem;
+}
+
+
 

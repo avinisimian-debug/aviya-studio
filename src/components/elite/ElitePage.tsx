@@ -39,6 +39,15 @@ import { AdUnit } from "@/components/ads/AdUnit";
 import { eliteMedia, eliteTemplates } from "@/data/elite-media";
 import { currentHebrewMonth, LANDING } from "@/data/landing";
 import { aboutPage, eliteFaqs } from "@/data/site-content";
+import {
+  bringToCall,
+  firstChat,
+  honestNotes,
+  igPosts,
+  realFacts,
+  studioHours,
+  weekFlow,
+} from "@/data/studio-real";
 import { NeedPicker } from "@/components/elite/NeedPicker";
 import {
   studioFitNo,
@@ -201,6 +210,7 @@ function Nav() {
         </a>
         <nav className="elite-nav-links" aria-label="ניווט ראשי">
           <a href="#about">אביה</a>
+          <a href="#instagram">רילס</a>
           <a href="#gallery">תבניות</a>
           <a href="#includes">מה כלול</a>
           <a href="/for">למי זה</a>
@@ -513,8 +523,8 @@ function Gallery() {
         <Reveal>
           <SectionHead
             kicker="גלריית כיוונים"
-            title="לא תבנית אחת. שפה שלמה של אתרים."
-            lead="כל כיוון נבנה כרמה של מותג — אתם בוחרים את האופי, אנחנו בונים את המערכת שממירה."
+            title="לא תיק עבודות מזויף. שפה שאפשר לבנות ממנה."
+            lead="כל כיוון הוא רמת מותג — אתם בוחרים אופי, אנחנו בונים מערכת שממירה. בלי לוגואים מומצאים."
           />
         </Reveal>
         <RevealStagger className="elite-gallery-grid">
@@ -548,6 +558,7 @@ function Gallery() {
           ))}
         </RevealStagger>
         <Reveal>
+          <p className="elite-honest-note">{honestNotes.gallery}</p>
           <div className="elite-gallery-cta">
             <Button href="#contact" variant="primary">
               רוצה כיוון מותאם לעסק שלך?
@@ -559,19 +570,141 @@ function Gallery() {
   );
 }
 
+function FirstChat() {
+  return (
+    <Section id="chat" className="elite-chat-section" tone="muted">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="איך זה מרגיש"
+            title="שיחה ראשונה — בלי סקריפט מכירות"
+            lead="ככה מתחילים בדרך כלל. קצר, אנושי, בוואטסאפ."
+          />
+        </Reveal>
+        <Reveal>
+          <div className="wa-thread" aria-label="דוגמה לשיחת וואטסאפ">
+            <p className="wa-thread-head">וואטסאפ · אביה</p>
+            {firstChat.map((m, i) => (
+              <p
+                key={`${m.who}-${i}`}
+                className={`wa-bubble wa-bubble--${m.who}`}
+              >
+                {m.t}
+              </p>
+            ))}
+            <a
+              className="wa-thread-cta"
+              href={LANDING.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              לפתוח שיחה אמיתית
+            </a>
+          </div>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
+function StudioNow() {
+  return (
+    <Section id="now" className="elite-now-section">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="סטודיו חי"
+            title="פרטים אמיתיים. לא עמוד ׳סוכנות גלובלית׳."
+            lead={studioHours}
+          />
+        </Reveal>
+        <RevealStagger className="elite-facts-grid">
+          {realFacts.map((f) => (
+            <RevealItem key={f.k} className="elite-fact-card">
+              <span>{f.k}</span>
+              <strong>{f.v}</strong>
+            </RevealItem>
+          ))}
+        </RevealStagger>
+        <RevealStagger className="elite-week">
+          {weekFlow.map((w) => (
+            <RevealItem key={w.d} className="elite-week-card">
+              <span>{w.d}</span>
+              <h3>{w.t}</h3>
+              <p>{w.b}</p>
+            </RevealItem>
+          ))}
+        </RevealStagger>
+        <Reveal>
+          <div className="elite-bring">
+            <h3>מה כדאי להביא לשיחה (לא חובה הכל)</h3>
+            <ul>
+              {bringToCall.map((x) => (
+                <li key={x}>{x}</li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
+function RealIg() {
+  return (
+    <Section id="instagram" className="elite-ig-section" tone="muted">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="אינסטגרם אמיתי"
+            title="העבודה קורה גם ברילס — לא רק באתר יפה"
+            lead={`${LANDING.instagramHandle} · זה העמוד של הסטודיו, לא פרופיל דמה.`}
+          />
+        </Reveal>
+        <RevealStagger className="elite-ig-grid">
+          {igPosts.map((p) => (
+            <RevealItem key={p.t}>
+              <a
+                className="elite-ig-card"
+                href={LANDING.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <strong>{p.t}</strong>
+                <span>{p.d}</span>
+              </a>
+            </RevealItem>
+          ))}
+        </RevealStagger>
+        <Reveal>
+          <p className="elite-resources-all">
+            <a
+              href={LANDING.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              לפתוח את הרילס של studio.aviya1 ←
+            </a>
+          </p>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
 function Voices() {
   const items = [
     {
-      q: "סוף־סוף אתר שנראה כמו העסק שלנו באמת — ולא כמו עמוד פייסבוק.",
-      a: "בעלת קליניקה · שירותים",
+      q: "אתר שנראה כמו העסק באמת — לא כמו עמוד פייסבוק ישן.",
+      a: "מה שחוזר אצל בעלי מקצוע",
     },
     {
-      q: "תוך שבועיים עלה אתר שמביא פניות. הלקוחות מגיעים כבר מוכנים.",
-      a: "עסק B2B · ייעוץ",
+      q: "שהלקוח יבין תוך שניות למה לפנות — בלי לחפש טלפון.",
+      a: "מה שחוזר אצל עסקי שירותים",
     },
     {
-      q: "החנות אונליין מרגישה כמו מותג — לא כמו קטלוג חובבני.",
-      a: "קמעונאות · אופנה",
+      q: "חנות שמרגישה כמו מותג, לא כמו קטלוג שהועלה בחיפזון.",
+      a: "מה שחוזר אצל מי שמוכר אונליין",
     },
   ] as const;
 
@@ -580,16 +713,16 @@ function Voices() {
       <Container>
         <Reveal>
           <SectionHead
-            kicker="קולות מהשטח"
-            title="ככה מרגיש אתר ברמה"
-            lead="המטרה לא ״יש לנו אתר״. המטרה: אמון, פניות, והרגשה של מותג — זו השפה שחוזרת אצל בעלי עסקים שמחפשים נוכחות רצינית."
+            kicker="בלי המצאות"
+            title="מה בעלי עסקים באמת רוצים מהאתר"
+            lead={honestNotes.voices}
           />
         </Reveal>
         <RevealStagger className="elite-voices-grid">
           {items.map((item) => (
             <RevealItem key={item.a} className="elite-voice-card">
               <blockquote>
-                <p>״{item.q}״</p>
+                <p>{item.q}</p>
                 <footer>{item.a}</footer>
               </blockquote>
             </RevealItem>
@@ -1304,8 +1437,10 @@ function Footer() {
         <div className="elite-footer-inner">
           <p className="elite-footer-brand">AVIYA</p>
           <p className="elite-footer-meta">
-            אתרים שנראים כמו מוצר. ממירים כמו מכונה. נבנה אישית על ידי אביה.
+            סטודיו של אדם אחד. 055-557-3090 · {LANDING.email} ·{" "}
+            {LANDING.instagramHandle}
           </p>
+          <p className="elite-footer-meta">{studioHours}</p>
           <div className="elite-footer-links">
             <a href="#top">למעלה</a>
             <a href="#includes">מה כלול</a>
@@ -1387,6 +1522,9 @@ export default function ElitePage() {
         <Marquee />
         <TrustStrip />
         <Gallery />
+        <FirstChat />
+        <StudioNow />
+        <RealIg />
         <AdUnit className="aviya-ad-slot--page" />
         <ProductDemo />
         <Craft />

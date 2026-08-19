@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SiteChrome } from "@/components/site/SiteChrome";
 import { SalesLeadForm } from "@/components/landing/SalesLeadForm";
 import { contactPage } from "@/data/site-content";
+import { studioHours } from "@/data/studio-real";
 import { LANDING } from "@/data/landing";
 
 export const metadata: Metadata = {
@@ -75,7 +76,7 @@ export default function ContactPage() {
               </a>
             </li>
           </ul>
-          <p className="site-contact-hours">{contactPage.hours}</p>
+          <p className="site-contact-hours">{studioHours}</p>
           <p className="site-contact-hours">
             אחרי שליחה חוזרים עם שאלות קצרות — כיוון, לא הצעת מחיר אוטומטית.
             עבודה לכל הארץ, בעיקר מרחוק.
