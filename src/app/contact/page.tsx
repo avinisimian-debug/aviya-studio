@@ -76,6 +76,10 @@ export default function ContactPage() {
             </li>
           </ul>
           <p className="site-contact-hours">{contactPage.hours}</p>
+          <p className="site-contact-hours">
+            אחרי שליחה חוזרים עם שאלות קצרות — כיוון, לא הצעת מחיר אוטומטית.
+            עבודה לכל הארץ, בעיקר מרחוק.
+          </p>
           <p className="site-contact-note">
             הפרטים משמשים רק לחזרה אליכם. ראו{" "}
             <a href="/privacy">מדיניות פרטיות</a>.

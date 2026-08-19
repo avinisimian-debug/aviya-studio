@@ -29,6 +29,7 @@ export function SiteChrome({
         <nav aria-label="ניווט משני">
           <Link href="/">בית</Link>
           <Link href="/about">אודות</Link>
+          <Link href="/for">תחומים</Link>
           <Link href="/guides">מדריכים</Link>
           <Link href="/services">שירותים</Link>
           <Link href="/promote">קידום</Link>
@@ -55,6 +56,7 @@ export function SiteChrome({
           <p>{LANDING.promise}</p>
         </div>
         <nav aria-label="קישורי תחתית">
+          <Link href="/for">תחומים</Link>
           <Link href="/guides">מדריכים</Link>
           <Link href="/services">שירותים</Link>
           <Link href="/promote">קידום</Link>

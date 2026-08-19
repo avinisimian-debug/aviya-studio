@@ -11,10 +11,13 @@ import {
 import { useRef } from "react";
 import {
   ArrowUpRight,
+  Check,
   Gauge,
   LayoutTemplate,
+  Menu,
   ShieldCheck,
   Sparkles,
+  X,
   Zap,
 } from "lucide-react";
 import {
@@ -36,6 +39,12 @@ import { AdUnit } from "@/components/ads/AdUnit";
 import { eliteMedia, eliteTemplates } from "@/data/elite-media";
 import { currentHebrewMonth, LANDING } from "@/data/landing";
 import { aboutPage, eliteFaqs } from "@/data/site-content";
+import {
+  studioFitNo,
+  studioFitYes,
+  studioIncludes,
+  studioIndustries,
+} from "@/data/studio-extras";
 
 /* ═══════════════════════════════════════════════════════════
    Aviya — product-first conversion craft · high-end Hebrew
@@ -158,6 +167,8 @@ function Progress() {
 
 function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
@@ -165,10 +176,19 @@ function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  const close = () => setOpen(false);
+
   return (
-    <header className={`elite-nav${scrolled ? " is-scrolled" : ""}`}>
+    <header className={`elite-nav${scrolled ? " is-scrolled" : ""}${open ? " is-open" : ""}`}>
       <div className="elite-nav-inner">
-        <a href="#top" className="elite-nav-brand">
+        <a href="#top" className="elite-nav-brand" onClick={close}>
           <Image
             src={LANDING.logoSrc}
             alt="Aviya"
@@ -180,9 +200,10 @@ function Nav() {
         </a>
         <nav className="elite-nav-links" aria-label="ניווט ראשי">
           <a href="#gallery">תבניות</a>
+          <a href="#includes">מה כלול</a>
+          <a href="/for">למי זה</a>
           <a href="/guides">מדריכים</a>
           <a href="/services">שירותים</a>
-          <a href="#about">אודות</a>
           <a href="/contact">{NAV_CONTACT}</a>
         </nav>
         <div className="elite-nav-actions">
@@ -197,8 +218,50 @@ function Nav() {
           <Button href="#contact" variant="primary">
             {CTA_PRIMARY}
           </Button>
+          <button
+            type="button"
+            className="elite-nav-toggle"
+            aria-expanded={open}
+            aria-controls="elite-mobile-menu"
+            aria-label={open ? "סגירת תפריט" : "פתיחת תפריט"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            {open ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
       </div>
+      {open ? (
+        <nav
+          id="elite-mobile-menu"
+          className="elite-nav-drawer"
+          aria-label="ניווט בנייד"
+        >
+          <a href="#gallery" onClick={close}>
+            תבניות
+          </a>
+          <a href="#includes" onClick={close}>
+            מה כלול
+          </a>
+          <a href="#fit" onClick={close}>
+            למי זה מתאים
+          </a>
+          <a href="/for" onClick={close}>
+            תחומים
+          </a>
+          <a href="/guides" onClick={close}>
+            מדריכים
+          </a>
+          <a href="/services" onClick={close}>
+            שירותים
+          </a>
+          <a href="/contact" onClick={close}>
+            {NAV_CONTACT}
+          </a>
+          <a href="#contact" onClick={close} className="elite-nav-drawer-cta">
+            {CTA_PRIMARY}
+          </a>
+        </nav>
+      ) : null}
     </header>
   );
 }
@@ -400,6 +463,9 @@ function Hero() {
                 לצפייה בתבניות
                 <ArrowUpRight size={16} aria-hidden />
               </a>
+              <a href="#includes" className="elite-link-quiet">
+                מה כלול בפרויקט
+              </a>
             </div>
 
             <div className="elite-hero-form-wrap" id="hero-form">
@@ -542,7 +608,7 @@ function Voices() {
           <SectionHead
             kicker="קולות מהשטח"
             title="ככה מרגיש אתר ברמה"
-            lead="המטרה לא ״יש לנו אתר״. המטרה: אמון, פניות, והרגשה של מותג."
+            lead="המטרה לא ״יש לנו אתר״. המטרה: אמון, פניות, והרגשה של מותג — זו השפה שחוזרת אצל בעלי עסקים שמחפשים נוכחות רצינית."
           />
         </Reveal>
         <RevealStagger className="elite-voices-grid">
@@ -983,11 +1049,113 @@ function ProductDemo() {
   );
 }
 
+function Fit() {
+  return (
+    <Section id="fit" className="elite-fit-section">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="התאמה"
+            title="לא לכולם. וזה בכוונה."
+            lead="מעט פרויקטים בחודש. אם זה לא מתאים — נגיד ישר, בלי בזבוז זמן לשני הצדדים."
+          />
+        </Reveal>
+        <div className="elite-fit-grid">
+          <Reveal className="elite-fit-col elite-fit-col--yes">
+            <h3>מתאים אם</h3>
+            <ul>
+              {studioFitYes.map((line) => (
+                <li key={line}>
+                  <Check size={16} aria-hidden />
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal className="elite-fit-col elite-fit-col--no">
+            <h3>פחות מתאים אם</h3>
+            <ul>
+              {studioFitNo.map((line) => (
+                <li key={line}>
+                  <span aria-hidden>—</span>
+                  <span>{line}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </div>
+      </Container>
+    </Section>
+  );
+}
+
+function Includes() {
+  return (
+    <Section id="includes" tone="muted" className="elite-includes-section">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="מה בפנים"
+            title="פרויקט מלא — לא ״רק עיצוב״"
+            lead="ככה נראית הקמה ברמה: מסר, מבנה, מובייל, פניות, ומדידה. בלי אותיות קטנות באמצע."
+          />
+        </Reveal>
+        <RevealStagger className="elite-includes-grid">
+          {studioIncludes.map((item, i) => (
+            <RevealItem key={item.t} className="elite-include-card">
+              <span className="elite-include-n" aria-hidden>
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <h3>{item.t}</h3>
+              <p>{item.d}</p>
+            </RevealItem>
+          ))}
+        </RevealStagger>
+      </Container>
+    </Section>
+  );
+}
+
+function Industries() {
+  return (
+    <Section id="industries" className="elite-industries-section">
+      <Container>
+        <Reveal>
+          <SectionHead
+            kicker="תחומים"
+            title="נבנה סביב סוג העסק — לא סביב תבנית"
+            lead="אותה רמת ביצוע. מסר אחר לכל תחום."
+          />
+        </Reveal>
+        <RevealStagger className="elite-industries-grid">
+          {studioIndustries.map((item) => (
+            <RevealItem key={item.t}>
+              <a href={item.href} className="elite-industry-card">
+                <strong>{item.t}</strong>
+                <span>{item.d}</span>
+              </a>
+            </RevealItem>
+          ))}
+        </RevealStagger>
+        <Reveal>
+          <p className="elite-resources-all">
+            <a href="/for">לכל התחומים והפירוט ←</a>
+          </p>
+        </Reveal>
+      </Container>
+    </Section>
+  );
+}
+
 function Process() {
   const steps = [
     {
       t: "משאירים פרטים",
       b: "שם וטלפון. חוזרים להבין כיוון — בלי התחייבות ובלי ז׳רגון.",
+    },
+    {
+      t: "מחדדים מסר",
+      b: "מי הלקוח, מה הפעולה, איך נשמע העסק. בלי זה האתר יפה — ולא ממיר.",
     },
     {
       t: "בנייה ברמה",
@@ -1058,9 +1226,14 @@ function SeoResources() {
       d: "פוסטים והאשטגים מוכנים",
     },
     {
-      href: "/google",
-      t: "הופעה בגוגל",
-      d: "Search Console — הצעד הקריטי",
+      href: "/guides/how-to-brief-a-website",
+      t: "איך מכינים בריף לאתר",
+      d: "מה להביא לפגישה הראשונה",
+    },
+    {
+      href: "/for",
+      t: "אתר לפי תחום",
+      d: "קליניקה · שירותים · חנות · B2B",
     },
   ] as const;
 
@@ -1144,6 +1317,8 @@ function Footer() {
           </p>
           <div className="elite-footer-links">
             <a href="#top">למעלה</a>
+            <a href="#includes">מה כלול</a>
+            <a href="/for">תחומים</a>
             <a href="#gallery">תבניות</a>
             <a href="#about">אודות</a>
             <a href="/about">עמוד אודות</a>
@@ -1224,6 +1399,9 @@ export default function ElitePage() {
         <AdUnit className="aviya-ad-slot--page" />
         <ProductDemo />
         <Craft />
+        <Includes />
+        <Fit />
+        <Industries />
         <Problem />
         <Solution />
         <About />

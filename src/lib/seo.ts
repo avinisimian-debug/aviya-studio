@@ -479,6 +479,12 @@ export function buildJsonLd() {
           {
             "@type": "ListItem",
             position: 6,
+            name: "איך מכינים בריף לאתר",
+            url: `${siteSeo.url}/guides/how-to-brief-a-website`,
+          },
+          {
+            "@type": "ListItem",
+            position: 7,
             name: "שירותי בניית אתרים",
             url: `${siteSeo.url}/services`,
           },
