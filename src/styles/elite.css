@@ -968,6 +968,32 @@ html:has(.elite-page) {
   order: -1;
 }
 
+.elite-hero--founder .elite-founder-frame {
+  width: min(92vw, 22rem);
+}
+
+.elite-hero--founder .elite-founder-img {
+  width: 100%;
+  height: auto;
+  max-height: min(58dvh, 28rem);
+  object-fit: cover;
+  object-position: 50% 18%;
+}
+
+@media (min-width: 960px) {
+  .elite-hero-visual {
+    order: 0;
+  }
+
+  .elite-hero--founder .elite-founder-frame {
+    width: min(100%, 26rem);
+  }
+
+  .elite-hero--founder .elite-founder-img {
+    max-height: min(72dvh, 36rem);
+  }
+}
+
 @media (min-width: 960px) {
   .elite-hero-visual {
     order: 0;

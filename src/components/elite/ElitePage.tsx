@@ -408,7 +408,7 @@ function TemplateShowcase() {
 
 function Hero() {
   return (
-    <Section id="top" className="elite-hero elite-section--flush" tight>
+    <Section id="top" className="elite-hero elite-hero--founder elite-section--flush" tight>
       <div className="elite-hero-bg" aria-hidden>
         <div className="elite-hero-mesh" />
         <div className="elite-hero-orb elite-hero-orb--a" />
@@ -423,73 +423,36 @@ function Hero() {
               <i className="elite-status-dot" aria-hidden />
               <span>אביה בונה אישית · זמינים ל־{currentHebrewMonth()}</span>
             </div>
-            <p className="elite-qualifier">
-              לבעלי עסקים, מותגים וחנויות שכבר עובדים — ורוצים נוכחות דיגיטלית
-              שמביאה לקוחות ישירים:
-            </p>
-            <h1 className="elite-h1">
-              האתר שגורם ללקוחות{" "}
-              <em className="elite-h1-em">לבחור בכם</em>
-              <br />
-              — לא במתחרה.
-            </h1>
-            <p className="elite-lead">
-              מסר חד, מהירות, ופרטים שהעולם מרגיש. אתר שמביא פניות — או חנות
-              דיגיטלית שמוכרת מהיום הראשון.
-            </p>
-
-            <ul className="elite-metrics" aria-label="סימני אמון">
-              <li>
-                <strong>
-                  <CountUp to={eliteTemplates.length} />
-                </strong>
-                <span>כיווני עיצוב</span>
-              </li>
-              <li>
-                <strong>
-                  <CountUp to={14} />
-                </strong>
-                <span>ימים לעלייה</span>
-              </li>
-              <li>
-                <strong>
-                  <CountUp to={100} suffix="%" />
-                </strong>
-                <span>בעלות שלכם</span>
-              </li>
-            </ul>
+            <p className="elite-kicker">{aboutPage.kicker}</p>
+            <h1 className="elite-h1">{aboutPage.title}</h1>
+            <p className="elite-lead">{aboutPage.lead}</p>
+            <p className="elite-p">{aboutPage.story[0]}</p>
+            <p className="elite-p">{aboutPage.story[1]}</p>
 
             <div className="elite-hero-ctas">
               <Button href="#contact" variant="accent">
                 {CTA_PRIMARY}
               </Button>
-              <a href="#gallery" className="elite-link-quiet">
-                לצפייה בתבניות
+              <a href="/about" className="elite-link-quiet">
+                הסיפור המלא
                 <ArrowUpRight size={16} aria-hidden />
               </a>
-              <a href="#includes" className="elite-link-quiet">
-                מה כלול בפרויקט
+              <a
+                href={LANDING.instagram}
+                className="elite-link-quiet"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                אינסטגרם {LANDING.instagramHandle}
               </a>
-            </div>
-
-            <div className="elite-hero-form-wrap" id="hero-form">
-              <SalesLeadForm
-                idPrefix="hero"
-                source="hero"
-                title={FORM_TITLE_HERO}
-                cta={FORM_CTA}
-                namePh="איך קוראים לך?"
-                phonePh="מה המספר שלך?"
-                className="elite-lead-form"
-              />
             </div>
           </div>
 
-          <div className="elite-hero-visual elite-rise elite-rise--delay">
-            <TemplateShowcase />
+          <div className="elite-hero-visual elite-rise elite-rise--delay" id="about">
+            <FounderPhoto priority />
             <p className="elite-hero-cap">
-              עד {LANDING.monthlyCap} עסקים בחודש · מקומות אחרונים ל
-              {currentHebrewMonth()}
+              מדברים איתי בוואטסאפ — לא עם מוקד. עד {LANDING.monthlyCap} עסקים
+              בחודש.
             </p>
           </div>
         </div>
@@ -1416,7 +1379,6 @@ export default function ElitePage() {
         <Hero />
         <Marquee />
         <TrustStrip />
-        <About />
         <Gallery />
         <AdUnit className="aviya-ad-slot--page" />
         <ProductDemo />
