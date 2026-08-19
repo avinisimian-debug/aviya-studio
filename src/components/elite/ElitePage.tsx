@@ -236,6 +236,9 @@ function Nav() {
           className="elite-nav-drawer"
           aria-label="ניווט בנייד"
         >
+          <a href="#about" onClick={close}>
+            אביה
+          </a>
           <a href="#gallery" onClick={close}>
             תבניות
           </a>
@@ -928,32 +931,38 @@ function Solution() {
   );
 }
 
+function FounderPhoto({
+  priority = false,
+}: {
+  priority?: boolean;
+}) {
+  return (
+    <figure className="elite-founder">
+      <div className="elite-founder-frame">
+        <Image
+          src={aboutPage.photo}
+          alt={aboutPage.photoAlt}
+          width={720}
+          height={900}
+          unoptimized
+          className="elite-founder-img"
+          priority={priority}
+        />
+      </div>
+      <figcaption className="elite-founder-cap">
+        <strong>{aboutPage.name}</strong>
+        <span>{aboutPage.role}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
 function About() {
   return (
     <Section id="about" className="elite-about-section">
       <Container>
         <Reveal>
-          <Split
-            className="elite-split--elevated"
-            media={
-              <figure className="elite-founder">
-                <div className="elite-founder-frame">
-                  <Image
-                    src={aboutPage.photo}
-                    alt={aboutPage.photoAlt}
-                    fill
-                    sizes="(max-width: 900px) 88vw, 480px"
-                    className="elite-founder-img"
-                    priority
-                  />
-                </div>
-                <figcaption className="elite-founder-cap">
-                  <strong>{aboutPage.name}</strong>
-                  <span>{aboutPage.role}</span>
-                </figcaption>
-              </figure>
-            }
-          >
+          <Split className="elite-split--elevated" media={<FounderPhoto priority />}>
             <p className="elite-kicker">{aboutPage.kicker}</p>
             <h2 className="elite-h2">{aboutPage.title}</h2>
             <p className="elite-lead">{aboutPage.lead}</p>
@@ -1406,6 +1415,7 @@ export default function ElitePage() {
         <Hero />
         <Marquee />
         <TrustStrip />
+        <About />
         <Gallery />
         <AdUnit className="aviya-ad-slot--page" />
         <ProductDemo />
@@ -1415,7 +1425,6 @@ export default function ElitePage() {
         <Industries />
         <Problem />
         <Solution />
-        <About />
         <AdUnit className="aviya-ad-slot--page" />
         <Voices />
         <Process />

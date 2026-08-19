@@ -18,6 +18,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const revalidate = 0;
+
 export default function AboutPage() {
   return (
     <SiteChrome title={aboutPage.title}>
@@ -30,6 +32,7 @@ export default function AboutPage() {
           alt={aboutPage.photoAlt}
           width={720}
           height={900}
+          unoptimized
           className="site-founder-img"
           priority
         />
