@@ -18,6 +18,7 @@ export function allPublicUrls(): string[] {
     "/services",
     "/contact",
     "/guides",
+    "/for",
     "/promote",
     "/privacy",
     "/accessibility",
