@@ -1,18 +1,20 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { SiteChrome } from "@/components/site/SiteChrome";
 import { aboutPage } from "@/data/site-content";
 import { LANDING } from "@/data/landing";
 
 export const metadata: Metadata = {
-  title: "אודות",
+  title: "אודות אביה",
   description:
-    "אודות Aviya (אביה) — סטודיו לבניית אתרים וחנויות דיגיטליות בישראל. עיצוב המרה, בעלות מלאה, עד 8 עסקים בחודש.",
+    "אביה — בן 17, יותר משנה בבניית אתרים, מאות עסקים. סטודיו Aviya: אתרים וחנויות שמביאים לקוחות, יחס אישי, בעלות מלאה.",
   alternates: { canonical: "/about" },
   openGraph: {
-    title: "אודות Aviya | אביה סטודיו",
+    title: "שלום, אני אביה | Aviya",
     description: aboutPage.lead,
     url: "/about",
+    images: [{ url: aboutPage.photo, alt: aboutPage.photoAlt }],
   },
 };
 
@@ -22,9 +24,24 @@ export default function AboutPage() {
       <p className="site-kicker">{aboutPage.kicker}</p>
       <p className="site-lead">{aboutPage.lead}</p>
 
+      <figure className="site-founder">
+        <Image
+          src={aboutPage.photo}
+          alt={aboutPage.photoAlt}
+          width={720}
+          height={900}
+          className="site-founder-img"
+          priority
+        />
+        <figcaption>
+          <strong>{aboutPage.name}</strong>
+          <span>{aboutPage.role}</span>
+        </figcaption>
+      </figure>
+
       <div className="site-prose">
         {aboutPage.story.map((p) => (
-          <p key={p.slice(0, 24)}>{p}</p>
+          <p key={p.slice(0, 28)}>{p}</p>
         ))}
       </div>
 
@@ -39,11 +56,12 @@ export default function AboutPage() {
 
       <div className="site-cta-band">
         <p>
-          מוגבל ל־{LANDING.monthlyCap} עסקים בחודש — כדי לשמור על רמה וזמינות.
+          רוצים להרגיש בנוח לפני שמתחילים? כתבו בוואטסאפ — זה מגיע אליי, אביה.
+          מוגבל ל־{LANDING.monthlyCap} עסקים בחודש כדי לשמור על יחס ורמה.
         </p>
         <div className="site-cta-row">
           <Link href="/contact" className="site-btn site-btn--primary">
-            יצירת קשר
+            השארת פרטים
           </Link>
           <a
             href={LANDING.whatsappUrl}
@@ -51,7 +69,7 @@ export default function AboutPage() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            וואטסאפ
+            וואטסאפ ישיר
           </a>
         </div>
       </div>

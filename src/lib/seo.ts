@@ -248,7 +248,17 @@ export function buildJsonLd() {
         description: siteSeo.description,
         email: siteSeo.email,
         telephone: siteSeo.phoneE164,
-        foundingDate: "2024",
+        foundingDate: "2025",
+        founder: {
+          "@type": "Person",
+          name: "אביה",
+          alternateName: "Aviya",
+          jobTitle: "Founder",
+          image: `${siteSeo.url}/brand/aviya-portrait.png`,
+          url: `${siteSeo.url}/about`,
+          description:
+            "מייסד Aviya. בן 17, יותר משנה בבניית אתרים לעסקים בישראל.",
+        },
         slogan: LANDING.promise,
         sameAs: [siteSeo.instagram],
         areaServed: [

@@ -417,7 +417,7 @@ function Hero() {
           <div className="elite-hero-copy elite-rise">
             <div className="elite-status">
               <i className="elite-status-dot" aria-hidden />
-              <span>זמינים לפרויקטים · {currentHebrewMonth()}</span>
+              <span>אביה בונה אישית · זמינים ל־{currentHebrewMonth()}</span>
             </div>
             <p className="elite-qualifier">
               לבעלי עסקים, מותגים וחנויות שכבר עובדים — ורוצים נוכחות דיגיטלית
@@ -936,11 +936,22 @@ function About() {
           <Split
             className="elite-split--elevated"
             media={
-              <MediaFrame
-                variant="default"
-                src={eliteMedia.proof}
-                alt="צוות מקצועי בעבודה — Aviya סטודיו"
-              />
+              <figure className="elite-founder">
+                <div className="elite-founder-frame">
+                  <Image
+                    src={aboutPage.photo}
+                    alt={aboutPage.photoAlt}
+                    fill
+                    sizes="(max-width: 900px) 88vw, 480px"
+                    className="elite-founder-img"
+                    priority
+                  />
+                </div>
+                <figcaption className="elite-founder-cap">
+                  <strong>{aboutPage.name}</strong>
+                  <span>{aboutPage.role}</span>
+                </figcaption>
+              </figure>
             }
           >
             <p className="elite-kicker">{aboutPage.kicker}</p>
@@ -958,7 +969,7 @@ function About() {
             </ul>
             <div className="elite-btn-row">
               <Button href="/about" variant="primary">
-                עוד עלינו
+                הסיפור המלא
               </Button>
               <Button href="#contact" variant="ghost">
                 {CTA_PRIMARY}
@@ -1313,7 +1324,7 @@ function Footer() {
         <div className="elite-footer-inner">
           <p className="elite-footer-brand">AVIYA</p>
           <p className="elite-footer-meta">
-            אתרים שנראים כמו מוצר. ממירים כמו מכונה. בבעלותכם.
+            אתרים שנראים כמו מוצר. ממירים כמו מכונה. נבנה אישית על ידי אביה.
           </p>
           <div className="elite-footer-links">
             <a href="#top">למעלה</a>
