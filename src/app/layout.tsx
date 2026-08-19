@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Frank_Ruhl_Libre, Heebo } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { CookieConsent } from "@/components/ads/CookieConsent";
 import { AppProviders } from "@/components/providers/AppProviders";
 import { GoogleMarketingScripts } from "@/components/seo/GoogleMarketingScripts";
@@ -62,6 +63,7 @@ export default function RootLayout({
         <JsonLd />
         <AppProviders>{children}</AppProviders>
         <CookieConsent />
+        <Analytics />
       </body>
     </html>
   );
