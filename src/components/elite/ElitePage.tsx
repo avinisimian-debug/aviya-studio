@@ -2,13 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import {
-  AnimatePresence,
-  motion,
-  useInView,
-  useReducedMotion,
-} from "framer-motion";
-import { useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowUpRight,
   Check,
@@ -16,7 +10,6 @@ import {
   LayoutTemplate,
   Menu,
   ShieldCheck,
-  Sparkles,
   X,
   Zap,
 } from "lucide-react";
@@ -64,27 +57,11 @@ const CTA_PRIMARY = "רוצה שנחזור אליך?";
 const NAV_CONTACT = "השארת פרטים";
 const FORM_CTA = "אני רוצה אתר / חנות שמביאה לקוחות";
 
-const FORM_TITLE_HERO = (
-  <>
-    לפרטים נוספים על אתר או חנות דיגיטלית <strong>לעסק שלך</strong>
-  </>
-);
 const FORM_TITLE_FINAL = (
   <>
     מלאו פרטים קצרים — <strong>נחזור אליכם</strong>
   </>
 );
-
-const MARQUEE = [
-  "אתר שמביא לקוחות",
-  "חנות דיגיטלית",
-  "מובייל קטלני",
-  "בבעלותכם 100%",
-  "SEO בסיסי",
-  "המרה בקיפול",
-  "עיצוב ברמת מותג",
-  "עלייה תוך ימים",
-];
 
 const CRAFT = [
   {
@@ -108,46 +85,6 @@ const CRAFT = [
     body: "העולם שופט לפי פרטים. מיקרו-טיפוגרפיה, הוכחות, והרגשה של מוצר — לא אתר ״גם לי יש״.",
   },
 ] as const;
-
-function CountUp({
-  to,
-  suffix = "",
-  duration = 1.4,
-}: {
-  to: number;
-  suffix?: string;
-  duration?: number;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.6 });
-  const reduce = useReducedMotion();
-  const [val, setVal] = useState(reduce ? to : 0);
-
-  useEffect(() => {
-    if (!inView) return;
-    if (reduce) {
-      setVal(to);
-      return;
-    }
-    let raf = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / (duration * 1000));
-      const eased = 1 - Math.pow(1 - t, 3);
-      setVal(Math.round(to * eased));
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [inView, to, duration, reduce]);
-
-  return (
-    <span ref={ref}>
-      {val}
-      {suffix}
-    </span>
-  );
-}
 
 function Progress() {
   const [p, setP] = useState(0);
@@ -281,142 +218,6 @@ function Nav() {
   );
 }
 
-function TemplateShowcase() {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
-  const n = eliteTemplates.length;
-
-  useEffect(() => {
-    if (paused) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = window.setInterval(() => {
-      setActive((i) => (i + 1) % n);
-    }, 3400);
-    return () => window.clearInterval(id);
-  }, [paused, n]);
-
-  return (
-    <div
-      id="templates"
-      className="elite-stage"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocusCapture={() => setPaused(true)}
-      onBlurCapture={(e) => {
-        if (!e.currentTarget.contains(e.relatedTarget as Node | null)) {
-          setPaused(false);
-        }
-      }}
-    >
-      <div className="elite-stage-oval" aria-hidden />
-      <div className="elite-stage-glow" aria-hidden />
-
-      <p className="elite-templates-kicker">
-        <Sparkles size={12} aria-hidden />
-        {n} כיווני עיצוב · ברמת מותג
-      </p>
-
-      <div className="elite-templates" role="region" aria-label="תצוגת תבניות אתר">
-        {eliteTemplates.map((tpl, i) => {
-          let offset = i - active;
-          if (offset > n / 2) offset -= n;
-          if (offset < -n / 2) offset += n;
-          const abs = Math.abs(offset);
-          if (abs > 2) return null;
-
-          const slot =
-            offset === 0
-              ? "is-center"
-              : offset === -1
-                ? "is-left"
-                : offset === 1
-                  ? "is-right"
-                  : offset === -2
-                    ? "is-far-left"
-                    : "is-far-right";
-
-          return (
-            <button
-              key={tpl.id}
-              type="button"
-              className={`elite-template ${slot}`}
-              onClick={() => setActive(i)}
-              aria-pressed={i === active}
-              aria-label={`${tpl.label} — ${tpl.tag}`}
-            >
-              <div className="elite-template-chrome" aria-hidden>
-                <span />
-                <span />
-                <span />
-                <p>{tpl.domain}</p>
-              </div>
-              <div className="elite-template-screen">
-                <Image
-                  src={tpl.src}
-                  alt={tpl.alt}
-                  fill
-                  sizes="(max-width: 960px) 70vw, 420px"
-                  priority={i === 0 || i === active}
-                  className="elite-template-img"
-                />
-                <div
-                  className={`elite-template-ui elite-template-ui--${tpl.id}`}
-                  aria-hidden
-                >
-                  <span className="elite-template-ui-nav" />
-                  <span className="elite-template-ui-hero" />
-                  <span className="elite-template-ui-row" />
-                </div>
-              </div>
-              <div className="elite-template-meta">
-                <span className="elite-template-tag">{tpl.tag}</span>
-                <span className="elite-template-name">{tpl.label}</span>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-
-      <div className="elite-template-dots" role="tablist" aria-label="בחירת תבנית">
-        {eliteTemplates.map((tpl, i) => (
-          <button
-            key={tpl.id}
-            type="button"
-            role="tab"
-            aria-selected={i === active}
-            className={`elite-template-dot${i === active ? " is-active" : ""}`}
-            onClick={() => setActive(i)}
-            aria-label={tpl.label}
-          />
-        ))}
-      </div>
-
-      <ul className="elite-template-pills" aria-label="סוגי תבניות">
-        {eliteTemplates.map((tpl, i) => (
-          <li key={tpl.id}>
-            <button
-              type="button"
-              className={`elite-template-pill${i === active ? " is-active" : ""}`}
-              onClick={() => setActive(i)}
-            >
-              {tpl.label}
-            </button>
-          </li>
-        ))}
-      </ul>
-
-      <div className="elite-float elite-float--a">
-        <strong>{n}</strong>
-        <span>כיווני עיצוב</span>
-      </div>
-      <div className="elite-float elite-float--b">
-        <strong>מותאם</strong>
-        <span>לעסק שלך</span>
-      </div>
-    </div>
-  );
-}
-
 function Hero() {
   return (
     <Section id="top" className="elite-hero elite-hero--founder elite-section--flush" tight>
@@ -434,11 +235,8 @@ function Hero() {
               <i className="elite-status-dot" aria-hidden />
               <span>אביה בונה אישית · זמינים ל־{currentHebrewMonth()}</span>
             </div>
-            <p className="elite-kicker">{aboutPage.kicker}</p>
             <h1 className="elite-h1">{aboutPage.title}</h1>
             <p className="elite-lead">{aboutPage.lead}</p>
-            <p className="elite-p">{aboutPage.story[0]}</p>
-            <p className="elite-p">{aboutPage.story[1]}</p>
 
             <div className="elite-hero-ctas">
               <Button href="#contact" variant="accent">
@@ -475,22 +273,6 @@ function Hero() {
         </div>
       </Container>
     </Section>
-  );
-}
-
-function Marquee() {
-  const loop = [...MARQUEE, ...MARQUEE];
-  return (
-    <div className="elite-marquee" aria-hidden>
-      <div className="elite-marquee-track">
-        {loop.map((t, i) => (
-          <span key={`${t}-${i}`} className="elite-marquee-item">
-            {t}
-            <i />
-          </span>
-        ))}
-      </div>
-    </div>
   );
 }
 
@@ -1061,118 +843,6 @@ function FounderPhoto({
   );
 }
 
-function About() {
-  return (
-    <Section id="about" className="elite-about-section">
-      <Container>
-        <Reveal>
-          <Split className="elite-split--elevated" media={<FounderPhoto priority />}>
-            <p className="elite-kicker">{aboutPage.kicker}</p>
-            <h2 className="elite-h2">{aboutPage.title}</h2>
-            <p className="elite-lead">{aboutPage.lead}</p>
-            <p className="elite-p">{aboutPage.story[0]}</p>
-            <p className="elite-p">{aboutPage.story[1]}</p>
-            <ul className="elite-about-pillars">
-              {aboutPage.pillars.map((p) => (
-                <li key={p.t}>
-                  <strong>{p.t}</strong>
-                  <span>{p.d}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="elite-btn-row">
-              <Button href="/about" variant="primary">
-                הסיפור המלא
-              </Button>
-              <Button href="#contact" variant="ghost">
-                {CTA_PRIMARY}
-              </Button>
-            </div>
-          </Split>
-        </Reveal>
-      </Container>
-    </Section>
-  );
-}
-
-/** Product demo reel — animated UI storyboard (no external video dependency) */
-function ProductDemo() {
-  const beats = [
-    { t: "01 · מסר מעל הקיפול", d: "הלקוח מבין תוך שניות מי אתם ומה לקחת." },
-    { t: "02 · אמון והוכחות", d: "תהליך, ביקורות, תמונות — נראה רציני." },
-    { t: "03 · קריאה לפעולה", d: "וואטסאפ / טופס / שיחה — מסלול אחד ברור." },
-    { t: "04 · מובייל קודם", d: "רוב ההחלטות קורות בטלפון. כאן זה מנצח." },
-  ] as const;
-  const [beat, setBeat] = useState(0);
-
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const id = window.setInterval(() => {
-      setBeat((b) => (b + 1) % beats.length);
-    }, 3200);
-    return () => window.clearInterval(id);
-  }, [beats.length]);
-
-  return (
-    <Section id="demo" className="elite-demo-section" tone="muted">
-      <Container>
-        <Reveal>
-          <SectionHead
-            kicker="איך אתר ברמה מרגיש"
-            title="סיור קצר בחוויית המרה"
-            lead="בלי סרטון כבד — סיפור ויזואלי ברור: מה הלקוח רואה, ומה גורם לו לפנות."
-          />
-        </Reveal>
-        <Reveal>
-          <div className="elite-demo">
-            <div className="elite-demo-stage" aria-hidden>
-              <div className="elite-demo-chrome">
-                <span />
-                <span />
-                <span />
-                <p>yourbrand.co.il</p>
-              </div>
-              <div className="elite-demo-screen">
-                <Image
-                  src={eliteMedia.laptopUi}
-                  alt=""
-                  fill
-                  sizes="(max-width: 900px) 92vw, 640px"
-                  className="elite-demo-bg"
-                />
-                <div className={`elite-demo-layer is-beat-${beat}`}>
-                  <div className="elite-demo-nav-bar" />
-                  <div className="elite-demo-hero-block">
-                    <i />
-                    <i />
-                    <b />
-                  </div>
-                  <div className="elite-demo-cards">
-                    <i />
-                    <i />
-                    <i />
-                  </div>
-                  <div className="elite-demo-cta-bar" />
-                </div>
-              </div>
-            </div>
-            <ol className="elite-demo-beats">
-              {beats.map((item, i) => (
-                <li key={item.t} className={i === beat ? "is-active" : ""}>
-                  <button type="button" onClick={() => setBeat(i)}>
-                    <strong>{item.t}</strong>
-                    <span>{item.d}</span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </Reveal>
-      </Container>
-    </Section>
-  );
-}
-
 function Fit() {
   return (
     <Section id="fit" className="elite-fit-section">
@@ -1519,14 +1189,12 @@ export default function ElitePage() {
       <Nav />
       <main id="main">
         <Hero />
-        <Marquee />
         <TrustStrip />
         <Gallery />
         <FirstChat />
         <StudioNow />
         <RealIg />
         <AdUnit className="aviya-ad-slot--page" />
-        <ProductDemo />
         <Craft />
         <Includes />
         <Fit />

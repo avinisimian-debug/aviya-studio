@@ -37,9 +37,7 @@ export function NeedPicker({
         <p className="need-picker-hint">
           {siteNeeds.find((n) => n.id === picked)?.hint}
         </p>
-      ) : (
-        <p className="need-picker-hint">בחירה קצרה — כדי שנחזור מדויק יותר</p>
-      )}
+      ) : null}
     </div>
   );
 }

@@ -110,7 +110,7 @@ export function SmartAssist() {
         onClick={() => setOpen((v) => !v)}
       >
         <Sparkles size={18} aria-hidden />
-        <span>עוזר חכם</span>
+        <span className="smart-assist-fab-label">עוזר חכם</span>
       </button>
     </div>
   );
