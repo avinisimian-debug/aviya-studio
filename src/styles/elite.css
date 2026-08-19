@@ -969,15 +969,14 @@ html:has(.elite-page) {
 }
 
 .elite-hero--founder .elite-founder-frame {
-  width: min(92vw, 22rem);
+  width: min(72vw, 17.5rem);
 }
 
 .elite-hero--founder .elite-founder-img {
   width: 100%;
-  height: auto;
-  max-height: min(58dvh, 28rem);
+  height: 100%;
   object-fit: cover;
-  object-position: 50% 18%;
+  object-position: 50% 12%;
 }
 
 @media (min-width: 960px) {
@@ -986,11 +985,7 @@ html:has(.elite-page) {
   }
 
   .elite-hero--founder .elite-founder-frame {
-    width: min(100%, 26rem);
-  }
-
-  .elite-hero--founder .elite-founder-img {
-    max-height: min(72dvh, 36rem);
+    width: min(100%, 20rem);
   }
 }
 
