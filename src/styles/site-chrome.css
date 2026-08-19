@@ -340,6 +340,8 @@
   font-size: 0.9rem;
   color: var(--e-fg-muted, #5c5868);
 }
+
+.elite-about-pillars {
   list-style: none;
   margin: 1.25rem 0 0;
   padding: 0;
