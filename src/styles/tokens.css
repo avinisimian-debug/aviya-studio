@@ -2,25 +2,25 @@
  * Tokens — premium ink + champagne (synced with base)
  */
 :root {
-  --bg: #f4f4f6;
-  --bg-elev: #ececf0;
+  --bg: #f5f4f7;
+  --bg-elev: #eeecf1;
   --bg-card: #ffffff;
   --bg-card-solid: #ffffff;
-  --fg: #141418;
-  --fg-soft: #2a2a32;
-  --fg-muted: #5c5c68;
-  --accent: #c4a35a;
-  --accent-bright: #d4b56e;
-  --accent-soft: rgba(196, 163, 90, 0.14);
-  --accent-ink: #141418;
-  --cta: #c4a35a;
-  --cta-ink: #141418;
-  --line: rgba(20, 20, 24, 0.1);
-  --line-strong: rgba(20, 20, 24, 0.16);
+  --fg: #111018;
+  --fg-soft: #2a2733;
+  --fg-muted: #5c5868;
+  --accent: #5b3fd1;
+  --accent-bright: #7a61e6;
+  --accent-soft: rgba(91, 63, 209, 0.1);
+  --accent-ink: #ffffff;
+  --cta: #5b3fd1;
+  --cta-ink: #ffffff;
+  --line: rgba(17, 16, 24, 0.1);
+  --line-strong: rgba(17, 16, 24, 0.16);
   --danger: #c44a4a;
   --success: #2f9d6a;
-  --selection: rgba(196, 163, 90, 0.28);
-  --focus: rgba(196, 163, 90, 0.55);
+  --selection: rgba(91, 63, 209, 0.22);
+  --focus: rgba(91, 63, 209, 0.5);
   --font-body: var(--font-heebo), system-ui, sans-serif;
   --font-display-stack: var(--font-display), var(--font-heebo), Georgia, serif;
 }

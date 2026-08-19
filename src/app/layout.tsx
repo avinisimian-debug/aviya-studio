@@ -25,7 +25,7 @@ const display = Frank_Ruhl_Libre({
 const heebo = Heebo({
   variable: "--font-heebo",
   subsets: ["hebrew", "latin"],
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
   preload: true,
   adjustFontFallback: true,
@@ -35,8 +35,8 @@ export const metadata: Metadata = buildMetadata();
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#3d2a78" },
-    { media: "(prefers-color-scheme: light)", color: "#ece8f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f0d14" },
+    { media: "(prefers-color-scheme: light)", color: "#f5f4f7" },
   ],
   width: "device-width",
   initialScale: 1,

@@ -150,8 +150,8 @@ export function buildMetadata(): Metadata {
       distribution: "global",
       target: "all",
       "audience": "all",
-      "msapplication-TileColor": "#3d2a78",
-      "theme-color": "#ece8f7",
+      "msapplication-TileColor": "#0f0d14",
+      "theme-color": "#f5f4f7",
     },
   };
 }

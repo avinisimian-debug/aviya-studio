@@ -4,10 +4,10 @@
 .site-shell {
   min-height: 100dvh;
   background:
-    radial-gradient(ellipse 90% 50% at 100% 0%, rgba(180, 150, 250, 0.18), transparent 55%),
-    radial-gradient(ellipse 70% 40% at 0% 100%, rgba(200, 180, 255, 0.14), transparent 50%),
-    var(--e-bg, #ece8f7);
-  color: var(--e-fg, #1a1430);
+    radial-gradient(ellipse 90% 50% at 100% 0%, rgba(91, 63, 209, 0.08), transparent 55%),
+    radial-gradient(ellipse 70% 40% at 0% 100%, rgba(17, 16, 24, 0.04), transparent 50%),
+    var(--e-bg, #f5f4f7);
+  color: var(--e-fg, #111018);
   font-family: var(--font-heebo), system-ui, sans-serif;
 }
 
@@ -20,9 +20,9 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.85rem 1.25rem;
-  background: rgba(243, 240, 252, 0.88);
-  backdrop-filter: blur(14px);
-  border-bottom: 1px solid rgba(61, 42, 120, 0.08);
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid rgba(17, 16, 24, 0.08);
 }
 
 .site-chrome-nav nav {
@@ -54,10 +54,10 @@
 
 .site-chrome-h1 {
   margin: 0 0 0.75rem;
-  font-family: var(--e-display, var(--font-frank-ruhl-libre), serif);
-  font-size: clamp(1.85rem, 4vw, 2.6rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-family: var(--font-heebo), system-ui, sans-serif;
+  font-size: clamp(1.85rem, 4vw, 2.55rem);
+  font-weight: 800;
+  letter-spacing: -0.038em;
   line-height: 1.15;
 }
 
@@ -126,7 +126,7 @@
   margin-top: 2.5rem;
   padding: 1.5rem 1.25rem;
   border-radius: 1.25rem;
-  background: linear-gradient(145deg, #4a3288, #6b45c4);
+  background: linear-gradient(145deg, #17141f, #5b3fd1);
   color: #f7f5ff;
 }
 
@@ -768,7 +768,7 @@
 
 /* Homepage resources strip */
 .elite-resources-section {
-  background: linear-gradient(180deg, #f8f6ff 0%, var(--e-bg, #ece8f7) 100%);
+  background: var(--e-bg-muted);
 }
 
 .elite-resources-grid {
