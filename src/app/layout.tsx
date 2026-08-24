@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Assistant, Rubik } from "next/font/google";
+import { Noto_Sans_Hebrew, Secular_One } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { CookieConsent } from "@/components/ads/CookieConsent";
@@ -11,24 +11,24 @@ import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
 
 /**
- * Type system — modern product studio:
- * Rubik → display / headings (geometric, contemporary)
- * Assistant → body / UI (Hebrew-first, long-form readable)
- * CSS keeps --font-heebo as the body variable for existing stylesheets.
+ * Type system — modern Hebrew (not default Rubik/Assistant):
+ * Secular One → headlines (strong geometric Hebrew display)
+ * Noto Sans Hebrew → body / UI (clean contemporary product type)
+ * --font-heebo kept as body CSS var for existing stylesheets.
  */
-const display = Rubik({
+const display = Secular_One({
   variable: "--font-display",
   subsets: ["hebrew", "latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: "400",
   display: "swap",
   preload: true,
   adjustFontFallback: true,
 });
 
-const body = Assistant({
+const body = Noto_Sans_Hebrew({
   variable: "--font-heebo",
   subsets: ["hebrew", "latin"],
-  weight: ["300", "400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
   display: "swap",
   preload: true,
   adjustFontFallback: true,

@@ -8,7 +8,7 @@
     radial-gradient(ellipse 70% 40% at 0% 100%, rgba(17, 16, 24, 0.04), transparent 50%),
     var(--e-bg, #f5f4f7);
   color: var(--e-fg, #111018);
-  font-family: var(--font-heebo), "Assistant", "Rubik", sans-serif;
+  font-family: var(--font-body);
 }
 
 .site-chrome-nav {
@@ -87,7 +87,7 @@
 
 .site-chrome-h1 {
   margin: 0 0 0.75rem;
-  font-family: var(--font-display), var(--font-heebo), "Rubik", "Assistant", sans-serif;
+  font-family: var(--font-display-stack);
   font-size: clamp(1.85rem, 4vw, 2.55rem);
   font-weight: 800;
   letter-spacing: -0.035em;

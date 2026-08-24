@@ -39,15 +39,16 @@
   --selection: rgba(91, 63, 209, 0.22);
   --focus: rgba(91, 63, 209, 0.5);
 
-  /* Type */
-  --font-body: var(--font-heebo), "Assistant", "Rubik", sans-serif;
-  --font-display-stack: var(--font-display), var(--font-heebo), "Rubik", "Assistant", sans-serif;
-  --type-h1: clamp(1.85rem, 4.5vw, 3.15rem);
-  --type-h2: clamp(1.55rem, 3.2vw, 2.25rem);
-  --type-h3: 1.08rem;
-  --type-body: 1.02rem;
+  /* Type — Secular One + Noto Sans Hebrew */
+  --font-body: var(--font-heebo), "Noto Sans Hebrew", system-ui, sans-serif;
+  --font-display-stack: var(--font-display), "Secular One", var(--font-heebo),
+    "Noto Sans Hebrew", system-ui, sans-serif;
+  --type-h1: clamp(2rem, 5vw, 3.35rem);
+  --type-h2: clamp(1.65rem, 3.4vw, 2.4rem);
+  --type-h3: 1.12rem;
+  --type-body: 1.05rem;
   --type-caption: 0.78rem;
-  --type-lead: clamp(1rem, 1.6vw, 1.12rem);
+  --type-lead: clamp(1.05rem, 1.7vw, 1.18rem);
 
   /* Control geometry (shared with design-system) */
   --r: 0.85rem;

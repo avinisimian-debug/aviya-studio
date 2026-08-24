@@ -1,5 +1,5 @@
 /**
- * Final polish — micro consistency only (no redesign)
+ * Final polish — micro consistency + modern type character
  */
 
 html {
@@ -9,38 +9,58 @@ html {
 body {
   overflow-x: clip;
   text-rendering: optimizeLegibility;
+  font-family: var(--font-body) !important;
+  font-feature-settings: "kern" 1, "liga" 1;
 }
 
-/* Type scale — fewer sizes, clearer rhythm */
+/* Force display face on all major headlines */
+.elite-h1,
+.elite-h2,
+.site-chrome-h1,
+.site-prose h2,
+.site-prose h3,
+.ws-topbar-title h1,
+.ws-brand-name,
+.lead-title {
+  font-family: var(--font-display-stack) !important;
+}
+
+/* Type scale — punchier Secular One headlines */
 .elite-h1,
 .site-chrome-h1 {
-  line-height: 1.15;
-  letter-spacing: -0.032em;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 400 !important;
 }
 
 .elite-h2 {
-  line-height: 1.22;
-  letter-spacing: -0.028em;
+  line-height: 1.18;
+  letter-spacing: -0.018em;
+  font-weight: 400 !important;
 }
 
 .elite-lead,
 .site-lead {
-  line-height: 1.68;
+  line-height: 1.7;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 .elite-p,
 .site-prose p,
 .ws-intro,
 .ws-meta {
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 .elite-kicker,
 .site-kicker,
 .ws-detail-kicker {
+  font-family: var(--font-body) !important;
   font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  font-weight: 700;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 /* Softer motion — premium, not bouncy */
