@@ -165,9 +165,9 @@ export default function PromotePage() {
 
         <p>
           צריכים עזרה לבנות את האתר ללקוח?{" "}
-          <Link href="/contact">יצירת קשר</Link> ·{" "}
+          <Link href="/contact">השארת פרטים</Link> ·{" "}
           <a href={LANDING.whatsappUrl} target="_blank" rel="noopener noreferrer">
-            וואטסאפ
+            וואטסאפ ישיר
           </a>
         </p>
       </div>

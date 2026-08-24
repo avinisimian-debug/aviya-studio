@@ -1,28 +1,101 @@
 /**
- * Tokens — premium ink + champagne (synced with base)
+ * Canonical design tokens — single source of truth
+ * Elite (--e-*), workspace (--ws-*), a11y, and forms should alias here.
  */
 :root {
+  /* Surfaces */
   --bg: #f5f4f7;
   --bg-elev: #eeecf1;
   --bg-card: #ffffff;
   --bg-card-solid: #ffffff;
+  --bg-inverse: #0f0d14;
+  --bg-inverse-soft: #17141f;
+
+  /* Text */
   --fg: #111018;
   --fg-soft: #2a2733;
   --fg-muted: #5c5868;
+  --fg-faint: #8a8696;
+  --fg-on-dark: #f8f7fb;
+  --fg-on-dark-muted: #b8b3c4;
+
+  /* Brand */
   --accent: #5b3fd1;
+  --accent-deep: #4630b4;
   --accent-bright: #7a61e6;
   --accent-soft: rgba(91, 63, 209, 0.1);
+  --accent-line: rgba(91, 63, 209, 0.22);
+  --accent-glow: rgba(91, 63, 209, 0.28);
   --accent-ink: #ffffff;
   --cta: #5b3fd1;
   --cta-ink: #ffffff;
+
+  /* Lines & feedback */
   --line: rgba(17, 16, 24, 0.1);
   --line-strong: rgba(17, 16, 24, 0.16);
-  --danger: #c44a4a;
-  --success: #2f9d6a;
+  --line-on-dark: rgba(255, 255, 255, 0.1);
+  --danger: #b42318;
+  --success: #1f7a4d;
   --selection: rgba(91, 63, 209, 0.22);
   --focus: rgba(91, 63, 209, 0.5);
-  --font-body: var(--font-heebo), system-ui, sans-serif;
-  --font-display-stack: var(--font-display), var(--font-heebo), Georgia, serif;
+
+  /* Type */
+  --font-body: var(--font-heebo), "Assistant", "Rubik", sans-serif;
+  --font-display-stack: var(--font-display), var(--font-heebo), "Rubik", "Assistant", sans-serif;
+  --type-h1: clamp(1.85rem, 4.5vw, 3.15rem);
+  --type-h2: clamp(1.55rem, 3.2vw, 2.25rem);
+  --type-h3: 1.08rem;
+  --type-body: 1.02rem;
+  --type-caption: 0.78rem;
+  --type-lead: clamp(1rem, 1.6vw, 1.12rem);
+
+  /* Control geometry (shared with design-system) */
+  --r: 0.85rem;
+  --r-sm: 0.55rem;
+  --r-lg: 1.15rem;
+  --r-full: 999px;
+  --pad-x: clamp(1.15rem, 4vw, 2.25rem);
+  --header-h: 4.15rem;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow: 0 8px 24px rgba(17, 16, 24, 0.07), 0 2px 6px rgba(17, 16, 24, 0.04);
+
+  /* Elite aliases — keep existing class selectors working */
+  --e-bg: var(--bg);
+  --e-bg-elev: var(--bg-card);
+  --e-bg-muted: var(--bg-elev);
+  --e-bg-hero: linear-gradient(180deg, #faf9fb 0%, #f3f1f6 48%, #eceaf1 100%);
+  --e-bg-inverse: var(--bg-inverse);
+  --e-bg-inverse-soft: var(--bg-inverse-soft);
+  --e-fg: var(--fg);
+  --e-fg-soft: var(--fg-soft);
+  --e-fg-muted: var(--fg-muted);
+  --e-fg-faint: var(--fg-faint);
+  --e-fg-on-dark: var(--fg-on-dark);
+  --e-fg-on-dark-muted: var(--fg-on-dark-muted);
+  --e-accent: var(--accent);
+  --e-accent-deep: var(--accent-deep);
+  --e-accent-bright: var(--accent-bright);
+  --e-accent-soft: var(--accent-soft);
+  --e-accent-line: var(--accent-line);
+  --e-accent-glow: var(--accent-glow);
+  --e-oval: #d8d2e8;
+  --e-line: var(--line);
+  --e-line-strong: var(--line-strong);
+  --e-line-on-dark: var(--line-on-dark);
+  --e-radius: var(--r);
+  --e-radius-sm: var(--r-sm);
+  --e-radius-lg: var(--r-lg);
+  --e-font: var(--font-body);
+  --e-display: var(--font-display-stack);
+  --e-ease: var(--ease);
+  --e-header-h: var(--header-h);
+  --e-gutter: var(--pad-x);
+  --e-section-y: clamp(3.5rem, 8vw, 6.25rem);
+  --e-shell: min(1120px, calc(100% - 2.5rem));
+  --e-shadow-sm: var(--ds-shadow-sm, 0 2px 8px rgba(17, 16, 24, 0.05));
+  --e-shadow: var(--ds-shadow-md, 0 8px 24px rgba(17, 16, 24, 0.07));
+  --e-shadow-lg: var(--ds-shadow-lg, 0 18px 44px rgba(17, 16, 24, 0.1));
+  --e-shadow-form: var(--ds-shadow-md, 0 8px 24px rgba(17, 16, 24, 0.07));
 }
 
 @theme inline {
@@ -30,5 +103,5 @@
   --color-foreground: var(--fg);
   --color-accent: var(--accent);
   --color-muted: var(--fg-muted);
-  --font-sans: var(--font-heebo), system-ui, sans-serif;
+  --font-sans: var(--font-body);
 }

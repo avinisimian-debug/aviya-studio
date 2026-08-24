@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
-import { SiteChrome } from "@/components/site/SiteChrome";
-import { aboutPage } from "@/data/site-content";
+import { SiteChrome, SiteCtaBand } from "@/components/site/SiteChrome";
+import { aboutPage, brandVoice } from "@/data/site-content";
 import { LANDING } from "@/data/landing";
 
 export const metadata: Metadata = {
@@ -57,25 +56,9 @@ export default function AboutPage() {
         ))}
       </ul>
 
-      <div className="site-cta-band">
-        <p>
-          רוצים להרגיש בנוח לפני שמתחילים? כתבו בוואטסאפ — זה מגיע אליי, אביה.
-          מוגבל ל־{LANDING.monthlyCap} עסקים בחודש כדי לשמור על יחס ורמה.
-        </p>
-        <div className="site-cta-row">
-          <Link href="/contact" className="site-btn site-btn--primary">
-            השארת פרטים
-          </Link>
-          <a
-            href={LANDING.whatsappUrl}
-            className="site-btn site-btn--ghost"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            וואטסאפ ישיר
-          </a>
-        </div>
-      </div>
+      <SiteCtaBand
+        note={`רוצים להרגיש בנוח לפני שמתחילים? ${brandVoice.ctaSecondary} מגיע ישירות לאביה. מוגבל ל־${LANDING.monthlyCap} עסקים בחודש.`}
+      />
     </SiteChrome>
   );
 }

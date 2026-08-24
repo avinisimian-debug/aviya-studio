@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteChrome } from "@/components/site/SiteChrome";
+import { SiteChrome, SiteCtaBand } from "@/components/site/SiteChrome";
 import { studioIndustries } from "@/data/studio-extras";
-import { LANDING } from "@/data/landing";
 
 export const metadata: Metadata = {
   title: "אתר לפי תחום — קליניקה, שירותים, חנות, B2B",
@@ -45,15 +44,7 @@ export default function ForPage() {
         ))}
       </ul>
 
-      <div className="site-cta-band">
-        <p>לא בטוחים באיזה מסלול? משאירים פרטים — נכוון יחד.</p>
-        <div className="site-cta-row">
-          <Link href="/contact">השארת פרטים</Link>
-          <a href={LANDING.whatsappUrl} target="_blank" rel="noopener noreferrer">
-            וואטסאפ
-          </a>
-        </div>
-      </div>
+      <SiteCtaBand note="לא בטוחים באיזה מסלול? משאירים פרטים — נכוון יחד." />
     </SiteChrome>
   );
 }

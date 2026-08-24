@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteChrome } from "@/components/site/SiteChrome";
+import { SiteChrome, SiteCtaBand } from "@/components/site/SiteChrome";
 import { AdUnit } from "@/components/ads/AdUnit";
 import { keywordClusters } from "@/data/seo-keywords";
+import { brandVoice } from "@/data/site-content";
 import { LANDING } from "@/data/landing";
 import { SITE_URL } from "@/lib/seo";
 
@@ -100,10 +101,7 @@ export default function ServicesPage() {
       <ServicesJsonLd />
       <SiteChrome title="שירותי בניית אתרים וחנויות דיגיטליות">
         <p className="site-kicker">Aviya · ישראל</p>
-        <p className="site-lead">
-          סטודיו לבניית אתרים שמביאים לקוחות, חנויות שמוכרות, ודפי נחיתה
-          שממירים — לתל אביב, למרכז ולכל הארץ.
-        </p>
+        <p className="site-lead">{brandVoice.valueLine}</p>
 
         <div className="site-prose">
           <h2>מה אנחנו בונים</h2>
@@ -138,9 +136,9 @@ export default function ServicesPage() {
 
           <h2>איך מתחילים</h2>
           <p>
-            משאירים שם וטלפון בטופס — חוזרים במהירות, בלי לחץ. אפשר גם{" "}
+            {brandVoice.finalLead} אפשר גם{" "}
             <a href={LANDING.whatsappUrl} target="_blank" rel="noopener noreferrer">
-              וואטסאפ
+              {brandVoice.ctaSecondary}
             </a>{" "}
             או{" "}
             <Link href="/contact">עמוד יצירת קשר</Link>.
@@ -154,22 +152,9 @@ export default function ServicesPage() {
           </p>
         </div>
 
-        <div className="site-cta-band" style={{ marginTop: "2rem" }}>
-          <p>מוגבל ל־{LANDING.monthlyCap} עסקים בחודש — רמה וזמינות.</p>
-          <div className="site-cta-row">
-            <Link href="/contact" className="site-btn site-btn--primary">
-              רוצה שנחזור אליך?
-            </Link>
-            <a
-              href={LANDING.whatsappUrl}
-              className="site-btn site-btn--ghost"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              וואטסאפ
-            </a>
-          </div>
-        </div>
+        <SiteCtaBand
+          note={`מוגבל ל־${LANDING.monthlyCap} עסקים בחודש — רמה וזמינות.`}
+        />
       </SiteChrome>
     </>
   );

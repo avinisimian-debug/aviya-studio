@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BrandLogo } from "@/components/BrandLogo";
 import { SocialLinks } from "@/components/SocialLinks";
+import { SiteChrome } from "@/components/site/SiteChrome";
 import { LANDING } from "@/data/landing";
 
 export const metadata: Metadata = {
@@ -28,36 +28,22 @@ const UPDATED = "4 באוגוסט 2026";
  */
 export default function AccessibilityPage() {
   return (
-    <>
-      <a href="#statement" className="skip-link">
-        דלג להצהרת נגישות
-      </a>
-
-      <header className="legal-nav">
-        <BrandLogo size="nav" href="/" />
-        <nav aria-label="קישורים מהירים">
-          <Link href="/">חזרה לדף הבית</Link>
-          {" · "}
-          <a href="#contact-a11y">יצירת קשר לנגישות</a>
-        </nav>
-      </header>
-
-      <main id="statement" className="legal-page">
-        <h1>הצהרת נגישות</h1>
-        <p className="legal-meta">
+    <SiteChrome title="הצהרת נגישות">
+      <div className="site-prose" id="statement">
+        <p className="legal-meta site-kicker" style={{ textTransform: "none", letterSpacing: 0 }}>
           עדכון אחרון: {UPDATED}
           <br />
           סטודיו {LANDING.brand} · עיצוב | בנייה | צמיחה
         </p>
 
         <p>
-          אנו ב־{LANDING.brand} רואים חשיבות רבה במתן שירות שוויוני, מכבד ונגיש לכל
-          אדם, לרבות אנשים עם מוגבלות. אתר זה מתוכנן ומותאם בהתאם לעקרונות חוק
-          שוויון זכויות לאנשים עם מוגבלות, התשנ״ח–1998, תקנות שוויון זכויות
+          אנו ב־{LANDING.brand} רואים חשיבות רבה במתן שירות שוויוני, מכבד ונגיש
+          לכל אדם, לרבות אנשים עם מוגבלות. אתר זה מתוכנן ומותאם בהתאם לעקרונות
+          חוק שוויון זכויות לאנשים עם מוגבלות, התשנ״ח–1998, תקנות שוויון זכויות
           לאנשים עם מוגבלות (התאמות נגישות לשירות), התשע״ג–2013, ובהתאם לתקן
           הישראלי ת״י 5568 המבוסס על הנחיות{" "}
-          <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.0 ברמת
-          AA.
+          <abbr title="Web Content Accessibility Guidelines">WCAG</abbr> 2.0
+          ברמת AA.
         </p>
 
         <h2>רמת הנגישות שאליה אנו שואפים</h2>
@@ -106,23 +92,30 @@ export default function AccessibilityPage() {
         </p>
         <ul>
           <li>
-            דוא״ל:{" "}
-            <a href={LANDING.emailUrl}>{LANDING.email}</a>
+            דוא״ל: <a href={LANDING.emailUrl}>{LANDING.email}</a>
           </li>
           <li>
             טלפון / WhatsApp:{" "}
-            <a href={LANDING.whatsappUrl} target="_blank" rel="noopener noreferrer">
+            <a
+              href={LANDING.whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               055-557-3090
             </a>
           </li>
           <li>
             Instagram:{" "}
-            <a href={LANDING.instagram} target="_blank" rel="noopener noreferrer">
+            <a
+              href={LANDING.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {LANDING.instagramHandle}
             </a>
           </li>
         </ul>
-        <div style={{ marginTop: "1.25rem" }}>
+        <div className="site-a11y-social">
           <SocialLinks />
         </div>
         <p>
@@ -146,7 +139,9 @@ export default function AccessibilityPage() {
               נציבות שוויון זכויות לאנשים עם מוגבלות
             </a>
           </li>
-          <li>טלפון מוקד: *6763 / 02-5089800 (ייתכנו שינויים — בדקו באתר הרשמי)</li>
+          <li>
+            טלפון מוקד: *6763 / 02-5089800 (ייתכנו שינויים — בדקו באתר הרשמי)
+          </li>
         </ul>
 
         <h2>הצהרה</h2>
@@ -156,23 +151,10 @@ export default function AccessibilityPage() {
           מהוראות הדין, והיא אינה מהווה ייעוץ משפטי.
         </p>
 
-        <p style={{ marginTop: "2.5rem" }}>
+        <p className="site-back-home">
           <Link href="/">← חזרה לדף הבית</Link>
         </p>
-      </main>
-
-      <footer className="footer">
-        <p>
-          <Link href="/">דף הבית</Link>
-          {" · "}
-          <Link href="/accessibility" aria-current="page">
-            הצהרת נגישות
-          </Link>
-        </p>
-        <p>
-          © {new Date().getFullYear()} {LANDING.brand}
-        </p>
-      </footer>
-    </>
+      </div>
+    </SiteChrome>
   );
 }

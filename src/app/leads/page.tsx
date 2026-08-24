@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useCallback, useState } from "react";
+import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import type { Lead } from "@/lib/leads";
 
 function formatDate(iso: string) {
@@ -14,19 +14,28 @@ function formatDate(iso: string) {
   }
 }
 
+function waLink(phone: string) {
+  const digits = phone.replace(/\D/g, "").replace(/^0/, "").replace(/^972/, "");
+  return `https://wa.me/972${digits}`;
+}
+
 /**
- * Admin inbox — password: AviyaLeads2026Secure (or LEADS_PASSWORD env)
+ * Admin inbox — password via LEADS_PASSWORD env (default in server).
+ * Work-screen UX only — API/auth unchanged.
  */
 export default function LeadsAdminPage() {
   const [password, setPassword] = useState("");
   const [authed, setAuthed] = useState(false);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [error, setError] = useState("");
+  const [okMsg, setOkMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const load = useCallback(async (pwd: string) => {
+  const load = useCallback(async (pwd: string, opts?: { quiet?: boolean }) => {
     setLoading(true);
     setError("");
+    if (!opts?.quiet) setOkMsg("");
     try {
       const res = await fetch("/api/leads", {
         headers: { "x-leads-password": pwd },
@@ -44,6 +53,7 @@ export default function LeadsAdminPage() {
       const data = (await res.json()) as { leads: Lead[] };
       setLeads(data.leads ?? []);
       setAuthed(true);
+      if (opts?.quiet) setOkMsg("התיבה עודכנה");
     } catch {
       setError("לא ניתן להתחבר לשרת");
     } finally {
@@ -51,246 +61,279 @@ export default function LeadsAdminPage() {
     }
   }, []);
 
+  useEffect(() => {
+    if (!okMsg) return;
+    const t = window.setTimeout(() => setOkMsg(""), 2200);
+    return () => window.clearTimeout(t);
+  }, [okMsg]);
+
   function onLogin(e: FormEvent) {
     e.preventDefault();
     void load(password);
   }
 
-  return (
-    <div
-      style={{
-        minHeight: "100dvh",
-        background: "var(--e-bg, #ece8f7)",
-        color: "var(--e-fg, #1a1430)",
-        padding: "2rem 1.25rem 4rem",
-        fontFamily: "var(--font-heebo), system-ui, sans-serif",
-      }}
-    >
-      <div style={{ maxWidth: 720, margin: "0 auto" }}>
-        <a
-          href="/"
-          style={{
-            color: "var(--e-fg-muted, #5c5578)",
-            fontSize: "0.9rem",
-            fontWeight: 600,
-          }}
-        >
-          ← חזרה לאתר
-        </a>
-        <h1
-          style={{
-            margin: "1.25rem 0 0.35rem",
-            fontSize: "1.75rem",
-            fontWeight: 800,
-          }}
-        >
-          תיבת פניות — Aviya
-        </h1>
-        <p
-          style={{
-            margin: 0,
-            color: "var(--e-fg-muted, #5c5578)",
-            fontSize: "0.95rem",
-            lineHeight: 1.55,
-          }}
-        >
-          כאן רואים <strong>את כל</strong> מי שמילא טופס (נשמר בענן).  
-          בנוסף נשלח מייל ל־
-          <strong dir="ltr"> aviya.nish@gmail.com</strong>.
-        </p>
+  const todayCount = useMemo(() => {
+    const start = new Date();
+    start.setHours(0, 0, 0, 0);
+    return leads.filter((l) => new Date(l.createdAt) >= start).length;
+  }, [leads]);
 
-        {!authed ? (
-          <form
-            onSubmit={onLogin}
-            style={{
-              marginTop: "2rem",
-              padding: "1.35rem",
-              borderRadius: "1rem",
-              border: "1px solid rgba(61,42,120,0.12)",
-              background: "#fff",
-              display: "flex",
-              flexDirection: "column",
-              gap: "0.75rem",
-            }}
-          >
-            <label style={{ fontWeight: 700, fontSize: "0.9rem" }}>
-              סיסמת גישה
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="הזיני סיסמה"
-              autoComplete="current-password"
-              style={{
-                padding: "0.9rem 1rem",
-                borderRadius: "0.65rem",
-                border: "1px solid rgba(61,42,120,0.15)",
-                fontSize: "1rem",
-                color: "#111",
-              }}
-            />
+  const selected = leads.find((l) => l.id === selectedId) ?? null;
+
+  return (
+    <div className="ws">
+      <div className="ws-shell">
+        <aside className="ws-sidebar" aria-label="ניווט עבודה">
+          <div className="ws-brand">
+            <strong>AVIYA</strong>
+            <span>מסך עבודה</span>
+          </div>
+          <nav className="ws-nav">
+            <span className="ws-nav-item is-active" aria-current="page">
+              תיבת פניות
+            </span>
+            <a href="/">חזרה לאתר</a>
+            <a href="/contact">עמוד יצירת קשר</a>
+          </nav>
+          <p className="ws-side-foot">
+            פניות נשמרות בענן. התראות מייל נשלחות אוטומטית.
+          </p>
+        </aside>
+
+        <div className="ws-main">
+          <header className="ws-topbar">
+            <div className="ws-topbar-title">
+              <h1>תיבת פניות</h1>
+              <p>
+                {authed
+                  ? loading
+                    ? "מרענן…"
+                    : `${leads.length} פניות · פעולה מרכזית: חזרה ללקוח`
+                  : "כניסה מאובטחת לניהול פניות"}
+              </p>
+            </div>
+            <div className="ws-topbar-actions">
+              {authed ? (
+                <button
+                  type="button"
+                  className="ws-btn ws-btn--ghost ws-btn--sm"
+                  onClick={() => void load(password, { quiet: true })}
+                  disabled={loading}
+                  aria-busy={loading}
+                >
+                  {loading ? "טוען…" : "רענון"}
+                </button>
+              ) : null}
+              <a href="/" className="ws-btn ws-btn--ghost ws-btn--sm">
+                לאתר
+              </a>
+            </div>
+          </header>
+
+          <div className="ws-body">
+            <div className="ws-mobile-nav">
+              <a href="/" className="ws-back">
+                ← חזרה לאתר
+              </a>
+            </div>
+
+            <p className="ws-intro">
+              איפה אני: תיבת פניות מהאתר. מה לעשות: בחרו פנייה → חייגו או פתחו
+              וואטסאפ. זו הפעולה המרכזית.
+            </p>
+
             {error ? (
-              <p style={{ margin: 0, color: "#b42318", fontSize: "0.9rem" }}>
+              <p className="ws-alert ws-alert--error" role="alert">
                 {error}
               </p>
             ) : null}
-            <button type="submit" disabled={loading} className="btn btn-primary">
-              {loading ? "טוען…" : "הצג פניות"}
-            </button>
-            <p
-              style={{
-                margin: "0.5rem 0 0",
-                fontSize: "0.85rem",
-                color: "var(--e-fg-muted, #5c5578)",
-                lineHeight: 1.55,
-              }}
-            >
-              סיסמה נוכחית:{" "}
-              <code
-                dir="ltr"
-                style={{
-                  background: "#f3f0fc",
-                  padding: "0.15rem 0.4rem",
-                  borderRadius: 6,
-                  fontWeight: 700,
-                }}
-              >
-                AviyaLeads2026Secure
-              </code>
-              <br />
-              (אפשר לשנות בעתיד ב־Vercel עם משתנה LEADS_PASSWORD)
-            </p>
-          </form>
-        ) : (
-          <div style={{ marginTop: "1.75rem" }}>
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "0.75rem",
-                alignItems: "center",
-                justifyContent: "space-between",
-                marginBottom: "1rem",
-              }}
-            >
-              <p style={{ margin: 0, fontWeight: 700 }}>
-                {leads.length} פניות
+            {okMsg && authed && !error ? (
+              <p className="ws-alert ws-alert--ok" role="status">
+                {okMsg}
               </p>
-              <button
-                type="button"
-                onClick={() => void load(password)}
-                className="btn btn-primary"
-                style={{
-                  width: "auto",
-                  minHeight: "2.5rem",
-                  padding: "0.5rem 1rem",
-                }}
-                disabled={loading}
-              >
-                רענון
-              </button>
-            </div>
+            ) : null}
 
-            {leads.length === 0 ? (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "2rem",
-                  background: "#fff",
-                  borderRadius: "1rem",
-                  border: "1px solid rgba(61,42,120,0.12)",
-                }}
-              >
-                <p style={{ margin: 0 }}>עדיין אין פניות. מלאו טופס באתר.</p>
-              </div>
+            {!authed ? (
+              <form className="ws-login" onSubmit={onLogin}>
+                <label htmlFor="ws-password">סיסמת גישה</label>
+                <input
+                  id="ws-password"
+                  className="ws-field"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="הזיני סיסמה"
+                  autoComplete="current-password"
+                  disabled={loading}
+                  aria-invalid={Boolean(error)}
+                  aria-describedby="ws-login-hint"
+                />
+                <button
+                  type="submit"
+                  className="ws-btn ws-btn--primary"
+                  disabled={loading || password.trim().length < 4}
+                >
+                  {loading ? "מתחבר…" : "כניסה לתיבה"}
+                </button>
+                <p className="ws-hint" id="ws-login-hint">
+                  הסיסמה מוגדרת בשרת (LEADS_PASSWORD). אין לשלוח אותה ללקוחות.
+                </p>
+              </form>
             ) : (
-              <ul
-                style={{
-                  listStyle: "none",
-                  margin: 0,
-                  padding: 0,
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "0.75rem",
-                }}
-              >
-                {leads.map((lead) => (
-                  <li
-                    key={lead.id}
-                    style={{
-                      background: "#fff",
-                      borderRadius: "1rem",
-                      border: "1px solid rgba(61,42,120,0.12)",
-                      padding: "1.1rem 1.2rem",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        gap: "1rem",
-                        flexWrap: "wrap",
-                      }}
-                    >
-                      <strong style={{ fontSize: "1.1rem" }}>{lead.name}</strong>
-                      <span
-                        style={{
-                          fontSize: "0.8rem",
-                          color: "var(--e-fg-muted, #5c5578)",
-                        }}
-                      >
-                        {formatDate(lead.createdAt)}
-                      </span>
+              <>
+                <div className="ws-stats" aria-label="סיכום">
+                  <div className="ws-stat">
+                    <strong>{leads.length}</strong>
+                    <span>סה״כ פניות</span>
+                  </div>
+                  <div className="ws-stat">
+                    <strong>{todayCount}</strong>
+                    <span>היום</span>
+                  </div>
+                  <div className="ws-stat">
+                    <strong>{loading ? "…" : "פעיל"}</strong>
+                    <span>סטטוס תיבה</span>
+                  </div>
+                </div>
+
+                {loading && leads.length === 0 ? (
+                  <div className="ws-loading" aria-busy="true" aria-label="טוען">
+                    <div className="ws-skel" />
+                    <div className="ws-skel" />
+                    <div className="ws-skel" />
+                  </div>
+                ) : leads.length === 0 ? (
+                  <div className="ws-empty">
+                    <div className="ws-empty-icon" aria-hidden>
+                      ✉
                     </div>
-                    <p style={{ margin: "0.65rem 0 0" }}>
-                      <a
-                        href={`tel:${lead.phone}`}
-                        style={{
-                          color: "#5b2fb8",
-                          fontWeight: 700,
-                          direction: "ltr",
-                          display: "inline-block",
-                        }}
-                      >
-                        {lead.phone}
-                      </a>
-                      {" · "}
-                      <a
-                        href={`https://wa.me/972${lead.phone.replace(/\D/g, "").replace(/^0/, "").replace(/^972/, "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ color: "#128c7e", fontWeight: 700 }}
-                      >
-                        וואטסאפ
-                      </a>
+                    <strong>עדיין אין פניות</strong>
+                    <p>
+                      כשמישהו ממלא טופס באתר — הוא יופיע כאן מיד. בינתיים אפשר
+                      לבדוק את{" "}
+                      <a href="/contact">עמוד יצירת הקשר</a> או לרענן את התיבה.
                     </p>
-                    {lead.business && lead.business !== "—" ? (
-                      <p
-                        style={{
-                          margin: "0.35rem 0 0",
-                          fontWeight: 600,
-                          fontSize: "0.95rem",
-                        }}
-                      >
-                        עסק: {lead.business}
-                      </p>
-                    ) : null}
-                    <p
-                      style={{
-                        margin: "0.35rem 0 0",
-                        color: "var(--e-fg-muted, #5c5578)",
-                        fontSize: "0.92rem",
-                      }}
+                  </div>
+                ) : (
+                  <div className="ws-workspace">
+                    <ul className="ws-list" aria-label="רשימת פניות">
+                      {leads.map((lead, i) => {
+                        const isOn = selectedId === lead.id;
+                        return (
+                          <li
+                            key={lead.id}
+                            className={`ws-card${isOn ? " is-selected" : ""}`}
+                            style={{
+                              animationDelay: `${Math.min(i, 8) * 35}ms`,
+                            }}
+                          >
+                            <div
+                              className="ws-card-select"
+                              role="button"
+                              tabIndex={0}
+                              aria-pressed={isOn}
+                              onClick={() =>
+                                setSelectedId(isOn ? null : lead.id)
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                  e.preventDefault();
+                                  setSelectedId(isOn ? null : lead.id);
+                                }
+                              }}
+                            >
+                              <div className="ws-card-head">
+                                <strong>{lead.name}</strong>
+                                <span className="ws-time">
+                                  {formatDate(lead.createdAt)}
+                                </span>
+                              </div>
+                              {lead.business && lead.business !== "—" ? (
+                                <p className="ws-meta">
+                                  עסק: <b>{lead.business}</b>
+                                </p>
+                              ) : null}
+                              <p className="ws-meta">
+                                מקור:{" "}
+                                <span className="ws-badge">
+                                  {lead.source || "אתר"}
+                                </span>
+                              </p>
+                            </div>
+                            <div className="ws-actions">
+                              <a
+                                className="ws-btn ws-btn--sm ws-btn--tel"
+                                href={`tel:${lead.phone}`}
+                              >
+                                <span dir="ltr">{lead.phone}</span>
+                              </a>
+                              <a
+                                className="ws-btn ws-btn--sm ws-btn--wa"
+                                href={waLink(lead.phone)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                וואטסאפ
+                              </a>
+                            </div>
+                          </li>
+                        );
+                      })}
+                    </ul>
+
+                    <aside
+                      className={`ws-detail${selected ? " is-open" : ""}`}
+                      aria-live="polite"
                     >
-                      מקור: {lead.source || "אתר"}
-                    </p>
-                  </li>
-                ))}
-              </ul>
+                      {selected ? (
+                        <div className="ws-detail-inner">
+                          <p className="ws-detail-kicker">הצעד הבא</p>
+                          <h2>{selected.name}</h2>
+                          <p className="ws-meta">
+                            {formatDate(selected.createdAt)}
+                            {selected.business && selected.business !== "—"
+                              ? ` · ${selected.business}`
+                              : ""}
+                          </p>
+                          <div className="ws-actions ws-actions--stack">
+                            <a
+                              className="ws-btn ws-btn--primary"
+                              href={`tel:${selected.phone}`}
+                            >
+                              חייג עכשיו · <span dir="ltr">{selected.phone}</span>
+                            </a>
+                            <a
+                              className="ws-btn ws-btn--wa"
+                              href={waLink(selected.phone)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              פתיחת וואטסאפ
+                            </a>
+                          </div>
+                          <p className="ws-hint">
+                            מקור: {selected.source || "אתר"} · חזרו מהר — זה
+                            הרגע שבו נסגרת פנייה.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="ws-detail-empty">
+                          <div className="ws-detail-empty-icon" aria-hidden>
+                            ←
+                          </div>
+                          <strong>בחרו פנייה מהרשימה</strong>
+                          <p>
+                            כאן יופיעו שם, טלפון, וקיצורי דרך לשיחה או לוואטסאפ.
+                          </p>
+                        </div>
+                      )}
+                    </aside>
+                  </div>
+                )}
+              </>
             )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

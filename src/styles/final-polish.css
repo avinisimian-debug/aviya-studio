@@ -1,0 +1,420 @@
+/**
+ * Final polish — micro consistency only (no redesign)
+ */
+
+html {
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: clip;
+  text-rendering: optimizeLegibility;
+}
+
+/* Type scale — fewer sizes, clearer rhythm */
+.elite-h1,
+.site-chrome-h1 {
+  line-height: 1.15;
+  letter-spacing: -0.032em;
+}
+
+.elite-h2 {
+  line-height: 1.22;
+  letter-spacing: -0.028em;
+}
+
+.elite-lead,
+.site-lead {
+  line-height: 1.68;
+}
+
+.elite-p,
+.site-prose p,
+.ws-intro,
+.ws-meta {
+  line-height: 1.6;
+}
+
+.elite-kicker,
+.site-kicker,
+.ws-detail-kicker {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+/* Softer motion — premium, not bouncy */
+.elite-fact-card:hover,
+.elite-week-card:hover,
+.elite-ig-card:hover,
+.elite-include-card:hover,
+.elite-industry-card:hover,
+.elite-step-card:hover,
+.elite-bento-card:hover,
+.elite-resource-card:hover,
+.elite-gallery-card:hover article,
+.elite-client-card:hover blockquote,
+.ws-card:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: var(--ds-shadow-sm) !important;
+}
+
+.elite-btn:hover,
+.site-btn:hover,
+.ws-btn:hover:not(:disabled) {
+  transform: translateY(-1px) !important;
+}
+
+/* Button size lock */
+.elite-btn,
+.site-btn,
+.ws-btn,
+.lead-submit {
+  min-height: 2.75rem;
+}
+
+.elite-hero-ctas .elite-btn--accent,
+.elite-hero-ctas .elite-btn--ghost {
+  min-height: 3rem;
+}
+
+.elite-btn--ghost .elite-btn-arrow {
+  display: none;
+}
+
+/* Hero polish — CTA first, picker quieter */
+.elite-hero-copy {
+  gap: 0.9rem !important;
+}
+
+.elite-hero--founder .elite-h1 {
+  max-width: 14ch;
+  font-size: clamp(1.95rem, 4.8vw, 3.15rem) !important;
+  font-weight: 800 !important;
+  line-height: 1.14 !important;
+}
+
+.elite-hero--founder .elite-lead {
+  margin-top: 0 !important;
+  max-width: 34rem;
+  color: var(--fg-muted);
+}
+
+.elite-status {
+  font-size: 0.74rem !important;
+  padding: 0.32rem 0.7rem !important;
+}
+
+.elite-hero-cap {
+  margin-top: 0.85rem !important;
+  font-size: 0.8rem !important;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--fg-muted);
+}
+
+.comfort-row {
+  margin-top: 0.15rem !important;
+}
+
+.comfort-row li {
+  font-size: 0.72rem !important;
+  padding: 0.32rem 0.65rem !important;
+  min-height: 0;
+}
+
+.need-picker {
+  margin-top: 0.35rem !important;
+  padding: 0.75rem 0.85rem !important;
+  background: #fff !important;
+  border-color: var(--line) !important;
+}
+
+.need-picker-label {
+  font-size: 0.74rem !important;
+  margin-bottom: 0.4rem !important;
+  color: var(--fg-muted);
+}
+
+.need-chip {
+  min-height: 2.2rem !important;
+  font-size: 0.78rem !important;
+  padding: 0.3rem 0.7rem !important;
+  border-radius: var(--ds-radius-sm) !important;
+}
+
+.elite-hero-secondary {
+  gap: 0.75rem 1rem !important;
+}
+
+.elite-link-quiet {
+  font-size: 0.84rem !important;
+  font-weight: 600;
+}
+
+/* Equal card surfaces */
+.elite-fact-card,
+.elite-week-card,
+.elite-include-card,
+.elite-industry-card,
+.elite-step-card,
+.elite-ig-card,
+.elite-resource-card {
+  border-radius: var(--ds-radius) !important;
+  min-height: 100%;
+}
+
+.elite-fact-card,
+.elite-week-card {
+  min-height: 6.75rem;
+  padding: 1.1rem 1.15rem !important;
+}
+
+.elite-client-stats li {
+  border-radius: var(--ds-radius) !important;
+  background: #fff !important;
+}
+
+.elite-section--muted,
+.elite-page {
+  background-color: var(--bg) !important;
+}
+
+.elite-section--muted {
+  background-color: var(--bg-elev) !important;
+}
+
+.elite-hero-bg {
+  background: var(--bg) !important;
+}
+
+/* Nav height lock */
+.elite-nav-inner,
+.site-chrome-nav,
+.ws-topbar {
+  min-height: 3.65rem;
+}
+
+.elite-nav-links a,
+.site-chrome-links > a:not(.site-chrome-cta) {
+  font-size: 0.84rem;
+  font-weight: 600;
+}
+
+/* Forms */
+.lead,
+.ws-login {
+  border-radius: var(--ds-radius) !important;
+  box-shadow: var(--ds-shadow-sm) !important;
+}
+
+.lead .field input,
+.lead .field textarea,
+.ws-field {
+  min-height: 2.75rem;
+  border-radius: var(--ds-radius-sm) !important;
+}
+
+.lead-comfort,
+.scarcity {
+  margin: 0;
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  line-height: 1.45;
+}
+
+/* Mobile polish */
+@media (max-width: 719px) {
+  .elite-hero {
+    padding-block: 1.35rem 2rem !important;
+  }
+
+  .elite-hero--founder .elite-h1 {
+    max-width: none;
+    font-size: clamp(1.75rem, 8vw, 2.25rem) !important;
+  }
+
+  .elite-hero-ctas {
+    gap: 0.55rem !important;
+  }
+
+  .comfort-row {
+    gap: 0.35rem !important;
+  }
+
+  .elite-section {
+    padding-block: clamp(2.75rem, 10vw, 4rem) !important;
+  }
+
+  .elite-mobile-cta {
+    padding: 0.65rem 0.9rem calc(0.65rem + env(safe-area-inset-bottom));
+  }
+
+  .elite-mobile-cta .elite-btn {
+    min-height: 2.85rem;
+    font-size: 0.92rem;
+  }
+
+  .ws-body {
+    padding: 1rem 0.95rem 2rem !important;
+  }
+
+  .ws-stats {
+    gap: 0.55rem !important;
+  }
+
+  .ws-stat {
+    padding: 0.85rem 0.75rem !important;
+  }
+
+  .ws-stat strong {
+    font-size: 1.25rem !important;
+  }
+
+  .ws-card {
+    padding: 1rem !important;
+  }
+
+  .ws-actions {
+    gap: 0.4rem !important;
+  }
+
+  .ws-btn--sm {
+    min-height: 2.5rem !important;
+    flex: 1 1 auto;
+  }
+}
+
+/* Work screen — focus on primary action */
+.ws-intro {
+  font-size: 0.9rem !important;
+  margin-bottom: 1.15rem !important;
+}
+
+.ws-topbar-title h1 {
+  font-size: 1.05rem !important;
+}
+
+.ws-topbar-title p {
+  font-size: 0.74rem !important;
+}
+
+.ws-sidebar {
+  width: auto;
+}
+
+.ws-card.is-selected {
+  background: #fff !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 0 0 1px var(--accent), var(--ds-shadow-sm) !important;
+}
+
+.ws-detail {
+  border-radius: var(--ds-radius) !important;
+  padding: 1.15rem 1.2rem !important;
+}
+
+.ws-detail-inner .ws-btn--primary {
+  min-height: 3rem;
+  width: 100%;
+}
+
+.ws-empty,
+.ws-detail-empty {
+  border-radius: var(--ds-radius) !important;
+}
+
+.ws-empty-icon,
+.ws-detail-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  margin: 0 auto 0.75rem;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.ws-login {
+  gap: 0.75rem !important;
+  padding: 1.35rem 1.25rem !important;
+}
+
+.ws-alert {
+  margin-bottom: 1rem;
+}
+
+.ws-hint {
+  font-size: 0.76rem !important;
+}
+
+/* Site chrome balance */
+.site-chrome-main {
+  padding-block: 2.25rem 3.5rem;
+}
+
+.site-chrome-h1 {
+  font-size: clamp(1.7rem, 3.8vw, 2.35rem) !important;
+  margin-bottom: 0.85rem !important;
+}
+
+.site-chrome-cta {
+  min-height: 2.35rem !important;
+}
+
+.site-chrome-footer {
+  padding: 1.75rem 1.25rem 2.25rem;
+}
+
+/* Gallery / honest note */
+.elite-honest-note {
+  font-size: 0.88rem !important;
+  line-height: 1.55 !important;
+}
+
+.elite-gallery-body h3,
+.elite-bento-card h3,
+.elite-include-card h3,
+.elite-step-card h3 {
+  font-size: 1.02rem !important;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.elite-founder-frame {
+  box-shadow: var(--ds-shadow-md) !important;
+}
+
+.elite-client-stars {
+  letter-spacing: 0.08em !important;
+  opacity: 0.9;
+}
+
+.a11y-fab,
+.smart-assist-fab,
+.elite-fab-wa {
+  min-width: 2.85rem;
+  min-height: 2.85rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elite-fact-card:hover,
+  .elite-week-card:hover,
+  .elite-ig-card:hover,
+  .elite-include-card:hover,
+  .elite-industry-card:hover,
+  .elite-step-card:hover,
+  .elite-bento-card:hover,
+  .elite-resource-card:hover,
+  .elite-gallery-card:hover article,
+  .elite-client-card:hover blockquote,
+  .ws-card:hover,
+  .elite-btn:hover,
+  .site-btn:hover,
+  .ws-btn:hover:not(:disabled) {
+    transform: none !important;
+  }
+}

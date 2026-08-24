@@ -2,8 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { LANDING } from "@/data/landing";
+import { brandVoice } from "@/data/site-content";
 
-/** Shared chrome for secondary pages (about, contact, privacy, etc.) */
+/** Shared chrome for secondary pages — aligned with homepage design system */
 export function SiteChrome({
   children,
   title,
@@ -26,22 +27,17 @@ export function SiteChrome({
             priority
           />
         </Link>
-        <nav aria-label="ניווט משני">
-          <Link href="/">בית</Link>
+        <nav className="site-chrome-links" aria-label="ניווט משני">
           <Link href="/about">אודות</Link>
-          <Link href="/for">תחומים</Link>
-          <Link href="/guides">מדריכים</Link>
           <Link href="/services">שירותים</Link>
-          <Link href="/promote">קידום</Link>
-          <Link href="/google">גוגל</Link>
+          <Link href="/guides">מדריכים</Link>
           <Link href="/contact">יצירת קשר</Link>
-          <a
-            href={LANDING.whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/contact"
+            className="site-btn site-btn--primary site-chrome-cta"
           >
-            וואטסאפ
-          </a>
+            {brandVoice.ctaNav}
+          </Link>
         </nav>
       </header>
 
@@ -53,21 +49,54 @@ export function SiteChrome({
       <footer className="site-chrome-footer">
         <div>
           <p className="site-chrome-footer-brand">AVIYA</p>
-          <p>{LANDING.promise}</p>
+          <p>{brandVoice.valueLine}</p>
         </div>
         <nav aria-label="קישורי תחתית">
+          <Link href="/">בית</Link>
+          <Link href="/about">אודות</Link>
           <Link href="/for">תחומים</Link>
           <Link href="/guides">מדריכים</Link>
           <Link href="/services">שירותים</Link>
-          <Link href="/promote">קידום</Link>
-          <Link href="/google">גוגל</Link>
           <Link href="/contact">יצירת קשר</Link>
           <Link href="/privacy">פרטיות</Link>
           <Link href="/accessibility">נגישות</Link>
+          <a
+            href={LANDING.whatsappUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {brandVoice.ctaSecondary}
+          </a>
           <a href={LANDING.emailUrl}>{LANDING.email}</a>
         </nav>
         <p>© {new Date().getFullYear()} Aviya</p>
       </footer>
+    </div>
+  );
+}
+
+/** Shared conversion band for secondary pages */
+export function SiteCtaBand({
+  note,
+}: {
+  note?: string;
+}) {
+  return (
+    <div className="site-cta-band">
+      <p>{note ?? brandVoice.valueLine}</p>
+      <div className="site-cta-row">
+        <Link href="/contact" className="site-btn site-btn--primary">
+          {brandVoice.ctaPrimary}
+        </Link>
+        <a
+          href={LANDING.whatsappUrl}
+          className="site-btn site-btn--ghost"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {brandVoice.ctaSecondary}
+        </a>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,282 @@
+/**
+ * Shared UI primitives — buttons, forms, focus
+ * Bridges elite / site / workspace without new dependencies.
+ */
+
+/* Global focus ring */
+:focus-visible {
+  outline: none;
+  box-shadow: var(--ds-focus);
+}
+
+/* Unified primary action look for marketing + site */
+.site-btn,
+.elite-btn,
+.ws-btn,
+.btn.btn-cta,
+.lead-submit {
+  border-radius: var(--ds-radius) !important;
+  letter-spacing: -0.015em;
+  transition:
+    transform var(--ds-dur-fast) var(--ds-ease),
+    background var(--ds-dur) ease,
+    box-shadow var(--ds-dur) ease,
+    border-color var(--ds-dur) ease,
+    color var(--ds-dur) ease,
+    opacity var(--ds-dur-fast) ease;
+}
+
+.site-btn--primary,
+.elite-btn--primary,
+.elite-btn--accent,
+.ws-btn--primary,
+.btn.btn-cta,
+.lead-submit {
+  background: var(--accent) !important;
+  color: #fff !important;
+  box-shadow: var(--ds-shadow-cta) !important;
+  font-weight: 700 !important;
+  border: 0 !important;
+}
+
+.site-btn--primary:hover,
+.elite-btn--primary:hover,
+.elite-btn--accent:hover,
+.ws-btn--primary:hover:not(:disabled),
+.btn.btn-cta:hover:not(:disabled),
+.lead-submit:hover:not(:disabled) {
+  background: var(--accent-deep) !important;
+  transform: translateY(-1px);
+}
+
+.site-btn--primary:active,
+.elite-btn--primary:active,
+.elite-btn--accent:active,
+.ws-btn--primary:active:not(:disabled),
+.lead-submit:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+}
+
+.site-btn--ghost,
+.elite-btn--ghost,
+.ws-btn--ghost {
+  background: #fff !important;
+  color: var(--fg) !important;
+  border: 1px solid var(--line) !important;
+  box-shadow: var(--ds-shadow-xs) !important;
+}
+
+.site-btn--ghost:hover,
+.elite-btn--ghost:hover,
+.ws-btn--ghost:hover:not(:disabled) {
+  border-color: var(--accent-line) !important;
+  background: #faf9fc !important;
+}
+
+/* Lead form — works with or without .elite-page wrapper */
+.lead {
+  display: grid;
+  gap: 0.85rem;
+  padding: 1.35rem 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--line);
+  border-radius: var(--ds-radius-lg);
+  box-shadow: var(--ds-shadow-md);
+}
+
+.lead-title {
+  margin: 0;
+  font-family: var(--font-display-stack);
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+  color: var(--fg);
+}
+
+.lead-title strong {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.lead-form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.lead-row {
+  display: grid;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .lead-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.lead .field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.lead .field input,
+.lead .field textarea {
+  width: 100%;
+  min-height: 2.85rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: var(--ds-radius-sm);
+  border: 1px solid var(--line);
+  background: #faf9fb;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--fg);
+  box-sizing: border-box;
+  transition:
+    border-color var(--ds-dur-fast) ease,
+    box-shadow var(--ds-dur-fast) ease,
+    background var(--ds-dur-fast) ease;
+}
+
+.lead .field input:hover,
+.lead .field textarea:hover {
+  border-color: var(--accent-line);
+}
+
+.lead .field input:focus,
+.lead .field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: #fff;
+  box-shadow: var(--ds-focus);
+}
+
+.lead .field--error input,
+.lead .field--error textarea {
+  border-color: var(--danger);
+}
+
+.lead .field-error {
+  margin: 0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--danger);
+}
+
+.lead-submit {
+  min-height: 3rem;
+  padding: 0.65rem 1.2rem;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.lead-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.lead-micro {
+  margin: 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+.lead-micro a {
+  color: var(--accent-deep);
+  font-weight: 700;
+}
+
+.lead-ok {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border-radius: var(--ds-radius-sm);
+  background: #edfaf3;
+  color: var(--success);
+  border: 1px solid rgba(31, 122, 77, 0.2);
+  font-weight: 700;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.lead-ok p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.lead-ok p + p {
+  margin-top: 0.65rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.lead--soft {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: none;
+}
+
+.lead--soft .lead-title,
+.lead--soft .lead-micro,
+.lead--soft .scarcity {
+  color: var(--fg-on-dark-muted);
+}
+
+.lead--soft .lead-title {
+  color: var(--fg-on-dark);
+}
+
+.lead--soft .lead-title strong {
+  color: #fff;
+}
+
+.lead--soft .field input {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #fff;
+}
+
+.lead--soft .field input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.lead--soft .field input:focus {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
+}
+
+.lead--soft .lead-submit {
+  background: #fff !important;
+  color: var(--accent-deep) !important;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Floating chrome — single mobile bottom system */
+@media (max-width: 899px) {
+  .smart-assist {
+    display: none !important;
+  }
+
+  .elite-fab-wa {
+    display: none !important;
+  }
+
+  .a11y-widget {
+    bottom: calc(5.15rem + env(safe-area-inset-bottom)) !important;
+    inset-inline-end: max(0.75rem, env(safe-area-inset-right)) !important;
+  }
+
+  .cookie-consent {
+    bottom: calc(5.15rem + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+@media (min-width: 900px) {
+  .elite-mobile-cta {
+    display: none !important;
+  }
+}

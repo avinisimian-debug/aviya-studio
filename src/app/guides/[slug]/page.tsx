@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { SiteChrome } from "@/components/site/SiteChrome";
+import { SiteChrome, SiteCtaBand } from "@/components/site/SiteChrome";
 import { AdUnit } from "@/components/ads/AdUnit";
 import { getAllGuideSlugs, getGuide, guides } from "@/data/guides";
+import { brandVoice } from "@/data/site-content";
 import { LANDING } from "@/data/landing";
 import { SITE_URL } from "@/lib/seo";
 
@@ -118,14 +119,14 @@ export default async function GuideArticlePage({ params }: Props) {
 
           <h2>רוצים שנבנה את זה בשבילכם?</h2>
           <p>
-            {LANDING.brand} — אתרים שמביאים לקוחות וחנויות שמוכרות.{" "}
-            <Link href="/contact">השאירו פרטים</Link> או{" "}
+            {brandVoice.valueLine}{" "}
+            <Link href="/contact">{brandVoice.ctaNav}</Link> או{" "}
             <a
               href={LANDING.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              וואטסאפ
+              {brandVoice.ctaSecondary}
             </a>
             .
           </p>
@@ -147,17 +148,9 @@ export default async function GuideArticlePage({ params }: Props) {
           </aside>
         ) : null}
 
-        <div className="site-cta-band" style={{ marginTop: "2rem" }}>
-          <p>מוגבל ל־{LANDING.monthlyCap} עסקים בחודש.</p>
-          <div className="site-cta-row">
-            <Link href="/contact" className="site-btn site-btn--primary">
-              יצירת קשר
-            </Link>
-            <Link href="/" className="site-btn site-btn--ghost">
-              לדף הבית
-            </Link>
-          </div>
-        </div>
+        <SiteCtaBand
+          note={`מוגבל ל־${LANDING.monthlyCap} עסקים בחודש. ${brandVoice.audienceLine}`}
+        />
       </SiteChrome>
     </>
   );

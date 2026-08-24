@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteChrome } from "@/components/site/SiteChrome";
+import { SiteChrome, SiteCtaBand } from "@/components/site/SiteChrome";
 import { AdUnit } from "@/components/ads/AdUnit";
 import { guides } from "@/data/guides";
-import { LANDING } from "@/data/landing";
+import { brandVoice } from "@/data/site-content";
 
 export const metadata: Metadata = {
   title: "מדריכים לבניית אתרים וחנויות דיגיטליות",
@@ -45,22 +45,9 @@ export default function GuidesHubPage() {
 
       <AdUnit className="aviya-ad-slot--article" />
 
-      <div className="site-cta-band" style={{ marginTop: "2.5rem" }}>
-        <p>רוצים אתר או חנות מותאמים לעסק — לא רק מאמר?</p>
-        <div className="site-cta-row">
-          <Link href="/contact" className="site-btn site-btn--primary">
-            יצירת קשר
-          </Link>
-          <a
-            href={LANDING.whatsappUrl}
-            className="site-btn site-btn--ghost"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            וואטסאפ
-          </a>
-        </div>
-      </div>
+      <SiteCtaBand
+        note={`רוצים אתר או חנות מותאמים לעסק — לא רק מאמר? ${brandVoice.valueLine}`}
+      />
     </SiteChrome>
   );
 }

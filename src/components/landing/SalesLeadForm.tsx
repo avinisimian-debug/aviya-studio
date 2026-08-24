@@ -3,6 +3,7 @@
 import { FormEvent, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { currentHebrewMonth, LANDING } from "@/data/landing";
+import { brandVoice, formCopy } from "@/data/site-content";
 import { cn } from "@/lib/cn";
 import { needLabel, readNeed } from "@/lib/need";
 import { NeedPicker } from "@/components/elite/NeedPicker";
@@ -61,11 +62,11 @@ async function sendEmailBackup(payload: {
 
 export function SalesLeadForm({
   idPrefix = "lead",
-  title = "רוצה שאבנה את זה לעסק שלך?",
-  cta = "אני רוצה אתר שמביא לי לקוחות",
-  namePh = "השם שלך",
-  phonePh = "טלפון",
-  businessPh = "שם העסק",
+  title,
+  cta = brandVoice.formCta,
+  namePh = formCopy.namePh,
+  phonePh = formCopy.phonePh,
+  businessPh = formCopy.businessPh,
   source,
   className,
   variant = "card",
@@ -82,6 +83,12 @@ export function SalesLeadForm({
   variant?: "card" | "soft";
   withBusiness?: boolean;
 }) {
+  const resolvedTitle =
+    title ?? (
+      <>
+        {formCopy.titleBefore} <strong>{formCopy.titleEm}</strong>
+      </>
+    );
   const [status, setStatus] = useState<"idle" | "sending" | "sent">("idle");
   const [errors, setErrors] = useState<Errors>({});
   const [savedSummary, setSavedSummary] = useState<{
@@ -156,34 +163,36 @@ export function SalesLeadForm({
       form.reset();
       if (err instanceof Error && err.message.includes("יותר מדי")) {
         setStatus("idle");
-        setErrors({ form: err.message });
+        setErrors({ form: err.message || brandVoice.formError });
       }
     }
   }
 
   return (
     <div className={cn("lead", `lead--${variant}`, className)}>
-      {title ? (
+      {resolvedTitle ? (
         <p className="lead-title" id={`${idPrefix}-title`}>
-          {title}
+          {resolvedTitle}
         </p>
       ) : null}
 
       {status === "sent" ? (
         <div className="lead-ok" role="status" aria-live="polite">
-          <p style={{ margin: 0, fontWeight: 700 }}>
-            תודה! קיבלנו את הפרטים — נחזור אליך בהקדם.
-          </p>
+          <p>{brandVoice.formSuccess}</p>
           {savedSummary ? (
-            <p
-              style={{
-                margin: "0.65rem 0 0",
-                fontSize: "0.9rem",
-                opacity: 0.9,
-              }}
-            >
+            <p>
               נשלח עבור: {savedSummary.name} ·{" "}
               <span dir="ltr">{savedSummary.phone}</span>
+              <br />
+              הצעד הבא: אביה חוזר. אפשר גם{" "}
+              <a
+                href={LANDING.whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {brandVoice.ctaSecondary}
+              </a>
+              .
             </p>
           ) : null}
         </div>
@@ -191,11 +200,11 @@ export function SalesLeadForm({
         <form
           onSubmit={onSubmit}
           noValidate
-          aria-labelledby={title ? `${idPrefix}-title` : undefined}
+          aria-labelledby={`${idPrefix}-title`}
           className="lead-form"
         >
           <NeedPicker />
-          <p className="lead-comfort">שדות קצרים. בלי ספאם. חוזרים אליכם.</p>
+          <p className="lead-comfort">{formCopy.comfort}</p>
           <div
             aria-hidden="true"
             style={{
@@ -337,8 +346,7 @@ export function SalesLeadForm({
       )}
 
       <p className="scarcity">
-        *מוגבל ל־{LANDING.monthlyCap} עסקים בחודש · מקומות אחרונים ל
-        {currentHebrewMonth()}
+        עד {LANDING.monthlyCap} עסקים בחודש · {currentHebrewMonth()}
       </p>
     </div>
   );

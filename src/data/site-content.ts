@@ -2,6 +2,41 @@
  * Elite homepage FAQs + secondary page copy — single source of truth for UI & SEO
  */
 
+/** Shared product voice — use on every live surface */
+export const brandVoice = {
+  valueLine:
+    "אתרים שמביאים לקוחות וחנויות שמוכרות — בעלות מלאה, מובייל קודם, יחס אישי.",
+  audienceLine:
+    "לעסקים שכבר עובדים ורוצים נוכחות דיגיטלית שמסבירה למה לבחור בכם — וסוגרת פנייה.",
+  /** Homepage hero — offer first */
+  homeHeadline: "אתר שמביא לקוחות — או חנות שמוכרת",
+  homeLead:
+    "בונים נוכחות ברמת מותג: מסר חד, מובייל שנוח, ומסלול ברור לפנייה או לרכישה. מדברים עם אביה — לא עם מוקד.",
+  homeStatus: "סטודיו Aviya · אתרים וחנויות לעסקים בישראל",
+  ctaPrimary: "השאירו פרטים — נבנה כיוון",
+  ctaSecondary: "וואטסאפ ישיר",
+  ctaNav: "השארת פרטים",
+  formCta: "שלחו פרטים — נחזור אליכם",
+  formSuccess:
+    "תודה! קיבלנו את הפרטים. אביה חוזר בהקדם עם שאלות קצרות — בלי לחץ.",
+  formError: "משהו לא עבר. נסו שוב, או כתבו בוואטסאפ.",
+  finalTitle: "מוכנים לנוכחות שסוגרת אמון?",
+  finalLead:
+    "השאירו שם וטלפון. חוזרים מהר, ברור, עם כיוון לעסק שלכם — בלי ספאם ובלי התחייבות מראש.",
+  trustCap: (cap: number) =>
+    `מדברים איתי בוואטסאפ — לא עם מוקד. עד ${cap} עסקים בחודש.`,
+} as const;
+
+/** Form titles as plain strings (JSX built at call sites) */
+export const formCopy = {
+  titleBefore: "פרטים קצרים —",
+  titleEm: "נחזור אליכם",
+  comfort: "שדות קצרים. בלי ספאם. חוזרים אליכם.",
+  namePh: "איך קוראים לך?",
+  phonePh: "מה המספר שלך?",
+  businessPh: "שם העסק",
+} as const;
+
 export const eliteFaqs = [
   {
     q: "כמה זמן לוקח לבנות?",
@@ -90,8 +125,8 @@ export const aboutPage = {
 
 export const contactPage = {
   title: "יצירת קשר",
-  kicker: "בואו נתחיל",
-  lead: "השאירו פרטים קצרים או כתבו בוואטסאפ. נחזור מהר, ברור, בלי לחץ.",
+  kicker: "הצעד הבא",
+  lead: "השאירו פרטים קצרים או כתבו בוואטסאפ. חוזרים עם כיוון לעסק שלכם — מהר, ברור, בלי לחץ.",
   hours: "ימים א׳–ה׳ · בדרך כלל מענה תוך 24 שעות",
 } as const;
 

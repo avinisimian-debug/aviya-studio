@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SiteChrome } from "@/components/site/SiteChrome";
 import { SalesLeadForm } from "@/components/landing/SalesLeadForm";
-import { contactPage } from "@/data/site-content";
+import { brandVoice, contactPage } from "@/data/site-content";
 import { studioHours } from "@/data/studio-real";
 import { LANDING } from "@/data/landing";
 
@@ -29,15 +29,6 @@ export default function ContactPage() {
             idPrefix="contact-page"
             source="contact-page"
             withBusiness
-            title={
-              <>
-                השאירו פרטים — <strong>נחזור אליכם</strong>
-              </>
-            }
-            cta="שלחו — ונחזור אליכם"
-            namePh="איך קוראים לך?"
-            phonePh="מה המספר שלך?"
-            businessPh="שם העסק"
             className="elite-lead-form"
           />
         </div>
@@ -46,7 +37,7 @@ export default function ContactPage() {
           <h2>ערוצים ישירים</h2>
           <ul className="site-contact-list">
             <li>
-              <span>וואטסאפ</span>
+              <span>{brandVoice.ctaSecondary}</span>
               <a
                 href={LANDING.whatsappUrl}
                 target="_blank"

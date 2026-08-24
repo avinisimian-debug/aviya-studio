@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState } from "react";
 import { Sparkles, X } from "lucide-react";
-import { eliteFaqs } from "@/data/site-content";
+import { eliteFaqs, brandVoice } from "@/data/site-content";
 import { LANDING } from "@/data/landing";
 
 const extra = [
@@ -69,7 +69,8 @@ export function SmartAssist() {
             </button>
           </header>
           <p className="smart-assist-lead">
-            תשובות מיידיות — מתוך הידע של הסטודיו. רוצים אדם? וואטסאפ ישיר לאביה.
+            תשובות מיידיות — מתוך הידע של הסטודיו. רוצים אדם?{" "}
+            {brandVoice.ctaSecondary} לאביה.
           </p>
           <div className="smart-assist-qs">
             {items.map((item, i) => (
@@ -89,13 +90,13 @@ export function SmartAssist() {
             </div>
           ) : null}
           <div className="smart-assist-actions">
-            <a href="#contact">השארת פרטים</a>
+            <a href="#contact">{brandVoice.ctaNav}</a>
             <a
               href={LANDING.whatsappUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              וואטסאפ
+              {brandVoice.ctaSecondary}
             </a>
           </div>
         </div>

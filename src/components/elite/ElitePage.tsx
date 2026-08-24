@@ -31,13 +31,13 @@ import { SalesLeadForm } from "@/components/landing/SalesLeadForm";
 import { AdUnit } from "@/components/ads/AdUnit";
 import { eliteMedia, eliteTemplates } from "@/data/elite-media";
 import { currentHebrewMonth, LANDING } from "@/data/landing";
-import { aboutPage, eliteFaqs } from "@/data/site-content";
+import { aboutPage, brandVoice, eliteFaqs, formCopy } from "@/data/site-content";
 import {
   bringToCall,
   firstChat,
-  happyClients,
   honestNotes,
   igPosts,
+  ownerPriorities,
   realFacts,
   studioHours,
   weekFlow,
@@ -54,13 +54,13 @@ import {
    Aviya — product-first conversion craft · high-end Hebrew
    ═══════════════════════════════════════════════════════════ */
 
-const CTA_PRIMARY = "רוצה שנחזור אליך?";
-const NAV_CONTACT = "השארת פרטים";
-const FORM_CTA = "אני רוצה אתר / חנות שמביאה לקוחות";
+const CTA_PRIMARY = brandVoice.ctaPrimary;
+const NAV_CONTACT = brandVoice.ctaNav;
+const FORM_CTA = brandVoice.formCta;
 
 const FORM_TITLE_FINAL = (
   <>
-    מלאו פרטים קצרים — <strong>נחזור אליכם</strong>
+    {formCopy.titleBefore} <strong>{formCopy.titleEm}</strong>
   </>
 );
 
@@ -164,7 +164,7 @@ function Nav() {
             rel="noopener noreferrer"
             className="elite-nav-wa"
           >
-            וואטסאפ
+            {brandVoice.ctaSecondary}
           </a>
           <Button href="#contact" variant="primary">
             {CTA_PRIMARY}
@@ -238,17 +238,35 @@ function Hero() {
           <div className="elite-hero-copy elite-rise">
             <div className="elite-status">
               <i className="elite-status-dot" aria-hidden />
-              <span>אביה בונה אישית · זמינים ל־{currentHebrewMonth()}</span>
+              <span>
+                {brandVoice.homeStatus} · {currentHebrewMonth()}
+              </span>
             </div>
-            <h1 className="elite-h1">{aboutPage.title}</h1>
-            <p className="elite-lead">{aboutPage.lead}</p>
+            <h1 className="elite-h1">{brandVoice.homeHeadline}</h1>
+            <p className="elite-lead">{brandVoice.homeLead}</p>
 
             <div className="elite-hero-ctas">
               <Button href="#contact" variant="accent">
                 {CTA_PRIMARY}
               </Button>
+              <a
+                href={LANDING.whatsappUrl}
+                className="elite-btn elite-btn--ghost"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <span className="elite-btn-label">{brandVoice.ctaSecondary}</span>
+              </a>
+            </div>
+            <ul className="comfort-row" aria-label="למה זה נוח">
+              <li>מענה תוך 24 שעות</li>
+              <li>בלי ספאם · בלי לחץ</li>
+              <li>בעלות מלאה שלכם</li>
+            </ul>
+            <NeedPicker />
+            <div className="elite-hero-secondary">
               <a href="/about" className="elite-link-quiet">
-                הסיפור המלא
+                הסיפור של אביה
                 <ArrowUpRight size={16} aria-hidden />
               </a>
               <a
@@ -260,19 +278,12 @@ function Hero() {
                 אינסטגרם {LANDING.instagramHandle}
               </a>
             </div>
-            <NeedPicker />
-            <ul className="comfort-row" aria-label="למה זה נוח">
-              <li>מענה תוך 24 שעות</li>
-              <li>בלי ספאם · בלי לחץ</li>
-              <li>בעלות מלאה שלכם</li>
-            </ul>
           </div>
 
           <div className="elite-hero-visual elite-rise elite-rise--delay" id="about">
             <FounderPhoto priority />
             <p className="elite-hero-cap">
-              מדברים איתי בוואטסאפ — לא עם מוקד. עד {LANDING.monthlyCap} עסקים
-              בחודש.
+              {brandVoice.trustCap(LANDING.monthlyCap)}
             </p>
           </div>
         </div>
@@ -286,10 +297,7 @@ function TrustStrip() {
     <div className="elite-trust" aria-label="למי זה">
       <Container>
         <div className="elite-trust-inner">
-          <p className="elite-trust-label">
-            נבנה לעסקים שכבר עובדים — ולא יכולים להרשות לעצמם להיראות ״לא
-            רציניים״ אונליין
-          </p>
+          <p className="elite-trust-label">{brandVoice.audienceLine}</p>
           <ul className="elite-trust-row">
             <li>שירותים</li>
             <li>קליניקות</li>
@@ -490,9 +498,9 @@ function Voices() {
       <Container>
         <Reveal>
           <SectionHead
-            kicker="לקוחות מרוצים"
-            title="עסקים שכבר עובדים עם האתר — לא עם הבטחות"
-            lead="בעלי עסקים אחרי עלייה לאוויר. ככה זה מרגיש כשיש נוכחות שסוגרת אמון ומביאה פניות."
+            kicker="מה באמת חשוב"
+            title="מה בעלי עסקים רוצים מהאתר"
+            lead={honestNotes.voices}
           />
         </Reveal>
         <ul className="elite-client-stats" aria-label="סיכום">
@@ -510,20 +518,13 @@ function Voices() {
           </li>
         </ul>
         <RevealStagger className="elite-voices-grid elite-clients-grid">
-          {happyClients.map((item) => (
-            <RevealItem key={item.n} className="elite-voice-card elite-client-card">
+          {ownerPriorities.map((item) => (
+            <RevealItem key={item.a} className="elite-voice-card elite-client-card">
               <blockquote>
-                <p className="elite-client-stars" aria-label="דירוג 5 כוכבים">
-                  ★★★★★
-                </p>
                 <p>{item.q}</p>
                 <footer>
-                  <span className="elite-client-ava" aria-hidden>
-                    {item.n.slice(0, 1)}
-                  </span>
                   <span>
-                    <strong>{item.n}</strong>
-                    <em>{item.r}</em>
+                    <strong>{item.a}</strong>
                   </span>
                   <b>{item.metric}</b>
                 </footer>
@@ -1089,14 +1090,9 @@ function FinalCta() {
       <Container>
         <Reveal>
           <div className="elite-final">
-            <p className="elite-kicker">רגע אחד</p>
-            <h2 className="elite-h2">
-              עוד יום בלי אתר שעובד — זה עוד יום שמשלמים למתחרה
-            </h2>
-            <p className="elite-lead">
-              אל תתנו ל״אחר כך״ לסגור לכם עסקאות. השאירו פרטים — נחזור מהר, ברור,
-              בלי לחץ.
-            </p>
+            <p className="elite-kicker">הצעד הבא</p>
+            <h2 className="elite-h2">{brandVoice.finalTitle}</h2>
+            <p className="elite-lead">{brandVoice.finalLead}</p>
             <div className="elite-final-form-wrap">
               <SalesLeadForm
                 idPrefix="final"
@@ -1104,10 +1100,10 @@ function FinalCta() {
                 variant="soft"
                 withBusiness
                 title={FORM_TITLE_FINAL}
-                cta="שלחו — ונחזור אליכם"
-                namePh="איך קוראים לך?"
-                phonePh="מה המספר שלך?"
-                businessPh="שם העסק"
+                cta={FORM_CTA}
+                namePh={formCopy.namePh}
+                phonePh={formCopy.phonePh}
+                businessPh={formCopy.businessPh}
                 className="elite-lead-form elite-lead-form--dark"
               />
             </div>
@@ -1152,7 +1148,7 @@ function Footer() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              וואטסאפ
+              {brandVoice.ctaSecondary}
             </a>
             <a href={LANDING.emailUrl}>מייל</a>
             <a
