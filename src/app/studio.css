@@ -988,14 +988,6 @@
     animation: frame-float 7s ease-in-out infinite;
   }
 
-  .concept {
-    transition: transform 0.35s ease;
-  }
-
-  .concept:hover {
-    transform: translateY(-4px);
-  }
-
   .filters button,
   .service-index a,
   .btn {
@@ -1312,5 +1304,281 @@
   .studio *::after {
     animation: none !important;
     transition: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Boutique refinements — hero trust, value props, case studies, guarantee.
+   --------------------------------------------------------------------------- */
+
+.hero-trust {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.hero-trust li {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.8rem;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 239, 230, 0.2);
+  background: rgba(244, 239, 230, 0.05);
+  color: var(--on-night);
+  font-size: 0.82rem;
+  letter-spacing: 0.01em;
+}
+
+.hero-trust li::before {
+  content: "";
+  display: inline-block;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--accent-bright);
+  margin-inline-end: 0.5rem;
+}
+
+.value-grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.value-card {
+  position: relative;
+  height: 100%;
+  padding: 1.35rem 1.25rem;
+  border-radius: 1.1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.value-card .value-index {
+  font-family: var(--font-display), "Instrument Serif", Georgia, serif;
+  color: var(--accent);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+}
+
+.value-card h3 {
+  margin: 0.4rem 0 0.35rem;
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.value-card p {
+  margin: 0;
+  color: var(--soft);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.guarantee {
+  margin: 0 0 1.7rem;
+  padding: 1.5rem;
+  border-radius: 1.2rem;
+  background: linear-gradient(135deg, rgba(42, 63, 212, 0.11), rgba(42, 63, 212, 0.02));
+  border: 1px solid rgba(42, 63, 212, 0.24);
+}
+
+.guarantee-kicker {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0 0 0.35rem;
+  color: var(--mute);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.guarantee-kicker .brand-latin {
+  color: var(--accent);
+  font-size: 2.1rem;
+  line-height: 1;
+}
+
+.guarantee h3 {
+  margin: 0;
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.guarantee p {
+  margin: 0.6rem 0 0;
+  max-width: 48rem;
+  color: var(--soft);
+}
+
+.guarantee ul {
+  list-style: none;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.guarantee li {
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: var(--night);
+  color: var(--on-night);
+  font-size: 0.82rem;
+}
+
+.concept-inner {
+  display: grid;
+  gap: 0.75rem;
+  height: 100%;
+}
+
+.concept-visual {
+  position: relative;
+}
+
+.concept-visual .browser {
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.case-badge {
+  position: absolute;
+  top: 0.8rem;
+  inset-inline-start: 0.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.32rem 0.65rem;
+  border-radius: 999px;
+  background: rgba(7, 11, 20, 0.72);
+  color: var(--on-night);
+  border: 1px solid rgba(244, 239, 230, 0.18);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  backdrop-filter: blur(6px);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.case-badge .brand-latin {
+  color: var(--accent-bright);
+  letter-spacing: 0.1em;
+}
+
+.case-layers {
+  display: grid;
+  gap: 0;
+  margin: 1rem 0 0;
+}
+
+.case-layer {
+  padding: 0.75rem 0;
+  border-top: 1px solid rgba(244, 239, 230, 0.14);
+}
+
+.case-layer dt {
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-bright);
+}
+
+.case-layer dd {
+  margin: 0.32rem 0 0;
+  color: var(--on-night-soft);
+  font-size: 0.96rem;
+  line-height: 1.65;
+}
+
+.case-craft {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  list-style: none;
+  margin: 1.1rem 0 0;
+  padding: 0;
+}
+
+.case-craft li {
+  padding: 0.3rem 0.68rem;
+  border-radius: 999px;
+  border: 1px solid rgba(244, 239, 230, 0.22);
+  color: var(--on-night-soft);
+  font-size: 0.8rem;
+}
+
+.craft-note {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border-radius: 1.2rem;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+
+.craft-note h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.craft-note .case-craft {
+  margin-top: 0.9rem;
+}
+
+.craft-note .case-craft li {
+  border-color: var(--line);
+  color: var(--soft);
+}
+
+.craft-note p {
+  margin: 1rem 0 0;
+  color: var(--soft);
+  max-width: 52rem;
+  line-height: 1.7;
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .value-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(42, 63, 212, 0.28);
+    box-shadow: 0 18px 44px rgba(17, 16, 24, 0.1);
+  }
+
+  .concept-inner:hover .browser {
+    border-color: rgba(142, 160, 255, 0.5);
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(142, 160, 255, 0.25);
+  }
+
+  .concept-inner:hover .case-badge {
+    background: var(--accent);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .concept-inner:hover .case-badge .brand-latin {
+    color: #fff;
+  }
+
+  .concept-inner:hover .concept-title {
+    color: var(--accent-bright);
+  }
+}
+
+@media (min-width: 800px) {
+  .value-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.2rem;
   }
 }

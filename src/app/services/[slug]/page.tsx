@@ -52,7 +52,7 @@ export default async function ServicePage({ params }: Props) {
             <h1>{service.title}</h1>
             <p>{depth.situation}</p>
             <p className="caption">{depth.typical}</p>
-            <p className="hero-caption">הפריוויו ליד הוא קונספט לסוג העבודה, לא פרויקט לקוח.</p>
+            <p className="hero-caption">המסך ליד הוא מקרה בוחן לסוג העבודה — חשיבה, לא פרויקט של לקוח.</p>
           </div>
           <ConceptFrame concept={conceptForService(service.slug)} heading="p" />
         </div>

@@ -6,33 +6,32 @@ import { ConceptGallery } from "@/components/studio/ConceptGallery";
 import { SiteFrame } from "@/components/studio/SiteFrame";
 import { pageMeta } from "@/lib/seo";
 
-const readings: Record<string, { watch: string; forWhom: string }> = {
-  service: {
-    forWhom: "עסק שירותים שצריך להסביר הצעה אחת ולהוביל לפנייה.",
-    watch: "הסדר בעמוד: כותרת, שלושה שלבים, כפתור אחד. אין תפריט שמפצל את הקשב.",
+const methodLayers = [
+  {
+    title: "האתגר העסקי",
+    body: "מה עומד מול העסק: קהל מפוזר, מסר שקבור מתחת לעיצוב, או תהליך שמאבד לקוחות בדרך. בלי אבחנה חדה אין כיוון — יש רק קישוט.",
   },
-  shop: {
-    forWhom: "מותג שמוכר מוצרים ורוצה שהקנייה תמשיך את השפה, לא קטלוג מוכן.",
-    watch: "המוצר יושב בגריד שקט. המחיר חלק מהקומפוזיציה, לא מדבקה שהודבקה בסוף.",
+  {
+    title: "הפתרון העיצובי",
+    body: "המבנה, הגריד, הקצב והטיפוגרפיה שעונים לאתגר. כל החלטה עיצובית היא תשובה לשאלה, לא בחירה של טעם.",
   },
-  clinic: {
-    forWhom: "קליניקה או מקצוע טיפולי, כשההחלטה מתחילה באמון ולא במבצע.",
-    watch: "הרבה שטח ריק, שעות ברורות, ותיאום כפעולה הראשית.",
+  {
+    title: "מנגנון ההמרה",
+    body: "איך תשומת הלב הופכת לפעולה: איפה הכפתור יושב, מה הוא אומר, ומה קורה אחר שלוחצים. כאן נסגרת המכירה.",
   },
-  landing: {
-    forWhom: "קמפיין עם כוונה: מודעה, סטטוס או המלצה שמגיעים לעמוד אחד.",
-    watch: "הבטחה, מבנה קצר, ופעולה אחת. זה לא אתר שלם שנדחס.",
-  },
-  editorial: {
-    forWhom: "מותג שצריך טון לפני שהוא צריך עוד עמוד מידע.",
-    watch: "אות גדולה, שוליים רחבים, ובלוק צבע שמוביל את העין.",
-  },
-};
+] as const;
+
+const craftPillars = [
+  "גריד והיררכיה",
+  "קצב אנכי ורווחים",
+  "טיפוגרפיה בקנה מידה",
+  "זרימת מכירה",
+] as const;
 
 export const metadata: Metadata = pageMeta({
-  title: "כיווני עיצוב",
+  title: "מקרי בוחן — אתגר, פתרון ומנגנון המרה",
   description:
-    "חמישה כיווני עיצוב מקוריים: שירותים, חנות, קליניקה, דף נחיתה ומותג. מסומנים כקונספט. פרויקט אמיתי יוצג רק עם אישור, בלי מספרים מומצאים.",
+    "חמישה מקרי בוחן עיצוביים: עסק שירותים, חנות, קליניקה, דף נחיתה ומותג. לכל אחד האתגר העסקי, הפתרון העיצובי, ומנגנון ההמרה — חשיבה, לא קישוט.",
   path: "/work",
 });
 
@@ -44,26 +43,27 @@ export default function WorkPage() {
           <Breadcrumbs
             items={[
               { name: "בית", path: "/" },
-              { name: "כיוונים", path: "/work" },
+              { name: "מקרי בוחן", path: "/work" },
             ]}
           />
           <p className="marker">
             <span className="brand-latin">AVIYA</span>
-            <span>קונספט</span>
+            <span>CASE STUDIES</span>
           </p>
-          <h1>כיווני עיצוב</h1>
+          <h1>מקרי בוחן</h1>
           <p>
-            אלה קונספטים מקוריים: הדגמה של שפה, מבנה וקצב. לא לקוחות, לא לוגואים,
-            ולא תוצאות. כשיהיה פרויקט עם אישור להצגה, הוא יסומן כעבודה ולא ככיוון.
+            חמישה כיוונים עיצוביים מלאים, כל אחד בנוי כמו מקרה בוחן: אתגר עסקי,
+            פתרון עיצובי, ומנגנון המרה. אלה הדגמות של חשיבה ושיטה — לא תוצאות של
+            לקוחות, בלי מספרים מומצאים.
           </p>
         </div>
       </header>
       <section className="band band-ink" aria-labelledby="folio-title">
         <div className="shell">
           <h2 id="folio-title" className="sr-only">
-            גלריית כיוונים
+            גלריית מקרי בוחן
           </h2>
-          <ConceptGallery concepts={concepts} />
+          <ConceptGallery concepts={concepts} detailed />
           <p className="folio-note">
             רוצים כיוון לעסק שלכם, לא העתק של המסכים האלה?{" "}
             <Link href="/contact">שיחה קצרה</Link>
@@ -74,28 +74,37 @@ export default function WorkPage() {
         <div className="shell">
           <p className="marker">
             <span className="brand-latin">01</span>
-            <span>איך קוראים</span>
+            <span>השיטה</span>
           </p>
-          <h2 id="reading-title">מה כל כיוון בודק</h2>
+          <h2 id="reading-title">שלוש שכבות בכל מקרה בוחן</h2>
           <p className="caption">
-            פרויקט שיוצג בעתיד יכלול אתגר, כיוון שנבחר, מסכים, ותפקיד הסטודיו.
-            מספרים ותוצאות רק אם נמדדו ואושרו להצגה. עד אז אין כאן תיאורי מקרה.
+            כל עבודה נבנית באותו סדר: קודם מבינים את האתגר, אחר כך מעצבים את
+            הפתרון, ולבסוף מגדירים את ההמרה. שום מסך לא נבנה לפני שהשאלה ברורה.
           </p>
           <ol className="reading-list">
-            {concepts.map((concept, index) => {
-              const note = readings[concept.id];
-              return (
-                <li key={concept.id}>
-                  <span className="brand-latin">{String(index + 1).padStart(2, "0")}</span>
-                  <div>
-                    <h3>{concept.title}</h3>
-                    <p>{note?.forWhom}</p>
-                    <p>{note?.watch}</p>
-                  </div>
-                </li>
-              );
-            })}
+            {methodLayers.map((layer, index) => (
+              <li key={layer.title}>
+                <span className="brand-latin">{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3>{layer.title}</h3>
+                  <p>{layer.body}</p>
+                </div>
+              </li>
+            ))}
           </ol>
+          <div className="craft-note">
+            <h3>עבודת הפרטים</h3>
+            <ul className="case-craft">
+              {craftPillars.map((pillar) => (
+                <li key={pillar}>{pillar}</li>
+              ))}
+            </ul>
+            <p>
+              מאחורי כל מקרה בוחן עומדת אותה הקפדה: גריד מדויק, קצב אנכי, טיפוגרפיה
+              בקנה מידה, וזרימת מכירה שמובילה לפעולה. אלה הדברים שמפרידים אתר
+              שנבנה ביד מאתר שהרכיבו מתבנית.
+            </p>
+          </div>
           <p className="after-link">
             <Link href="/services">מהמבנים האלה נגזרים השירותים</Link>
           </p>

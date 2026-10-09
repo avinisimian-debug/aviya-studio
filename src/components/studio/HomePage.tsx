@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { concepts } from "@/data/concepts";
-import { homeFaqs, stages, standards } from "@/data/depth";
-import { fitNo, fitYes, principles, SERVICES } from "@/data/studio-site";
+import { deliveryGuarantee, homeFaqs, stages, standards } from "@/data/depth";
+import { fitNo, fitYes, hero, principles, SERVICES, valueProps } from "@/data/studio-site";
 import { ConceptGallery } from "@/components/studio/ConceptGallery";
 import { LdJson } from "@/components/studio/LdJson";
+import { Reveal } from "@/components/Reveal";
 
 export function HomePage() {
   const faqLd = {
@@ -22,23 +23,35 @@ export function HomePage() {
       <section className="hero">
         <div className="shell hero-grid">
           <div className="hero-copy">
-            <p className="eyebrow">
-              <span className="brand-latin">AVIYA</span>
-              <span>סטודיו דיגיטלי · ישראל</span>
-            </p>
-            <h1>לא רק אתר. חוויה דיגיטלית שמקדמת את העסק.</h1>
-            <p className="lede">
-              אביה מתכנן ובונה אתרי תדמית, דפי נחיתה וחנויות לעסקים שכבר עובדים.
-              העמוד נפתח במסר אחד, נקרא בטלפון, ונגמר בפנייה, בשיחה או ברכישה.
-            </p>
-            <div className="btn-row">
-              <Link className="btn btn-primary" href="/contact">
-                שיחה קצרה
-              </Link>
-              <Link className="btn btn-ghost" href="/work">
-                כיווני עיצוב
-              </Link>
-            </div>
+            <Reveal>
+              <p className="eyebrow">
+                <span className="brand-latin">{hero.eyebrowLabel}</span>
+                <span>{hero.eyebrowText}</span>
+              </p>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <h1>{hero.title}</h1>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <p className="lede">{hero.lede}</p>
+            </Reveal>
+            <Reveal delay={0.18}>
+              <div className="btn-row">
+                <Link className="btn btn-primary" href={hero.primary.href}>
+                  {hero.primary.label}
+                </Link>
+                <Link className="btn btn-ghost" href={hero.secondary.href}>
+                  {hero.secondary.label}
+                </Link>
+              </div>
+            </Reveal>
+            <Reveal delay={0.24}>
+              <ul className="hero-trust">
+                {hero.trust.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </Reveal>
           </div>
           <div className="hero-stage">
             <div className="hero-frames" aria-hidden="true">
@@ -48,7 +61,7 @@ export function HomePage() {
                     <span />
                     <span />
                     <span />
-                    <em>כיוון עיצובי</em>
+                    <em>מקרה בוחן</em>
                   </div>
                   <div className="stage stage-service">
                     <p>השירות</p>
@@ -67,7 +80,7 @@ export function HomePage() {
                     <span />
                     <span />
                     <span />
-                    <em>קונספט</em>
+                    <em>מקרה בוחן</em>
                   </div>
                   <div className="stage stage-shop">
                     <div className="stage-top">
@@ -84,7 +97,7 @@ export function HomePage() {
                 </div>
               </div>
             </div>
-            <p className="hero-caption">קונספט · לא עבודת לקוח</p>
+            <p className="hero-caption">חשיבה, מבנה, והמרה — בכל מסך.</p>
           </div>
         </div>
       </section>
@@ -95,29 +108,49 @@ export function HomePage() {
             <div>
               <p className="marker">
                 <span className="brand-latin">01</span>
-                <span>כיוון</span>
+                <span>מקרי בוחן</span>
               </p>
-              <h2 id="portfolio-title">הכיוון קודם לתיק העבודות.</h2>
+              <h2 id="portfolio-title">החשיבה מאחורי הפיקסלים.</h2>
             </div>
             <p>
-              חמישה כיוונים מקוריים, לפי סוג עסק. אין כאן שמות של לקוחות, לוגואים
-              או תוצאות. פרויקט אמיתי יסומן אחרת, כשיהיה מה להראות.
+              חמש עבודות ליבה, לפי סוג עסק. כל אחת מוצגת כמו מקרה בוחן אמיתי:
+              האתגר העסקי, הפתרון העיצובי, ומנגנון ההמרה. לא קישוט — תכנון.
             </p>
           </div>
           <ConceptGallery concepts={concepts} />
+          <p className="folio-note">
+            רוצים לראות את העומק המלא, שכבה אחר שכבה?{" "}
+            <Link href="/work">לכל מקרי הבוחן</Link>
+          </p>
         </div>
       </section>
 
-      <section className="band" aria-labelledby="thesis-title">
-        <div className="shell split">
-          <h2 id="thesis-title">האתר הוא הנכס. הרשת היא השכירות.</h2>
-          <div>
+      <section className="band" aria-labelledby="value-title">
+        <div className="shell">
+          <div className="section-head">
+            <div>
+              <p className="marker">
+                <span className="brand-latin">02</span>
+                <span>למה זה עובד</span>
+              </p>
+              <h2 id="value-title">האתר הוא הנכס. אנחנו בונים אותו נכון.</h2>
+            </div>
             <p>
-              אינסטגרם מביא תשומת לב. הוא לא מקום לסגור אמון, וגוגל לא קורא סטורי.
-              העמוד הראשון צריך להסביר מי אתם, למי זה, ומה עושים עכשיו.
+              אינסטגרם מביא תשומת לב, אבל הוא לא מקום לסגור אמון — וגוגל לא קורא
+              סטורי. העמוד שלכם צריך להסביר מי אתם, למי זה, ומה עושים עכשיו.
             </p>
-            <p>משם נגזרים המבנה, המובייל, והטופס. לא להפך.</p>
           </div>
+          <ul className="value-grid">
+            {valueProps.map((item, index) => (
+              <Reveal as="li" key={item.title} delay={index * 0.06}>
+                <div className="value-card">
+                  <span className="value-index">{String(index + 1).padStart(2, "0")}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -126,19 +159,19 @@ export function HomePage() {
           <div className="section-head">
             <div>
               <p className="marker">
-                <span className="brand-latin">02</span>
+                <span className="brand-latin">03</span>
                 <span>שירותים</span>
               </p>
               <h2 id="services-title">מה אפשר לבנות</h2>
             </div>
             <p>
-              שישה מבנים. הטווח הטיפוסי וההתאמה נמצאים בכל עמוד. המחיר יוצא בהצעה
+              שישה מבנים. הטווח המובטח וההתאמה נמצאים בכל עמוד. המחיר יוצא בהצעה
               כתובה, אחרי שיחה.
             </p>
           </div>
           <ol className="service-index">
             {SERVICES.map((service, index) => (
-              <li key={service.slug}>
+              <Reveal as="li" key={service.slug} delay={index * 0.05}>
                 <Link href={`/services/${service.slug}`}>
                   <span className="brand-latin">{String(index + 1).padStart(2, "0")}</span>
                   <span>
@@ -146,7 +179,7 @@ export function HomePage() {
                     <p>{service.summary}</p>
                   </span>
                 </Link>
-              </li>
+              </Reveal>
             ))}
           </ol>
           <p className="after-link">
@@ -158,19 +191,19 @@ export function HomePage() {
       <section className="band" aria-labelledby="principles-title">
         <div className="shell">
           <p className="marker">
-            <span className="brand-latin">03</span>
+            <span className="brand-latin">04</span>
             <span>אופן העבודה</span>
           </p>
           <h2 id="principles-title">איך זה מרגיש בעבודה</h2>
           <ol className="principle-list">
             {principles.map((item, index) => (
-              <li key={item.title}>
+              <Reveal as="li" key={item.title} delay={index * 0.06}>
                 <span className="brand-latin">{String(index + 1).padStart(2, "0")}</span>
                 <div>
                   <h3>{item.title}</h3>
                   <p>{item.body}</p>
                 </div>
-              </li>
+              </Reveal>
             ))}
           </ol>
         </div>
@@ -181,15 +214,27 @@ export function HomePage() {
           <div className="section-head">
             <div>
               <p className="marker">
-                <span className="brand-latin">04</span>
+                <span className="brand-latin">05</span>
                 <span>תהליך</span>
               </p>
               <h2 id="method-title">ארבעה שלבים, מהשיחה ועד ההעברה.</h2>
             </div>
             <p>
-              הטווחים טיפוסיים. הם לא תאריך מובטח, והם זזים אם אין טקסט, תמונות
-              או גישה לדומיין. מה מקבלים בכל שלב מפורט בעמוד האודות.
+              תהליך שקוף עם טווח זמן מובטח. מה שמקבלים בכל שלב מפורט בעמוד האודות.
             </p>
+          </div>
+          <div className="guarantee">
+            <p className="guarantee-kicker">
+              <span className="brand-latin">14</span>
+              <span>ימי אספקה</span>
+            </p>
+            <h3>{deliveryGuarantee.title}</h3>
+            <p>{deliveryGuarantee.body}</p>
+            <ul>
+              {deliveryGuarantee.points.map((point) => (
+                <li key={point}>{point}</li>
+              ))}
+            </ul>
           </div>
           <ol className="stage-list">
             {stages.map((step) => (
@@ -214,7 +259,7 @@ export function HomePage() {
           <div className="section-head">
             <div>
               <p className="marker">
-                <span className="brand-latin">05</span>
+                <span className="brand-latin">06</span>
                 <span>סטנדרט</span>
               </p>
               <h2 id="standards-title">מה נבדק בכל הקמה</h2>
@@ -240,7 +285,7 @@ export function HomePage() {
       <section className="band band-ink" aria-labelledby="fit-title">
         <div className="shell">
           <p className="marker">
-            <span className="brand-latin">06</span>
+            <span className="brand-latin">07</span>
             <span>התאמה</span>
           </p>
           <h2 id="fit-title">לא לכל פרויקט</h2>
@@ -268,7 +313,7 @@ export function HomePage() {
       <section className="band" id="faq" aria-labelledby="faq-title">
         <div className="shell faq">
           <p className="marker">
-            <span className="brand-latin">07</span>
+            <span className="brand-latin">08</span>
             <span>שאלות</span>
           </p>
           <h2 id="faq-title">לפני שפונים</h2>
@@ -290,8 +335,7 @@ export function HomePage() {
           <div>
             <p>
               שם, טלפון או אימייל, ומה צריך. ימים א׳–ה׳, יעד מענה תוך יום עסקים.
-              אם שליחת המייל מהשרת עדיין לא מחוברת, אפשר לפתוח וואטסאפ או אימייל
-              עם אותם פרטים.
+              נחזור עם כיוון, טווח זמן מובטח, והצעה כתובה — לא עם מכירה בלחיצה.
             </p>
             <Link className="btn btn-primary" href="/contact">
               ליצירת קשר
