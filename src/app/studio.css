@@ -153,6 +153,8 @@
   border-color: rgba(244, 239, 230, 0.28);
 }
 
+.studio a.btn-primary,
+.studio button.btn-primary,
 .btn-primary {
   background: var(--accent);
   color: #fff;
@@ -289,6 +291,8 @@
 
 .folio-note a {
   color: var(--on-night);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 .band {
@@ -451,7 +455,9 @@
 }
 
 .page-hero-dark .crumbs,
-.page-hero-dark .crumbs a {
+.page-hero-dark .crumbs ol,
+.page-hero-dark .crumbs a,
+.page-hero-dark .crumbs [aria-current="page"] {
   color: var(--on-night-soft);
 }
 
@@ -538,12 +544,19 @@
   align-content: start;
 }
 
-.stage p {
+.browser .stage,
+.browser .stage p {
   margin: 0;
+  color: #16130f;
   font-size: 1.35rem;
   font-weight: 560;
   letter-spacing: -0.03em;
   line-height: 1.2;
+}
+
+.browser .stage-editorial,
+.browser .stage-editorial p {
+  color: #f4efe6;
 }
 
 .stage b {
