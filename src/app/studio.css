@@ -489,6 +489,15 @@
   color: #7f1d1d;
 }
 
+.form-status-handoff {
+  background: #f3ecdf;
+  color: #14120f;
+}
+
+.handoff-actions {
+  margin-top: 0.85rem;
+}
+
 .hp-field {
   position: absolute;
   width: 1px;

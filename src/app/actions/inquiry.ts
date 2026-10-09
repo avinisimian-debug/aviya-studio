@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { budgetLabel, needLabel } from "@/data/studio-site";
 import { getLeadSender } from "@/lib/inquiry/deliver";
+import { inquiryHandoff } from "@/lib/inquiry/handoff";
 import { inquirySchema } from "@/lib/inquiry/schema";
 import type { InquiryState } from "@/lib/inquiry/state";
 import { rateLimit } from "@/lib/security";
@@ -33,6 +34,7 @@ export async function submitInquiry(
       status: "rate_limited",
       message: "יותר מדי ניסיונות. נסו שוב בעוד כמה דקות.",
       fieldErrors: {},
+      handoff: null,
     };
   }
 
@@ -52,6 +54,7 @@ export async function submitInquiry(
       status: "sent",
       message: "הפנייה נשלחה. תודה. נחזור עם כיוון קצר — בלי לחץ ובלי התחייבות.",
       fieldErrors: {},
+      handoff: null,
     };
   }
 
@@ -61,29 +64,34 @@ export async function submitInquiry(
       status: "invalid",
       message: "חסר או לא תקין שדה אחד. אפשר לתקן ולשלוח שוב.",
       fieldErrors: fieldErrorsFromIssues(parsed.error.issues),
+      handoff: null,
     };
   }
+
+  const lead = {
+    name: parsed.data.name,
+    phone: parsed.data.phone,
+    email: parsed.data.email,
+    need: needLabel(parsed.data.need),
+    detail: parsed.data.detail,
+    budget: budgetLabel(parsed.data.budget || "unspecified"),
+    source: parsed.data.source || "contact",
+  };
+  const handoff = inquiryHandoff(lead);
 
   const sender = getLeadSender();
   if (!sender.isConfigured()) {
     return {
-      status: "not_configured",
+      status: "handoff",
       message:
-        "שליחת המייל עדיין לא מחוברת בשרת. הפנייה לא נשלחה ולא נשמרה. אם מופיעים טלפון או וואטסאפ בעמוד — דברו שם. אחרי הגדרת RESEND_API_KEY ו־LEADS_TO_EMAIL אפשר לשלוח שוב.",
+        "הפרטים תקינים. שליחה מהשרת עדיין לא מחוברת, והפנייה לא יצאה לבד. «שליחה בוואטסאפ» פותח וואטסאפ עם הטקסט. «פתיחת אימייל» פותח אימייל עם אותה פנייה.",
       fieldErrors: {},
+      handoff,
     };
   }
 
   try {
-    await sender.send({
-      name: parsed.data.name,
-      phone: parsed.data.phone,
-      email: parsed.data.email,
-      need: needLabel(parsed.data.need),
-      detail: parsed.data.detail,
-      budget: budgetLabel(parsed.data.budget || "unspecified"),
-      source: parsed.data.source || "contact",
-    });
+    await sender.send(lead);
   } catch (error) {
     console.error(
       "inquiry delivery failed",
@@ -92,8 +100,9 @@ export async function submitInquiry(
     return {
       status: "error",
       message:
-        "השליחה נכשלה. הפנייה לא יצאה. נסו שוב בעוד רגע, או דברו ישירות אם יש טלפון או וואטסאפ בעמוד.",
+        "השליחה מהשרת נכשלה, והפנייה לא יצאה. אפשר לפתוח וואטסאפ או אימייל עם אותם פרטים.",
       fieldErrors: {},
+      handoff,
     };
   }
 
@@ -101,5 +110,6 @@ export async function submitInquiry(
     status: "sent",
     message: "הפנייה נשלחה. תודה. נחזור עם כיוון קצר — בלי לחץ ובלי התחייבות.",
     fieldErrors: {},
+    handoff: null,
   };
 }

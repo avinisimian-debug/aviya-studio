@@ -47,11 +47,11 @@ Copy `.env.example` to `.env.local`.
 | `NEXT_PUBLIC_SITE_URL` | Canonical host, sitemap, Open Graph. Set after DNS is live. |
 | `NEXT_PUBLIC_GSC_VERIFICATION` | Google Search Console meta tag. Omitted when empty. |
 | `NEXT_PUBLIC_GA_ID` | GA4 (`G-…`). Loads only after consent. Off when empty. |
-| `NEXT_PUBLIC_PHONE` | Phone CTA. Hidden when empty. |
-| `NEXT_PUBLIC_WHATSAPP` | WhatsApp number (`972…` or `05…`). Hidden when empty. |
-| `NEXT_PUBLIC_STUDIO_EMAIL` | Public email. Defaults to `studio.aviya1@gmail.com`. |
-| `RESEND_API_KEY` | Resend API key. Required together with `LEADS_TO_EMAIL`. |
-| `LEADS_TO_EMAIL` | Inbox that receives inquiries. |
+| `NEXT_PUBLIC_PHONE` | Phone CTA. Defaults to `055-557-3090` (`tel:+972555573090`). |
+| `NEXT_PUBLIC_WHATSAPP` | WhatsApp number. Defaults to `972555573090`. |
+| `NEXT_PUBLIC_STUDIO_EMAIL` | Public email on the site. Defaults to `studio.aviya1@gmail.com`. |
+| `RESEND_API_KEY` | When set, the form sends the inquiry by email. |
+| `LEADS_TO_EMAIL` | Leads inbox. Defaults to `aviya.nish@gmail.com`. |
 | `RESEND_FROM` | Optional from-address. Defaults to Resend’s onboarding sender until a domain is verified. |
 
 ### Leads
@@ -60,10 +60,12 @@ The contact form posts to a server action (`submitInquiry`).
 
 - Zod validates name, phone **or** email, the requested service, and an optional budget.
 - A honeypot field and a per-IP rate limit drop spam.
-- If `RESEND_API_KEY` and `LEADS_TO_EMAIL` are both set, the action sends the email through [Resend](https://resend.com).
-- If they are not set, the action returns **NOT CONFIGURED**. The page says the inquiry was **not** sent and was **not** stored. Nothing is pretended.
+- If `RESEND_API_KEY` is set, the action emails `LEADS_TO_EMAIL` (default `aviya.nish@gmail.com`) through [Resend](https://resend.com).
+- If `RESEND_API_KEY` is missing, validation still runs, then the page offers **שליחה בוואטסאפ** and **פתיחת אימייל**. Those buttons open WhatsApp or the mail app with the inquiry filled in. The copy says the server did not send it.
 
-Phone and WhatsApp buttons are separate from the form. They render only when their env vars are set. On small screens they sit in a sticky bar with the inquiry link.
+The public address on the site stays `studio.aviya1@gmail.com`. The leads inbox is separate: `aviya.nish@gmail.com`.
+
+Phone (`055-557-3090`) and WhatsApp (`wa.me/972555573090`) are on by default. On small screens the sticky bar shows פנייה, טלפון, and וואטסאפ. Env vars override the defaults.
 
 ## Google Search Console
 

@@ -1,3 +1,5 @@
+import { leadsInbox } from "@/lib/contact-channels";
+
 export type InquiryPayload = {
   name: string;
   phone: string;
@@ -50,13 +52,11 @@ export function resendSender(): LeadSender {
   return {
     id: "resend",
     isConfigured() {
-      return Boolean(
-        process.env.RESEND_API_KEY?.trim() && process.env.LEADS_TO_EMAIL?.trim()
-      );
+      return Boolean(process.env.RESEND_API_KEY?.trim() && leadsInbox());
     },
     async send(lead) {
       const key = process.env.RESEND_API_KEY?.trim();
-      const to = process.env.LEADS_TO_EMAIL?.trim();
+      const to = leadsInbox();
       if (!key || !to) {
         throw new Error("NOT_CONFIGURED");
       }

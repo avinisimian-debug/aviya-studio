@@ -156,17 +156,40 @@ export function InquiryForm({
             </select>
           </div>
 
+          {state.status === "handoff" ? (
+            <p className="form-status form-status-handoff" role="status">
+              {state.message}
+            </p>
+          ) : null}
           {state.status === "invalid" ||
           state.status === "error" ||
-          state.status === "rate_limited" ||
-          state.status === "not_configured" ? (
+          state.status === "rate_limited" ? (
             <p className="form-status form-status-bad" role="alert">
               {state.message}
             </p>
           ) : null}
+          {state.handoff ? (
+            <div className="btn-row handoff-actions">
+              <a
+                className="btn btn-primary"
+                href={state.handoff.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                שליחה בוואטסאפ
+              </a>
+              <a className="btn btn-ghost" href={state.handoff.mailtoHref}>
+                פתיחת אימייל
+              </a>
+            </div>
+          ) : null}
 
-          <button className="btn btn-primary" type="submit" disabled={pending}>
-            {pending ? "שולחים…" : "שליחת פנייה"}
+          <button
+            className={state.handoff ? "btn btn-ghost" : "btn btn-primary"}
+            type="submit"
+            disabled={pending}
+          >
+            {pending ? "בודקים…" : state.handoff ? "עדכון הפרטים" : "שליחת פנייה"}
           </button>
         </form>
       )}
