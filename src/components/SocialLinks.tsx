@@ -1,5 +1,6 @@
 import { LANDING } from "@/data/landing";
 import { cn } from "@/lib/cn";
+import { publicEmail, whatsappHref } from "@/lib/contact-channels";
 
 function IconWhatsApp({ className }: { className?: string }) {
   return (
@@ -46,14 +47,18 @@ type SocialLinksProps = {
  * Contact channels with brand icons — WhatsApp, Instagram, Email
  */
 export function SocialLinks({ className, iconOnly = false }: SocialLinksProps) {
+  const email = publicEmail();
+  const whatsapp = whatsappHref();
   const items = [
-    {
-      href: LANDING.whatsappUrl,
-      label: "WhatsApp",
-      short: "WhatsApp",
-      external: true,
-      Icon: IconWhatsApp,
-    },
+    whatsapp
+      ? {
+          href: whatsapp,
+          label: "WhatsApp",
+          short: "WhatsApp",
+          external: true,
+          Icon: IconWhatsApp,
+        }
+      : null,
     {
       href: LANDING.instagram,
       label: `Instagram ${LANDING.instagramHandle}`,
@@ -62,13 +67,13 @@ export function SocialLinks({ className, iconOnly = false }: SocialLinksProps) {
       Icon: IconInstagram,
     },
     {
-      href: LANDING.emailUrl,
-      label: LANDING.email,
+      href: `mailto:${email}`,
+      label: email,
       short: "מייל",
       external: false,
       Icon: IconMail,
     },
-  ] as const;
+  ].filter((item): item is NonNullable<typeof item> => item !== null);
 
   return (
     <ul className={cn("social-links", iconOnly && "social-links--icons", className)}>

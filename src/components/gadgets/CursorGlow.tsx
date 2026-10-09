@@ -13,10 +13,13 @@ export function CursorGlow() {
     const fine = window.matchMedia("(pointer: fine)").matches;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (!fine || reduce) return;
-    setOn(true);
+    const enable = window.setTimeout(() => setOn(true), 0);
     const move = (e: MouseEvent) => setPos({ x: e.clientX, y: e.clientY });
     window.addEventListener("mousemove", move, { passive: true });
-    return () => window.removeEventListener("mousemove", move);
+    return () => {
+      window.clearTimeout(enable);
+      window.removeEventListener("mousemove", move);
+    };
   }, []);
 
   if (!on) return null;

@@ -7,7 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export function Testimonials() {
   const [index, setIndex] = useState(0);
-  const t = testimonials[index]!;
+  if (testimonials.length === 0) return null;
+  const t = testimonials[index];
+  if (!t) return null;
 
   function prev() {
     setIndex((i) => (i - 1 + testimonials.length) % testimonials.length);

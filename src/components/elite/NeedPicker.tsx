@@ -11,7 +11,8 @@ export function NeedPicker({
   const [picked, setPicked] = useState<SiteNeedId | "">("");
 
   useEffect(() => {
-    setPicked(readNeed());
+    const id = window.setTimeout(() => setPicked(readNeed()), 0);
+    return () => window.clearTimeout(id);
   }, []);
 
   return (

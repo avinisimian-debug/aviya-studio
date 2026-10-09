@@ -12,12 +12,15 @@ export function CookieConsent() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    try {
-      const v = localStorage.getItem(STORAGE_KEY);
-      if (!v) setVisible(true);
-    } catch {
-      setVisible(true);
-    }
+    const id = window.setTimeout(() => {
+      try {
+        const v = localStorage.getItem(STORAGE_KEY);
+        if (!v) setVisible(true);
+      } catch {
+        setVisible(true);
+      }
+    }, 0);
+    return () => window.clearTimeout(id);
   }, []);
 
   function accept() {

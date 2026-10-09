@@ -93,91 +93,29 @@ export const services = [
   },
 ];
 
-export const portfolio = [
-  {
-    id: "nord",
-    brand: "Atelier Nord",
-    field: "אופנה",
-    year: "2025",
-    line: "קטלוג שהפך לחוויית מותג",
-    tone: "from-[#2a2430] to-[#121018]",
-  },
-  {
-    id: "ledger",
-    brand: "Ledger & Co.",
-    field: "פיננסים",
-    year: "2025",
-    line: "אמון בשפת מוצר, לא ׳בנק׳",
-    tone: "from-[#1a2430] to-[#0e141a]",
-  },
-  {
-    id: "halo",
-    brand: "Halo Clinic",
-    field: "בריאות",
-    year: "2024",
-    line: "שקט רפואי עם נוכחות יוקרתית",
-    tone: "from-[#242820] to-[#10140f]",
-  },
-  {
-    id: "orbit",
-    brand: "Orbit Labs",
-    field: "טכנולוגיה",
-    year: "2024",
-    line: "SaaS שנראה מוכן להשקעה",
-    tone: "from-[#1e2438] to-[#0c1018]",
-  },
-];
+/** Removed invented clients: Atelier Nord, Ledger & Co., Halo Clinic, Orbit Labs. */
+export const portfolio: {
+  id: string;
+  brand: string;
+  field: string;
+  year: string;
+  line: string;
+  tone: string;
+}[] = [];
 
-export const cases = [
-  {
-    id: "nord",
-    brand: "Atelier Nord",
-    challenge: "אתר עמוס שהרגיש כמו חנות סיטונאית, לא מותג פרימיום.",
-    move: "גיבור מלא־מסך, מסלול רכישה קצר, טיפוגרפיה עריכתית.",
-    result: "זמן באתר ×2.1 · פניות איכותיות יותר",
-    metric: "×2.1",
-    metricLabel: "זמן באתר",
-  },
-  {
-    id: "ledger",
-    brand: "Ledger & Co.",
-    challenge: "שירות מצוין — אבל האתר לא שידר אמון של מוסד רציני.",
-    move: "מבנה תהליך שקוף, הוכחות חכמות, ביצועים מוסדיים.",
-    result: "המרת לידים +38% · פחות נשירה בטופס",
-    metric: "+38%",
-    metricLabel: "המרת לידים",
-  },
-  {
-    id: "halo",
-    brand: "Halo Clinic",
-    challenge: "יותר מדי ׳מבצעים׳ — פחות תחושת טיפול ומקצועיות.",
-    move: "טמפו רגוע, עברית מדויקת, CTA אחד ברור לזימון.",
-    result: "זימון מהיר יותר · מותג חד ושקט",
-    metric: "1 CTA",
-    metricLabel: "מסלול החלטה",
-  },
-];
+/** Removed invented case studies and metrics (×2.1, +38%, Halo Clinic). */
+export const cases: {
+  id: string;
+  brand: string;
+  challenge: string;
+  move: string;
+  result: string;
+  metric: string;
+  metricLabel: string;
+}[] = [];
 
-export const testimonials = [
-  {
-    quote:
-      "בפעם הראשונה שהאתר נפתח — הרגשתי שאנחנו חברה אחרת. לא ׳יפה יותר׳. רציניים יותר.",
-    name: "נועה כהן",
-    role: "מייסדת, Atelier Nord",
-  },
-  {
-    quote:
-      "התהליך היה שקט ומדויק. בכל שלב ידענו מה קורה, ולמה. נדיר.",
-    name: "אלון מרקוביץ׳",
-    role: "שותף, Ledger & Co.",
-  },
-  {
-    quote:
-      "לא מכרה לי חבילות — עזרה לי להבין מה באמת צריך. היום האתר עובד בשבילי.",
-    name: "ד״ר יעל אביב",
-    role: "Halo Clinic",
-  },
-];
+/** Removed invented reviews: נועה כהן, אלון מרקוביץ׳, ד״ר יעל אביב. */
+export const testimonials: { quote: string; name: string; role: string }[] = [];
 
 export const technologies = [
   "Next.js",

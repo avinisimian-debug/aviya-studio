@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SiteChrome } from "@/components/site/SiteChrome";
 import { privacyPage } from "@/data/site-content";
 import { LANDING } from "@/data/landing";
+import { phoneHref, publicEmail, publicPhone, whatsappHref } from "@/lib/contact-channels";
 
 export const metadata: Metadata = {
   title: "מדיניות פרטיות",
@@ -13,6 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default function PrivacyPage() {
+  const email = publicEmail();
+  const phone = publicPhone();
+  const tel = phoneHref();
+  const whatsapp = whatsappHref();
+
   return (
     <SiteChrome title={privacyPage.title}>
       <p className="legal-meta">עדכון אחרון: {privacyPage.updated}</p>
@@ -26,11 +32,11 @@ export default function PrivacyPage() {
 
         <h2>איזה מידע נאסף</h2>
         <ul>
-          <li>שם מלא</li>
-          <li>מספר טלפון</li>
-          <li>שם עסק (אם מולא)</li>
-          <li>מקור הטופס (למשל: הירו / סוף הדף / עמוד יצירת קשר)</li>
-          <li>זמן השליחה</li>
+          <li>שם</li>
+          <li>טלפון או אימייל (לפחות אחד)</li>
+          <li>מה צריך, ופירוט קצר אם מולא</li>
+          <li>טווח תקציב, אם מולא</li>
+          <li>מקור הטופס</li>
         </ul>
         <p>
           איננו מבקשים מספר כרטיס אשראי באתר זה. איננו אוספים במודע מידע על
@@ -50,9 +56,9 @@ export default function PrivacyPage() {
 
         <h2>שמירה ואבטחה</h2>
         <p>
-          הפניות נשמרות באופן מאובטח ככל הניתן בסביבת האחסון של האתר. גישה
-          לתיבת הפניות מוגנת בסיסמה. מומלץ להגדיר סיסמה חזקה במשתנה סביבה
-          של השרת. אין מערכת מאובטחת ב־100% — אם נגלה דליפה, נודיע כנדרש.
+          טופס הפנייה באתר נשלח במייל רק כשמוגדרים מפתח ספק המייל וכתובת
+          היעד. אם הם לא מוגדרים, הטופס אומר זאת במפורש והפנייה לא נשלחת ולא
+          נשמרת. אין מערכת מאובטחת ב־100% — אם נגלה דליפה, נודיע כנדרש.
         </p>
 
         <h2>עוגיות, אנליטיקה ופרסומות</h2>
@@ -62,8 +68,8 @@ export default function PrivacyPage() {
         </p>
         <ul>
           <li>
-            <strong>Google Analytics</strong> — מדידת תנועה ושימוש באתר
-            (במידה והוגדר מזהה מדידה)
+            <strong>Google Analytics</strong> — נטען רק אחרי אישור, ורק אם
+            הוגדר מזהה מדידה. בלי אישור אין מדידה.
           </li>
           <li>
             <strong>Google AdSense</strong> — הצגת פרסומות של גוגל / שותפים
@@ -93,20 +99,37 @@ export default function PrivacyPage() {
 
         <h2>זכויותיכם</h2>
         <p>
-          ניתן לבקש עיון, תיקון או מחיקת פרטים ששלחתם — בפנייה ל
-          <a href={LANDING.emailUrl}> {LANDING.email}</a> או
-          <a href={LANDING.whatsappUrl} target="_blank" rel="noopener noreferrer">
-            {" "}
-            בוואטסאפ
-          </a>
+          ניתן לבקש עיון, תיקון או מחיקת פרטים ששלחתם — בפנייה ל־{" "}
+          <a href={`mailto:${email}`}>{email}</a>
+          {whatsapp ? (
+            <>
+              {" "}
+              או{" "}
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer">
+                בוואטסאפ
+              </a>
+            </>
+          ) : null}
           .
         </p>
 
         <h2>יצירת קשר בנושא פרטיות</h2>
         <p>
-          {LANDING.email}
-          <br />
-          טלפון / וואטסאפ: 055-557-3090
+          {email}
+          {tel && phone ? (
+            <>
+              <br />
+              <a href={tel}>טלפון {phone}</a>
+            </>
+          ) : null}
+          {whatsapp ? (
+            <>
+              <br />
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer">
+                וואטסאפ
+              </a>
+            </>
+          ) : null}
         </p>
 
         <p>

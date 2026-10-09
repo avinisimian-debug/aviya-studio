@@ -1,20 +1,11 @@
 import type { Metadata } from "next";
-import { LANDING } from "@/data/landing";
-import { eliteFaqs } from "@/data/site-content";
-import { allSeoKeywords } from "@/data/seo-keywords";
+import { SERVICES, brand } from "@/data/studio-site";
+import { gscVerification, publicEmail, publicPhone } from "@/lib/contact-channels";
 
 /**
  * Canonical production URL.
- *
- * CRITICAL: Do not invent a domain. If canonical points at a domain that
- * is not this deployment, Google will not index the live site (or will
- * prefer a dead URL). Set NEXT_PUBLIC_SITE_URL only after DNS is live.
- *
- * Resolution order:
- * 1. NEXT_PUBLIC_SITE_URL (custom domain when connected)
- * 2. VERCEL_PROJECT_PRODUCTION_URL (stable production host on Vercel)
- * 3. VERCEL_URL (per-deployment host — last resort on Vercel)
- * 4. Known production alias for this project
+ * Set NEXT_PUBLIC_SITE_URL after the real domain is live.
+ * Order: explicit env, Vercel production host, Vercel deployment host, known alias.
  */
 function resolveSiteUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL?.trim();
@@ -37,32 +28,75 @@ function resolveSiteUrl(): string {
 
 export const SITE_URL = resolveSiteUrl();
 
-/**
- * On-page + SERP meta — brand first (so "Aviya" searches match), then intent.
- */
+function toE164(phone: string | null): string | null {
+  if (!phone) return null;
+  const digits = phone.replace(/\D/g, "");
+  if (digits.startsWith("972")) return `+${digits}`;
+  if (digits.startsWith("0")) return `+972${digits.slice(1)}`;
+  return digits ? `+${digits}` : null;
+}
+
+const phone = publicPhone();
+const phoneE164 = toE164(phone);
+
 export const siteSeo = {
   url: SITE_URL,
   locale: "he_IL",
-  title:
-    "Aviya | בניית אתרים לעסקים · חנויות דיגיטליות · אתר תדמית | אביה סטודיו ישראל",
-  titleShort: "Aviya | אביה סטודיו",
+  title: "Aviya | סטודיו דיגיטלי — אתרים וחנויות לעסקים בישראל",
+  titleShort: "Aviya",
   description:
-    "Aviya (אביה) — סטודיו לבניית אתרים בישראל: אתרים שמביאים לקוחות (שירותים, קליניקות, B2B), חנויות דיגיטליות, דפי נחיתה ו-SEO. תל אביב, מרכז וכל הארץ. 055-557-3090 · studio.aviya1",
+    "אביה בונה אתרי תדמית, דפי נחיתה וחנויות דיגיטליות. מובייל קודם, בעלות מלאה, יחס אישי. שיחה קצרה בלי התחייבות.",
   ogDescription:
-    "Aviya — בניית אתרים שמביאים לקוחות וחנויות שמוכרות. עיצוב יוקרתי, המרה, בעלות מלאה. אביה סטודיו דיגיטלי בישראל.",
-  /** Full cluster — related business intent only */
-  keywords: allSeoKeywords,
+    "סטודיו Aviya: אתרי תדמית, דפי נחיתה וחנויות לעסקים בישראל. עיצוב שקט, מסלול פנייה ברור.",
+  keywords: [
+    "Aviya",
+    "אביה",
+    "סטודיו דיגיטלי",
+    "בניית אתרים",
+    "אתר תדמית",
+    "דף נחיתה",
+    "חנות דיגיטלית",
+  ],
   ogImagePath: "/opengraph-image",
-  email: LANDING.email,
-  phone: "+972-55-557-3090",
-  phoneE164: `+${LANDING.whatsappE164}`,
-  instagram: LANDING.instagram,
+  email: publicEmail(),
+  phone: phone ?? "",
+  phoneE164: phoneE164 ?? "",
+  instagram: brand.instagram,
 } as const;
 
-export function buildMetadata(): Metadata {
-  const ogImage = new URL(siteSeo.ogImagePath, siteSeo.url).toString();
-  const verification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+export function pageMeta({
+  title,
+  description,
+  path,
+  absoluteTitle = false,
+}: {
+  title: string;
+  description: string;
+  path: string;
+  absoluteTitle?: boolean;
+}): Metadata {
+  return {
+    title: absoluteTitle ? { absolute: title } : title,
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      title,
+      description,
+      url: path,
+      locale: siteSeo.locale,
+      type: "website",
+      siteName: "Aviya Studio",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
+  };
+}
 
+export function buildMetadata(): Metadata {
+  const verification = gscVerification();
   return {
     metadataBase: new URL(siteSeo.url),
     title: {
@@ -75,431 +109,127 @@ export function buildMetadata(): Metadata {
     creator: "Aviya Studio",
     publisher: "Aviya Studio",
     category: "business",
-    classification: "Web Design, E-commerce Websites, Digital Marketing",
     keywords: [...siteSeo.keywords],
     referrer: "origin-when-cross-origin",
-    formatDetection: {
-      email: false,
-      address: false,
-      telephone: false,
-    },
     alternates: {
-      canonical: siteSeo.url,
-      languages: {
-        "he-IL": siteSeo.url,
-        he: siteSeo.url,
-        "x-default": siteSeo.url,
-      },
+      canonical: "/",
+      languages: { "he-IL": "/", he: "/", "x-default": "/" },
     },
     openGraph: {
       type: "website",
       locale: siteSeo.locale,
-      alternateLocale: ["en_US"],
-      url: siteSeo.url,
+      url: "/",
       siteName: "Aviya Studio",
       title: siteSeo.title,
       description: siteSeo.ogDescription,
-      images: [
-        {
-          url: ogImage,
-          width: 1200,
-          height: 630,
-          alt: "Aviya — בניית אתרים וחנויות דיגיטליות לעסקים בישראל",
-          type: "image/png",
-        },
-      ],
-      countryName: "Israel",
     },
     twitter: {
       card: "summary_large_image",
-      title: siteSeo.titleShort,
+      title: siteSeo.title,
       description: siteSeo.ogDescription,
-      images: [ogImage],
     },
     robots: {
       index: true,
       follow: true,
-      nocache: false,
       googleBot: {
         index: true,
         follow: true,
-        noimageindex: false,
         "max-image-preview": "large",
         "max-snippet": -1,
         "max-video-preview": -1,
       },
     },
-    icons: {
-      icon: [{ url: "/icon", type: "image/png" }],
-      apple: [{ url: "/apple-icon", type: "image/png" }],
-    },
-    manifest: "/manifest.webmanifest",
-    ...(verification
-      ? {
-          verification: {
-            google: verification,
-          },
-        }
-      : {}),
-    other: {
-      "geo.region": "IL",
-      "geo.placename": "Israel",
-      "content-language": "he-IL",
-      "revisit-after": "7 days",
-      rating: "general",
-      distribution: "global",
-      target: "all",
-      "audience": "all",
-      "msapplication-TileColor": "#0f0d14",
-      "theme-color": "#f5f4f7",
-    },
+    ...(verification ? { verification: { google: verification } } : {}),
   };
 }
 
-/** Home-page specific overrides (H1 alignment in SERP) */
 export function buildHomeMetadata(): Metadata {
-  return {
+  return pageMeta({
     title: siteSeo.title,
     description: siteSeo.description,
-    keywords: [...siteSeo.keywords],
-    alternates: {
-      canonical: siteSeo.url,
-    },
-    openGraph: {
-      title: siteSeo.title,
-      description: siteSeo.ogDescription,
-      url: siteSeo.url,
-      locale: siteSeo.locale,
-      type: "website",
-      siteName: "Aviya Studio",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: siteSeo.titleShort,
-      description: siteSeo.ogDescription,
-    },
-  };
+    path: "/",
+    absoluteTitle: true,
+  });
 }
 
-/**
- * Rich results: Organization, LocalBusiness, ProfessionalService,
- * WebSite, WebPage, FAQPage, OfferCatalog, BreadcrumbList
- */
 export function buildJsonLd() {
   const orgId = `${siteSeo.url}/#organization`;
-  const bizId = `${siteSeo.url}/#localbusiness`;
   const websiteId = `${siteSeo.url}/#website`;
-  const webpageId = `${siteSeo.url}/#webpage`;
-  const logoUrl = `${siteSeo.url}/opengraph-image`;
+  const logo = `${siteSeo.url}/opengraph-image`;
 
-  const services = [
-    {
-      name: "דף נחיתה מקצועי",
-      description:
-        "עמוד נחיתה ממוקד להמרה: עיצוב, מבנה ו-CTA ברור לפנייה או לפעולה.",
+  const organization: Record<string, unknown> = {
+    "@type": ["Organization", "ProfessionalService"],
+    "@id": orgId,
+    name: "Aviya Studio",
+    alternateName: ["AVIYA", "Aviya", "אביה", "אביה סטודיו"],
+    url: siteSeo.url,
+    logo,
+    image: `${siteSeo.url}/brand/aviya-portrait.png`,
+    description: siteSeo.description,
+    email: siteSeo.email,
+    areaServed: { "@type": "Country", name: "Israel" },
+    knowsLanguage: ["he", "en"],
+    founder: {
+      "@type": "Person",
+      name: "אביה",
+      alternateName: "Aviya",
+      jobTitle: "מייסד",
+      image: `${siteSeo.url}/brand/aviya-portrait.png`,
+      url: `${siteSeo.url}/about`,
     },
-    {
-      name: "אתר תדמית לעסק",
-      description:
-        "אתר תדמית מותאם אישית — מסר, אמון וטפסי פנייה לעסקי שירותים ומותגים.",
+    sameAs: [siteSeo.instagram],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "שירותי Aviya",
+      itemListElement: SERVICES.map((service, index) => ({
+        "@type": "Offer",
+        position: index + 1,
+        itemOffered: {
+          "@type": "Service",
+          name: service.title,
+          description: service.summary,
+          url: `${siteSeo.url}/services/${service.slug}`,
+          provider: { "@id": orgId },
+          areaServed: "IL",
+        },
+      })),
     },
-    {
-      name: "שדרוג אתר קיים",
-      description:
-        "שיפור עיצוב, מבנה וחוויית משתמש לאתר קיים — עם תוכן ונכסים קיימים ככל האפשר.",
-    },
-    {
-      name: "בניית חנות דיגיטלית",
-      description:
-        "חנות אונליין עם סליקה, תהליך רכישה, משלוחים והזנות מוצרים ראשונות.",
-    },
-    {
-      name: "קידום אורגני (SEO) בסיסי בהקמה",
-      description:
-        "מבנה טכני, תגיות, מהירות, Analytics ו-Search Console כבסיס לקידום בגוגל.",
-    },
-  ];
+  };
+
+  if (siteSeo.phoneE164) {
+    organization.telephone = siteSeo.phoneE164;
+  }
 
   return {
     "@context": "https://schema.org",
     "@graph": [
-      {
-        "@type": "Organization",
-        "@id": orgId,
-        name: "Aviya Studio",
-        alternateName: [
-          "AVIYA",
-          "Aviya",
-          "Aviya studio",
-          "אביה",
-          "אביה סטודיו",
-          "אביה בניית אתרים",
-          "Aviya בניית אתרים",
-          "studio.aviya1",
-        ],
-        url: siteSeo.url,
-        logo: {
-          "@type": "ImageObject",
-          url: logoUrl,
-          width: 1200,
-          height: 630,
-        },
-        image: logoUrl,
-        description: siteSeo.description,
-        email: siteSeo.email,
-        telephone: siteSeo.phoneE164,
-        foundingDate: "2025",
-        founder: {
-          "@type": "Person",
-          name: "אביה",
-          alternateName: "Aviya",
-          jobTitle: "Founder",
-          image: `${siteSeo.url}/brand/aviya-portrait.png`,
-          url: `${siteSeo.url}/about`,
-          description:
-            "מייסד Aviya. בן 17, יותר משנה בבניית אתרים לעסקים בישראל.",
-        },
-        slogan: LANDING.promise,
-        sameAs: [siteSeo.instagram],
-        areaServed: [
-          { "@type": "Country", name: "Israel" },
-          { "@type": "Place", name: "ישראל" },
-        ],
-        knowsLanguage: ["he", "en"],
-        contactPoint: [
-          {
-            "@type": "ContactPoint",
-            contactType: "sales",
-            email: siteSeo.email,
-            telephone: siteSeo.phoneE164,
-            availableLanguage: ["Hebrew", "he", "English"],
-            areaServed: "IL",
-          },
-          {
-            "@type": "ContactPoint",
-            contactType: "customer support",
-            email: siteSeo.email,
-            telephone: siteSeo.phoneE164,
-            availableLanguage: ["Hebrew", "he"],
-          },
-        ],
-      },
-      {
-        "@type": ["LocalBusiness", "ProfessionalService"],
-        "@id": bizId,
-        name: "Aviya — בניית אתרים וחנויות דיגיטליות",
-        url: siteSeo.url,
-        image: logoUrl,
-        description: siteSeo.description,
-        email: siteSeo.email,
-        telephone: siteSeo.phoneE164,
-        priceRange: "₪₪₪",
-        currenciesAccepted: "ILS",
-        paymentAccepted: "Credit Card, Bank Transfer",
-        openingHoursSpecification: {
-          "@type": "OpeningHoursSpecification",
-          dayOfWeek: [
-            "Sunday",
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-          ],
-          opens: "09:00",
-          closes: "19:00",
-        },
-        address: {
-          "@type": "PostalAddress",
-          addressCountry: "IL",
-          addressLocality: "Israel",
-        },
-        geo: {
-          "@type": "GeoCoordinates",
-          // Approximate center IL — update when you have exact studio address
-          latitude: 32.0853,
-          longitude: 34.7818,
-        },
-        areaServed: {
-          "@type": "Country",
-          name: "Israel",
-        },
-        serviceType: services.map((s) => s.name),
-        hasOfferCatalog: {
-          "@type": "OfferCatalog",
-          name: "שירותי Aviya",
-          itemListElement: services.map((s, i) => ({
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: s.name,
-              description: s.description,
-              provider: { "@id": orgId },
-              areaServed: "IL",
-              availableChannel: {
-                "@type": "ServiceChannel",
-                serviceUrl: `${siteSeo.url}/contact`,
-              },
-            },
-            position: i + 1,
-          })),
-        },
-        parentOrganization: { "@id": orgId },
-        sameAs: [siteSeo.instagram],
-      },
+      organization,
       {
         "@type": "WebSite",
         "@id": websiteId,
         url: siteSeo.url,
         name: "Aviya Studio",
-        alternateName: [
-          "Aviya — בניית אתרים",
-          "אביה סטודיו",
-          "אביה בניית אתרים",
-        ],
         description: siteSeo.description,
         inLanguage: "he-IL",
         publisher: { "@id": orgId },
-        copyrightHolder: { "@id": orgId },
-        potentialAction: [
-          {
-            "@type": "CommunicateAction",
-            name: "יצירת קשר לבניית אתר Aviya",
-            target: `${siteSeo.url}/contact`,
-          },
-          {
-            "@type": "ReadAction",
-            target: siteSeo.url,
-          },
-        ],
-      },
-      {
-        "@type": "WebPage",
-        "@id": webpageId,
-        url: siteSeo.url,
-        name: siteSeo.title,
-        isPartOf: { "@id": websiteId },
-        about: { "@id": bizId },
-        description: siteSeo.description,
-        inLanguage: "he-IL",
-        primaryImageOfPage: {
-          "@type": "ImageObject",
-          url: logoUrl,
-        },
-        speakable: {
-          "@type": "SpeakableSpecification",
-          cssSelector: [".elite-h1", ".elite-lead", ".elite-h2"],
-        },
-        mainEntity: { "@id": bizId },
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": `${siteSeo.url}/#breadcrumb`,
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "דף הבית — בניית אתרים Aviya",
-            item: siteSeo.url,
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "תבניות",
-            item: `${siteSeo.url}/#gallery`,
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: "מדריכים",
-            item: `${siteSeo.url}/guides`,
-          },
-          {
-            "@type": "ListItem",
-            position: 4,
-            name: "אודות",
-            item: `${siteSeo.url}/about`,
-          },
-          {
-            "@type": "ListItem",
-            position: 5,
-            name: "יצירת קשר",
-            item: `${siteSeo.url}/contact`,
-          },
-        ],
-      },
-      {
-        "@type": "FAQPage",
-        "@id": `${siteSeo.url}/#faq`,
-        mainEntity: eliteFaqs.map((item) => ({
-          "@type": "Question",
-          name: item.q,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: item.a,
-          },
-        })),
-      },
-      {
-        "@type": "ItemList",
-        "@id": `${siteSeo.url}/#services-list`,
-        name: "שירותי בניית אתרים של Aviya",
-        itemListElement: services.map((s, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          name: s.name,
-          description: s.description,
-          url: `${siteSeo.url}/#process`,
-        })),
-      },
-      {
-        "@type": "ItemList",
-        "@id": `${siteSeo.url}/#guides-list`,
-        name: "מדריכי Aviya לבניית אתרים",
-        itemListElement: [
-          {
-            "@type": "ListItem",
-            position: 1,
-            name: "למה עסק צריך אתר מקצועי",
-            url: `${siteSeo.url}/guides/why-business-needs-website`,
-          },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "דף נחיתה מול אתר תדמית",
-            url: `${siteSeo.url}/guides/landing-page-vs-website`,
-          },
-          {
-            "@type": "ListItem",
-            position: 3,
-            name: "בניית חנות דיגיטלית",
-            url: `${siteSeo.url}/guides/ecommerce-store-guide`,
-          },
-          {
-            "@type": "ListItem",
-            position: 4,
-            name: "SEO בסיסי לעסקים",
-            url: `${siteSeo.url}/guides/seo-basics-for-business`,
-          },
-          {
-            "@type": "ListItem",
-            position: 5,
-            name: "אתר לקליניקה",
-            url: `${siteSeo.url}/guides/website-for-clinic`,
-          },
-          {
-            "@type": "ListItem",
-            position: 6,
-            name: "איך מכינים בריף לאתר",
-            url: `${siteSeo.url}/guides/how-to-brief-a-website`,
-          },
-          {
-            "@type": "ListItem",
-            position: 7,
-            name: "שירותי בניית אתרים",
-            url: `${siteSeo.url}/services`,
-          },
-        ],
       },
     ],
+  };
+}
+
+export function serviceJsonLd(service: {
+  slug: string;
+  title: string;
+  summary: string;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: service.title,
+    description: service.summary,
+    url: `${SITE_URL}/services/${service.slug}`,
+    provider: { "@id": `${SITE_URL}/#organization` },
+    areaServed: "IL",
+    serviceType: service.title,
   };
 }

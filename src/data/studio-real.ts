@@ -33,7 +33,7 @@ export const firstChat = [
 export const igPosts = [
   {
     t: "רילס · כיווני עיצוב",
-    d: "דוגמאות אמיתיות מהעבודה — לא סטוק מנותק.",
+    d: "כיווני עיצוב, לא תיק לקוחות.",
   },
   {
     t: "רילס · לפני / אחרי",
@@ -52,29 +52,15 @@ export const honestNotes = {
     "בלי שמות מומצאים. אלה הדברים שבעלי עסקים חוזרים עליהם כשהם רוצים אתר שעובד — לא עוד תבנית.",
 } as const;
 
-/** Honest owner priorities — not named testimonials */
-export const ownerPriorities = [
-  {
-    q: "אתר שנראה כמו העסק באמת — לא כמו עמוד פייסבוק ישן.",
-    a: "מה שחוזר אצל בעלי מקצוע",
-    metric: "אמון מיידי",
-  },
-  {
-    q: "שהלקוח יבין תוך שניות למה לפנות — בלי לחפש טלפון.",
-    a: "מה שחוזר אצל עסקי שירותים",
-    metric: "פנייה ברורה",
-  },
-  {
-    q: "חנות שמרגישה כמו מותג, לא כמו קטלוג שהועלה בחיפזון.",
-    a: "מה שחוזר אצל מי שמוכר אונליין",
-    metric: "חוויית קנייה",
-  },
-  {
-    q: "מדברים עם מי שבונה — לא עם מוקד שמוסר הודעות.",
-    a: "מה שחוזר אחרי שיחה ראשונה",
-    metric: "יחס אישי",
-  },
-] as const;
+/**
+ * Removed composite quotes that read like reviews
+ * ("מה שחוזר אצל בעלי מקצוע" and three similar lines).
+ */
+export const ownerPriorities: {
+  q: string;
+  a: string;
+  metric: string;
+}[] = [];
 
 /** @deprecated use ownerPriorities — kept empty to avoid accidental named quotes */
 export const happyClients = ownerPriorities;

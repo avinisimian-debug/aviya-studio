@@ -147,36 +147,18 @@ function WebsitePreview({
       </motion.div>
 
       <motion.div
-        className="hero-float hero-float-a hero-glass"
-        initial={play && !prefersReduced ? { opacity: 0, x: 20 } : false}
-        animate={play ? { opacity: 1, x: 0 } : { opacity: 0 }}
-        transition={{ duration: 0.9, delay: 0.75, ease }}
-      >
-        <p className="text-[0.65rem] tracking-[0.14em] uppercase text-[var(--fg-muted)]">
-          Conversion
-        </p>
-        <p className="mt-1 display text-[1.55rem] tracking-tight text-[var(--fg)]">
-          +38%
-        </p>
-        <p className="mt-0.5 text-[0.72rem] text-[var(--fg-muted)]">המרת לידים</p>
-      </motion.div>
-
-      <motion.div
         className="hero-float hero-float-b hero-glass"
         initial={play && !prefersReduced ? { opacity: 0, x: -20 } : false}
         animate={play ? { opacity: 1, x: 0 } : { opacity: 0 }}
         transition={{ duration: 0.9, delay: 0.9, ease }}
       >
-        <div className="flex items-center gap-2">
-          <span className="hero-status-dot" />
-          <p className="text-[0.65rem] tracking-[0.14em] uppercase text-[var(--fg-muted)]">
-            Performance
-          </p>
-        </div>
-        <p className="mt-1.5 text-[0.92rem] font-medium text-[var(--fg)]">
-          LCP <span className="text-[var(--accent)]">0.9s</span>
+        <p className="text-[0.65rem] tracking-[0.14em] uppercase text-[var(--fg-muted)]">
+          Studio
         </p>
-        <p className="mt-0.5 text-[0.72rem] text-[var(--fg-muted)]">Core Web Vitals</p>
+        <p className="mt-1.5 text-[0.92rem] font-medium text-[var(--fg)]">
+          מובייל קודם
+        </p>
+        <p className="mt-0.5 text-[0.72rem] text-[var(--fg-muted)]">בלי מדדי המרה מומצאים</p>
       </motion.div>
 
       <motion.div

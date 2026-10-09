@@ -2,7 +2,6 @@
 
 import {
   useCallback,
-  useEffect,
   useId,
   useMemo,
   useRef,
@@ -36,27 +35,20 @@ function HighlightText({ text, query }: { text: string; query: string }) {
   const q = query.trim();
   if (!q) return <>{text}</>;
 
-  try {
-    const parts = text.split(new RegExp(`(${escapeRegExp(q)})`, "gi"));
-    return (
-      <>
-        {parts.map((part, i) =>
-          part.toLowerCase() === q.toLowerCase() ? (
-            <mark
-              key={i}
-              className="rounded-[2px] bg-white/10 px-0.5 text-white"
-            >
-              {part}
-            </mark>
-          ) : (
-            <span key={i}>{part}</span>
-          )
-        )}
-      </>
-    );
-  } catch {
-    return <>{text}</>;
-  }
+  const parts = text.split(new RegExp(`(${escapeRegExp(q)})`, "gi"));
+  return (
+    <>
+      {parts.map((part, i) =>
+        part.toLowerCase() === q.toLowerCase() ? (
+          <mark key={i} className="rounded-[2px] bg-white/10 px-0.5 text-white">
+            {part}
+          </mark>
+        ) : (
+          <span key={i}>{part}</span>
+        )
+      )}
+    </>
+  );
 }
 
 function categoryCount(cat: Category, searchQuery: string): number {
@@ -210,15 +202,12 @@ export function FAQ() {
     });
   }, [category, query]);
 
-  useEffect(() => {
-    if (!filtered.length) {
-      setOpenKey(null);
-      return;
-    }
-    if (openKey && !filtered.some((f) => faqKey(f) === openKey)) {
-      setOpenKey(faqKey(filtered[0]!));
-    }
-  }, [filtered, openKey]);
+  const activeKey =
+    filtered.length === 0
+      ? null
+      : openKey && filtered.some((item) => faqKey(item) === openKey)
+        ? openKey
+        : faqKey(filtered[0]!);
 
   const chipCounts = useMemo(() => {
     const map = {} as Record<Category, number>;
@@ -410,7 +399,7 @@ export function FAQ() {
                     <FaqAccordionItem
                       item={item}
                       index={i}
-                      isOpen={openKey === key}
+                      isOpen={activeKey === key}
                       query={query}
                       buttonId={`${uid}-btn-${i}`}
                       panelId={`${uid}-panel-${i}`}

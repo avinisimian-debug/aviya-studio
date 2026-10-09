@@ -161,8 +161,8 @@ function useCountUp(target: number, active: boolean, duration = 1400) {
   useEffect(() => {
     if (!active) return;
     if (prefersReduced) {
-      setN(target);
-      return;
+      const id = window.setTimeout(() => setN(target), 0);
+      return () => window.clearTimeout(id);
     }
     let raf = 0;
     const start = performance.now();

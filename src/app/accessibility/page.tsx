@@ -3,6 +3,7 @@ import Link from "next/link";
 import { SocialLinks } from "@/components/SocialLinks";
 import { SiteChrome } from "@/components/site/SiteChrome";
 import { LANDING } from "@/data/landing";
+import { phoneHref, publicEmail, publicPhone, whatsappHref } from "@/lib/contact-channels";
 
 export const metadata: Metadata = {
   title: "הצהרת נגישות | Aviya",
@@ -27,6 +28,11 @@ const UPDATED = "4 באוגוסט 2026";
  * & Internet Service Accessibility Regulations — IS 5568 / WCAG 2.0 Level AA).
  */
 export default function AccessibilityPage() {
+  const email = publicEmail();
+  const phone = publicPhone();
+  const tel = phoneHref();
+  const whatsapp = whatsappHref();
+
   return (
     <SiteChrome title="הצהרת נגישות">
       <div className="site-prose" id="statement">
@@ -92,18 +98,21 @@ export default function AccessibilityPage() {
         </p>
         <ul>
           <li>
-            דוא״ל: <a href={LANDING.emailUrl}>{LANDING.email}</a>
+            דוא״ל: <a href={`mailto:${email}`}>{email}</a>
           </li>
-          <li>
-            טלפון / WhatsApp:{" "}
-            <a
-              href={LANDING.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              055-557-3090
-            </a>
-          </li>
+          {tel && phone ? (
+            <li>
+              טלפון: <a href={tel}>{phone}</a>
+            </li>
+          ) : null}
+          {whatsapp ? (
+            <li>
+              WhatsApp:{" "}
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer">
+                וואטסאפ
+              </a>
+            </li>
+          ) : null}
           <li>
             Instagram:{" "}
             <a

@@ -1,31 +1,24 @@
 import type { Metadata, Viewport } from "next";
-import { Noto_Sans_Hebrew, Secular_One } from "next/font/google";
+import { Heebo, Instrument_Serif } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { CookieConsent } from "@/components/ads/CookieConsent";
 import { AppProviders } from "@/components/providers/AppProviders";
-import { GoogleMarketingScripts } from "@/components/seo/GoogleMarketingScripts";
+import { ConsentAnalytics } from "@/components/studio/ConsentAnalytics";
 import { JsonLd } from "@/components/seo/JsonLd";
-import { SmartAssist } from "@/components/elite/SmartAssist";
 import { buildMetadata } from "@/lib/seo";
 import "./globals.css";
 
-/**
- * Type system — modern Hebrew (not default Rubik/Assistant):
- * Secular One → headlines (strong geometric Hebrew display)
- * Noto Sans Hebrew → body / UI (clean contemporary product type)
- * --font-heebo kept as body CSS var for existing stylesheets.
- */
-const display = Secular_One({
+const display = Instrument_Serif({
   variable: "--font-display",
-  subsets: ["hebrew", "latin"],
+  subsets: ["latin"],
   weight: "400",
+  style: ["normal", "italic"],
   display: "swap",
   preload: true,
   adjustFontFallback: true,
 });
 
-const body = Noto_Sans_Hebrew({
+const body = Heebo({
   variable: "--font-heebo",
   subsets: ["hebrew", "latin"],
   weight: ["300", "400", "500", "600", "700"],
@@ -37,10 +30,7 @@ const body = Noto_Sans_Hebrew({
 export const metadata: Metadata = buildMetadata();
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#0f0d14" },
-    { media: "(prefers-color-scheme: light)", color: "#f5f4f7" },
-  ],
+  themeColor: "#f4f0e8",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -61,12 +51,10 @@ export default function RootLayout({
       className={`${display.variable} ${body.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-full min-h-dvh bg-background font-sans text-foreground antialiased">
-        <GoogleMarketingScripts />
+      <body className="studio-body min-h-full min-h-dvh antialiased">
         <JsonLd />
         <AppProviders>{children}</AppProviders>
-        <SmartAssist />
-        <CookieConsent />
+        <ConsentAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ""} />
         <Analytics />
         <SpeedInsights />
       </body>

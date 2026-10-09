@@ -34,9 +34,12 @@ export function AccessibilityProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const loaded = loadA11yPrefs();
-    setPrefsState(loaded);
     applyA11yToDocument(loaded);
-    setReady(true);
+    const id = window.setTimeout(() => {
+      setPrefsState(loaded);
+      setReady(true);
+    }, 0);
+    return () => window.clearTimeout(id);
   }, []);
 
   const setPrefs = useCallback((next: A11yPrefs | ((p: A11yPrefs) => A11yPrefs)) => {

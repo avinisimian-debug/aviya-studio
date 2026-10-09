@@ -7,7 +7,9 @@ import { AnimatePresence, motion } from "framer-motion";
 
 export function Portfolio() {
   const [active, setActive] = useState(0);
-  const item = portfolio[active]!;
+  if (portfolio.length === 0) return null;
+  const item = portfolio[active];
+  if (!item) return null;
 
   return (
     <section id="work" className="section section-band" aria-labelledby="work-title">

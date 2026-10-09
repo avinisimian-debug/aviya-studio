@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
@@ -153,8 +154,8 @@ function Nav() {
           <a href="#gallery">תבניות</a>
           <a href="#includes">מה כלול</a>
           <a href="/for">למי זה</a>
-          <a href="/guides">מדריכים</a>
-          <a href="/services">שירותים</a>
+          <Link href="/guides">מדריכים</Link>
+          <Link href="/services">שירותים</Link>
           <a href="/contact">{NAV_CONTACT}</a>
         </nav>
         <div className="elite-nav-actions">
@@ -205,12 +206,12 @@ function Nav() {
           <a href="/for" onClick={close}>
             תחומים
           </a>
-          <a href="/guides" onClick={close}>
+          <Link href="/guides" onClick={close}>
             מדריכים
-          </a>
-          <a href="/services" onClick={close}>
+          </Link>
+          <Link href="/services" onClick={close}>
             שירותים
-          </a>
+          </Link>
           <a href="/contact" onClick={close}>
             {NAV_CONTACT}
           </a>
@@ -503,20 +504,6 @@ function Voices() {
             lead={honestNotes.voices}
           />
         </Reveal>
-        <ul className="elite-client-stats" aria-label="סיכום">
-          <li>
-            <strong>מאות</strong>
-            <span>אתרים שנבנו</span>
-          </li>
-          <li>
-            <strong>24 שעות</strong>
-            <span>מענה בדרך כלל</span>
-          </li>
-          <li>
-            <strong>100%</strong>
-            <span>בעלות שלכם</span>
-          </li>
-        </ul>
         <RevealStagger className="elite-voices-grid elite-clients-grid">
           {ownerPriorities.map((item) => (
             <RevealItem key={item.a} className="elite-voice-card elite-client-card">
@@ -1075,7 +1062,7 @@ function SeoResources() {
         </RevealStagger>
         <Reveal>
           <p className="elite-resources-all">
-            <a href="/guides">לכל המדריכים ←</a>
+            <Link href="/guides">לכל המדריכים ←</Link>
           </p>
         </Reveal>
       </Container>
@@ -1124,7 +1111,7 @@ function Footer() {
         <div className="elite-footer-inner">
           <p className="elite-footer-brand">AVIYA</p>
           <p className="elite-footer-meta">
-            סטודיו של אדם אחד. 055-557-3090 · {LANDING.email} ·{" "}
+            סטודיו של אדם אחד. {LANDING.email} ·{" "}
             {LANDING.instagramHandle}
           </p>
           <p className="elite-footer-meta">{studioHours}</p>
@@ -1136,8 +1123,8 @@ function Footer() {
             <a href="#clients">לקוחות</a>
             <a href="#about">אודות</a>
             <a href="/about">עמוד אודות</a>
-            <a href="/guides">מדריכים</a>
-            <a href="/services">שירותים</a>
+            <Link href="/guides">מדריכים</Link>
+            <Link href="/services">שירותים</Link>
             <a href="/promote">קידום</a>
             <a href="/contact">יצירת קשר</a>
             <a href="#faq">שאלות</a>
