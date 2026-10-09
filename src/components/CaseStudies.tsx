@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 export function CaseStudies() {
   const [open, setOpen] = useState<string | null>(cases[0]?.id ?? null);
+  if (cases.length === 0) return null;
 
   return (
     <section id="cases" className="section" aria-labelledby="cases-title">

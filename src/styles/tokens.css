@@ -39,10 +39,9 @@
   --selection: rgba(91, 63, 209, 0.22);
   --focus: rgba(91, 63, 209, 0.5);
 
-  /* Type — Secular One + Noto Sans Hebrew */
-  --font-body: var(--font-heebo), "Noto Sans Hebrew", system-ui, sans-serif;
-  --font-display-stack: var(--font-display), "Secular One", var(--font-heebo),
-    "Noto Sans Hebrew", system-ui, sans-serif;
+  /* Type — Heebo for Hebrew, Instrument Serif for the Latin wordmark */
+  --font-body: var(--font-heebo), "Heebo", system-ui, sans-serif;
+  --font-display-stack: var(--font-heebo), "Heebo", system-ui, sans-serif;
   --type-h1: clamp(2rem, 5vw, 3.35rem);
   --type-h2: clamp(1.65rem, 3.4vw, 2.4rem);
   --type-h3: 1.12rem;

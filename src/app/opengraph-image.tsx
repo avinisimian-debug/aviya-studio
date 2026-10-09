@@ -27,7 +27,6 @@ export default async function OpenGraphImage() {
             "radial-gradient(circle at 50% 40%, #1a160e 0%, #0a0a0c 70%)",
         }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={logoSrc}
           alt="Aviya"

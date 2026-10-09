@@ -1,64 +1,89 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import { SiteChrome, SiteCtaBand } from "@/components/site/SiteChrome";
-import { aboutPage, brandVoice } from "@/data/site-content";
-import { LANDING } from "@/data/landing";
+import Link from "next/link";
+import { Breadcrumbs } from "@/components/studio/Breadcrumbs";
+import { SiteFrame } from "@/components/studio/SiteFrame";
+import { aboutStory, method, principles } from "@/data/studio-site";
+import { pageMeta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "אודות אביה",
+export const metadata: Metadata = pageMeta({
+  title: "אודות ותהליך",
   description:
-    "אביה — בן 17, יותר משנה בבניית אתרים, מאות עסקים. סטודיו Aviya: אתרים וחנויות שמביאים לקוחות, יחס אישי, בעלות מלאה.",
-  alternates: { canonical: "/about" },
-  openGraph: {
-    title: "שלום, אני אביה | Aviya",
-    description: aboutPage.lead,
-    url: "/about",
-    images: [{ url: aboutPage.photo, alt: aboutPage.photoAlt }],
-  },
-};
-
-export const revalidate = 0;
+    "אביה, מייסד הסטודיו. בן 17, יותר משנה בבניית אתרים. תהליך קצר: אפיון, בנייה, השקה. בלי מוקד ובלי בעלות נעולה.",
+  path: "/about",
+});
 
 export default function AboutPage() {
   return (
-    <SiteChrome title={aboutPage.title}>
-      <p className="site-kicker">{aboutPage.kicker}</p>
-      <p className="site-lead">{aboutPage.lead}</p>
-
-      <figure className="site-founder">
-        <Image
-          src={aboutPage.photo}
-          alt={aboutPage.photoAlt}
-          width={720}
-          height={900}
-          unoptimized
-          className="site-founder-img"
-          priority
-        />
-        <figcaption>
-          <strong>{aboutPage.name}</strong>
-          <span>{aboutPage.role}</span>
-        </figcaption>
-      </figure>
-
-      <div className="site-prose">
-        {aboutPage.story.map((p) => (
-          <p key={p.slice(0, 28)}>{p}</p>
-        ))}
-      </div>
-
-      <ul className="site-pillars">
-        {aboutPage.pillars.map((item) => (
-          <li key={item.t}>
-            <h2>{item.t}</h2>
-            <p>{item.d}</p>
-          </li>
-        ))}
-      </ul>
-
-      <SiteCtaBand
-        note={`רוצים להרגיש בנוח לפני שמתחילים? ${brandVoice.ctaSecondary} מגיע ישירות לאביה. מוגבל ל־${LANDING.monthlyCap} עסקים בחודש.`}
-      />
-    </SiteChrome>
+    <SiteFrame>
+      <header className="page-hero">
+        <div className="shell">
+          <Breadcrumbs
+            items={[
+              { name: "בית", path: "/" },
+              { name: "אודות", path: "/about" },
+            ]}
+          />
+          <h1>שלום, אני אביה</h1>
+        </div>
+      </header>
+      <section className="band" aria-labelledby="story-title">
+        <div className="shell about-grid">
+          <figure className="portrait-card">
+            <Image
+              src="/brand/aviya-portrait.png"
+              alt="אביה, מייסד Aviya Studio, בפורטרט בשחור־לבן"
+              width={720}
+              height={900}
+              priority
+              sizes="(max-width: 800px) 100vw, 480px"
+            />
+            <figcaption>אביה · מייסד הסטודיו</figcaption>
+          </figure>
+          <div className="prose">
+            <h2 id="story-title">האדם שמאחורי העבודה</h2>
+            <p>בן 17. בשטח כבר יותר משנה. בונה אתרים וחנויות, ומדבר ישירות עם מי שפונה.</p>
+            {aboutStory.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+      </section>
+      <section className="band band-muted" aria-labelledby="process-title">
+        <div className="shell">
+          <h2 id="process-title">התהליך</h2>
+          <ol className="method-list">
+            {method.map((step) => (
+              <li key={step.n}>
+                <span className="brand-latin">{step.n}</span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+      <section className="band" aria-labelledby="about-principles">
+        <div className="shell">
+          <h2 id="about-principles">איך זה מרגיש בפועל</h2>
+          <ol className="principle-list">
+            {principles.map((item, index) => (
+              <li key={item.title}>
+                <span>{String(index + 1).padStart(2, "0")}</span>
+                <div>
+                  <h3>{item.title}</h3>
+                  <p>{item.body}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+          <p>
+            <Link className="btn btn-primary" href="/contact">
+              לדבר על כיוון
+            </Link>
+          </p>
+        </div>
+      </section>
+    </SiteFrame>
   );
 }

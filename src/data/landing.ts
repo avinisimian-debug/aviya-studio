@@ -233,35 +233,16 @@ export const showcaseTitle = "מערכות עיצוב. מיושמות על סו�
 export const showcaseLead =
   "DNA ויזואלי מקצועי — לא ״תבנית לכולם״. מתאימים שפה למסלול: לידים, מסחר, או שילוב.";
 
-export const showcases = [
-  {
-    name: "Forge Studio",
-    cat: "שירותים · B2B",
-    tone: "ink",
-    img: photos.service,
-    domain: "forge.studio",
-    line: "אתר שסוגר פגישות: מסר חד, הוכחות, תהליך ברור, כפתור אחד. בלי רעש — עם פניות.",
-    traits: ["Hero חד", "Trust", "CTA לשיחה"],
-  },
-  {
-    name: "Maison Liora",
-    cat: "אופנה · מסחר",
-    tone: "warm",
-    img: photos.fashion,
-    domain: "maisonliora.shop",
-    line: "חנות שמרגישה בוטיק: מוצר במרכז, טיפוגרפיה חדה, סל שזורם — לא סריקה משעממת.",
-    traits: ["Full-bleed", "מוצר גדול", "Checkout"],
-  },
-  {
-    name: "NÓA Ritual",
-    cat: "טיפוח · מותג",
-    tone: "cool",
-    img: photos.beauty,
-    domain: "noa-ritual.com",
-    line: "סיפור + קטלוג: אמון, מרקמים, upsell רך. מי שצריך להאמין לפני שהוא משלם.",
-    traits: ["Story", "Catalog", "Upsell"],
-  },
-] as const;
+/** Removed fictional sample brands: Forge Studio, Maison Liora, NÓA Ritual. */
+export const showcases: {
+  name: string;
+  cat: string;
+  tone: string;
+  img: string;
+  domain: string;
+  line: string;
+  traits: readonly string[];
+}[] = [];
 
 export const templateSystems = [
   {
@@ -343,29 +324,14 @@ export const productPillars = [
 export const socialTitle = "מה קורה כשהאתר עובד בשבילכם";
 export const socialLead = "בעלי עסקים, שירותים וחנויות — אחרי שהעלו את הרמה";
 
-export const testimonials = [
-  {
-    img: photos.t1,
-    q: "תוך חודש התחלתי לקבל פניות מהאתר — בלי לרדוף אחרי אנשים בוואטסאפ. סוף־סוף יש מקום שמסביר את העסק בשבילי.",
-    n: "דנה כ.",
-    r: "קליניקה · שירותים",
-    metric: "פניות מהאתר",
-  },
-  {
-    img: photos.t2,
-    q: "14 יום והיינו באוויר. החנות מוכרת גם בלילה — וזה נראה כמו מותג, לא כמו ניסוי.",
-    n: "יונתן ל.",
-    r: "קמעונאות · חנות דיגיטלית",
-    metric: "14 ימים להשקה",
-  },
-  {
-    img: photos.t3,
-    q: "לא הייתי טכנולוגית. קיבלתי אתר יוקרתי + הדרכה. היום אני מנהלת הכל לבד.",
-    n: "מאיה ש.",
-    r: "ייעוץ · מותג אישי",
-    metric: "שליטה מלאה",
-  },
-] as const;
+/** Removed invented quotes: דנה כ., יונתן ל., מאיה ש. (stock portraits). */
+export const testimonials: {
+  img: string;
+  q: string;
+  n: string;
+  r: string;
+  metric: string;
+}[] = [];
 
 /* ════════════ PROCESS ════════════ */
 export const processTitle = "אני עושה את העבודה. אתם נשארים בעסק.";

@@ -684,6 +684,7 @@ export default function SalesPage() {
           </div>
         </section>
 
+        {testimonials.length > 0 ? (
         <section className="sales-sec">
           <div className="sales-shell">
             <Reveal>
@@ -718,6 +719,7 @@ export default function SalesPage() {
             <MidJump label={midJumpDetails} soft />
           </div>
         </section>
+        ) : null}
 
         {/* Comparison table */}
         <section className="sales-sec sales-sec-compare">

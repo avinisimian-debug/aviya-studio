@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FormEvent, useCallback, useEffect, useMemo, useState } from "react";
 import type { Lead } from "@/lib/leads";
 
@@ -92,8 +93,8 @@ export default function LeadsAdminPage() {
             <span className="ws-nav-item is-active" aria-current="page">
               תיבת פניות
             </span>
-            <a href="/">חזרה לאתר</a>
-            <a href="/contact">עמוד יצירת קשר</a>
+            <Link href="/">חזרה לאתר</Link>
+            <Link href="/contact">עמוד יצירת קשר</Link>
           </nav>
           <p className="ws-side-foot">
             פניות נשמרות בענן. התראות מייל נשלחות אוטומטית.
@@ -124,17 +125,17 @@ export default function LeadsAdminPage() {
                   {loading ? "טוען…" : "רענון"}
                 </button>
               ) : null}
-              <a href="/" className="ws-btn ws-btn--ghost ws-btn--sm">
+              <Link href="/" className="ws-btn ws-btn--ghost ws-btn--sm">
                 לאתר
-              </a>
+              </Link>
             </div>
           </header>
 
           <div className="ws-body">
             <div className="ws-mobile-nav">
-              <a href="/" className="ws-back">
+              <Link href="/" className="ws-back">
                 ← חזרה לאתר
-              </a>
+              </Link>
             </div>
 
             <p className="ws-intro">

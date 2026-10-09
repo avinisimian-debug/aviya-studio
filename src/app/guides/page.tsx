@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { SiteChrome, SiteCtaBand } from "@/components/site/SiteChrome";
-import { AdUnit } from "@/components/ads/AdUnit";
 import { guides } from "@/data/guides";
 import { brandVoice } from "@/data/site-content";
 
@@ -42,8 +41,6 @@ export default function GuidesHubPage() {
           </li>
         ))}
       </ul>
-
-      <AdUnit className="aviya-ad-slot--article" />
 
       <SiteCtaBand
         note={`רוצים אתר או חנות מותאמים לעסק — לא רק מאמר? ${brandVoice.valueLine}`}

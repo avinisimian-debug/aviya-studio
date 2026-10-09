@@ -8,6 +8,7 @@
 @import "../styles/a11y.css";
 @import "../styles/workspace.css";
 @import "../styles/final-polish.css";
+@import "./studio.css";
 
 /* Elite conversion landing shell. Legacy sales CSS available if needed:
    @import "../styles/base.css";

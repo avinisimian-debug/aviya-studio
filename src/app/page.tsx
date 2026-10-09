@@ -1,10 +1,13 @@
-import type { Metadata } from "next";
-import HomePage from "@/components/HomePage";
+import { HomePage } from "@/components/studio/HomePage";
+import { SiteFrame } from "@/components/studio/SiteFrame";
 import { buildHomeMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = buildHomeMetadata();
-export const revalidate = 0;
+export const metadata = buildHomeMetadata();
 
 export default function Home() {
-  return <HomePage />;
+  return (
+    <SiteFrame>
+      <HomePage />
+    </SiteFrame>
+  );
 }

@@ -9,9 +9,11 @@ export function Entrance({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     if (prefersReduced) {
-      setVisible(false);
-      onDone();
-      return;
+      const id = window.setTimeout(() => {
+        setVisible(false);
+        onDone();
+      }, 0);
+      return () => window.clearTimeout(id);
     }
 
     const timer = window.setTimeout(() => {

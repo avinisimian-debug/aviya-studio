@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SiteChrome, SiteCtaBand } from "@/components/site/SiteChrome";
-import { AdUnit } from "@/components/ads/AdUnit";
 import { getAllGuideSlugs, getGuide, guides } from "@/data/guides";
 import { brandVoice } from "@/data/site-content";
-import { LANDING } from "@/data/landing";
+import { whatsappHref } from "@/lib/contact-channels";
 import { SITE_URL } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -105,29 +104,27 @@ export default async function GuideArticlePage({ params }: Props) {
         <p className="site-lead">{guide.description}</p>
 
         <article className="site-prose">
-          {guide.sections.map((section, i) => (
+          {guide.sections.map((section) => (
             <section key={section.h}>
               <h2>{section.h}</h2>
               {section.body.map((p) => (
                 <p key={p.slice(0, 40)}>{p}</p>
               ))}
-              {i === 0 ? (
-                <AdUnit className="aviya-ad-slot--article" />
-              ) : null}
             </section>
           ))}
 
           <h2>רוצים שנבנה את זה בשבילכם?</h2>
           <p>
-            {brandVoice.valueLine}{" "}
-            <Link href="/contact">{brandVoice.ctaNav}</Link> או{" "}
-            <a
-              href={LANDING.whatsappUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {brandVoice.ctaSecondary}
-            </a>
+            {brandVoice.valueLine} <Link href="/contact">{brandVoice.ctaNav}</Link>
+            {whatsappHref() ? (
+              <>
+                {" "}
+                או{" "}
+                <a href={whatsappHref()!} target="_blank" rel="noopener noreferrer">
+                  וואטסאפ
+                </a>
+              </>
+            ) : null}
             .
           </p>
         </article>
@@ -149,7 +146,7 @@ export default async function GuideArticlePage({ params }: Props) {
         ) : null}
 
         <SiteCtaBand
-          note={`מוגבל ל־${LANDING.monthlyCap} עסקים בחודש. ${brandVoice.audienceLine}`}
+          note={brandVoice.audienceLine}
         />
       </SiteChrome>
     </>

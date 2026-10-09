@@ -1,4 +1,4 @@
 /** @deprecated — replaced by SalesPage */
-export function SalesHero(_props: { play?: boolean }) {
+export function SalesHero() {
   return null;
 }

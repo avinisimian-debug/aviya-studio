@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   description:
     "טקסטים מוכנים לאינסטגרם, פייסבוק, לינקדאין, טיקטוק ויוטיוב + האשטגים — לקידום Aviya ובניית אתרים שמביאים לקוחות.",
   alternates: { canonical: "/promote" },
+  robots: { index: false, follow: false },
   keywords: [
     "קידום באינסטגרם",
     "קידום ביוטיוב",
