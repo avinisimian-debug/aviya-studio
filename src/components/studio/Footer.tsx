@@ -15,7 +15,7 @@ export function Footer() {
         <div>
           <p className="brand-latin footer-brand">AVIYA</p>
           <p className="footer-note">
-            סטודיו דיגיטלי. אתרי תדמית, דפי נחיתה וחנויות — מובייל קודם, בעלות מלאה.
+            אביה בונה אתרי תדמית, דפי נחיתה וחנויות. העבודה מרחוק, לכל הארץ.
           </p>
         </div>
         <nav aria-label="קישורי תחתית">
