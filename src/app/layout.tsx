@@ -55,8 +55,12 @@ export default function RootLayout({
         <JsonLd />
         <AppProviders>{children}</AppProviders>
         <ConsentAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ""} />
-        <Analytics />
-        <SpeedInsights />
+        {process.env.VERCEL ? (
+          <>
+            <Analytics />
+            <SpeedInsights />
+          </>
+        ) : null}
       </body>
     </html>
   );

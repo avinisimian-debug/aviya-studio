@@ -17,7 +17,7 @@ export function Header() {
   return (
     <header className="site-header">
       <div className="shell header-bar">
-        <Link href="/" className="brand" aria-label="Aviya, דף הבית">
+        <Link href="/" className="brand">
           <span className="brand-latin">AVIYA</span>
           <span className="brand-sub">Digital Studio</span>
         </Link>
