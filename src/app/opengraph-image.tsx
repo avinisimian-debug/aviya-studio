@@ -19,21 +19,27 @@ export default async function OpenGraphImage() {
           width: "100%",
           height: "100%",
           display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+          flexDirection: "row",
           background: "#070b14",
-          backgroundImage:
-            "radial-gradient(circle at 70% 30%, rgba(42, 63, 212, 0.45) 0%, #070b14 62%)",
         }}
       >
-        <img
-          src={logoSrc}
-          alt="Aviya"
-          width={320}
-          height={320}
-          style={{ objectFit: "contain" }}
-        />
+        <div
+          style={{
+            display: "flex",
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <img
+            src={logoSrc}
+            alt="Aviya"
+            width={280}
+            height={280}
+            style={{ objectFit: "contain" }}
+          />
+        </div>
+        <div style={{ width: 8, height: "100%", background: "#2a3fd4" }} />
       </div>
     ),
     { ...size }
