@@ -101,7 +101,7 @@ function WebsitePreview({
           <span className="hero-browser-dot" />
           <span className="hero-browser-dot" />
           <span className="hero-browser-dot" />
-          <div className="hero-browser-url">aviya.studio/atelier-nord</div>
+          <div className="hero-browser-url">aviya.studio</div>
         </div>
 
         <div className="hero-preview-body">
@@ -119,7 +119,7 @@ function WebsitePreview({
           <div className="hero-preview-ui">
             <div className="hero-preview-nav hero-glass">
               <span className="display text-[0.95rem] tracking-tight text-white/90">
-                Atelier Nord
+                Aviya
               </span>
               <div className="hidden items-center gap-4 text-[0.62rem] tracking-[0.12em] uppercase text-white/55 sm:flex">
                 <span>קולקציה</span>
