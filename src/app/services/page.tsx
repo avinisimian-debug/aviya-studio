@@ -25,8 +25,8 @@ export default function ServicesPage() {
             ]}
           />
           <p className="marker">
-            <span className="brand-latin">06</span>
-            <span>מבנים</span>
+            <span className="brand-latin">AVIYA</span>
+            <span>שירותים</span>
           </p>
           <h1>מה אפשר לבנות</h1>
           <p>

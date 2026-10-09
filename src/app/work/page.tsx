@@ -48,7 +48,7 @@ export default function WorkPage() {
             ]}
           />
           <p className="marker">
-            <span className="brand-latin">02</span>
+            <span className="brand-latin">AVIYA</span>
             <span>קונספט</span>
           </p>
           <h1>כיווני עיצוב</h1>
@@ -73,7 +73,7 @@ export default function WorkPage() {
       <section className="band" aria-labelledby="reading-title">
         <div className="shell">
           <p className="marker">
-            <span className="brand-latin">03</span>
+            <span className="brand-latin">01</span>
             <span>איך קוראים</span>
           </p>
           <h2 id="reading-title">מה כל כיוון בודק</h2>

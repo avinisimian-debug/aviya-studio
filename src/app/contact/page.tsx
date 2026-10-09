@@ -31,7 +31,7 @@ export default function ContactPage() {
             ]}
           />
           <p className="marker">
-            <span className="brand-latin">07</span>
+            <span className="brand-latin">AVIYA</span>
             <span>פנייה</span>
           </p>
           <h1>יצירת קשר</h1>
@@ -70,7 +70,7 @@ export default function ContactPage() {
       <section className="band band-muted" id="terms" aria-labelledby="terms-title">
         <div className="shell">
           <p className="marker">
-            <span className="brand-latin">08</span>
+            <span className="brand-latin">01</span>
             <span>אחרי השליחה</span>
           </p>
           <h2 id="terms-title">מה קורה אחר כך</h2>
