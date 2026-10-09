@@ -30,7 +30,7 @@ const body = Heebo({
 export const metadata: Metadata = buildMetadata();
 
 export const viewport: Viewport = {
-  themeColor: "#f4f0e8",
+  themeColor: "#070b14",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,

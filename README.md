@@ -32,7 +32,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | `/services/expand` | אתר תדמית מורחב |
 | `/services/redesign` | שדרוג אתר קיים |
 | `/services/shop` | חנות דיגיטלית |
-| `/work` | Work — no invented clients; projects appear only when real |
+| `/work` | Design directions, labelled as concepts. Real client projects appear only when they exist |
 | `/about` | About and process |
 | `/contact` | Inquiry form |
 | `/guides` | Existing Hebrew guides |

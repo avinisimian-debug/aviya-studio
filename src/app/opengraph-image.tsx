@@ -22,9 +22,9 @@ export default async function OpenGraphImage() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#0a0a0c",
+          background: "#070b14",
           backgroundImage:
-            "radial-gradient(circle at 50% 40%, #1a160e 0%, #0a0a0c 70%)",
+            "radial-gradient(circle at 70% 30%, rgba(42, 63, 212, 0.45) 0%, #070b14 62%)",
         }}
       >
         <img

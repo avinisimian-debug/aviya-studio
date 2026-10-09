@@ -20,7 +20,7 @@ export default function ContactPage() {
 
   return (
     <SiteFrame>
-      <header className="page-hero">
+      <header className="page-hero page-hero-dark">
         <div className="shell">
           <Breadcrumbs
             items={[

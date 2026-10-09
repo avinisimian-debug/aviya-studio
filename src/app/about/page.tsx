@@ -16,7 +16,7 @@ export const metadata: Metadata = pageMeta({
 export default function AboutPage() {
   return (
     <SiteFrame>
-      <header className="page-hero">
+      <header className="page-hero page-hero-dark">
         <div className="shell">
           <Breadcrumbs
             items={[

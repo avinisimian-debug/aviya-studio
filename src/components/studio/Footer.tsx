@@ -20,7 +20,7 @@ export function Footer() {
         </div>
         <nav aria-label="קישורי תחתית">
           <Link href="/services">שירותים</Link>
-          <Link href="/work">עבודות</Link>
+          <Link href="/work">כיוונים</Link>
           <Link href="/about">אודות ותהליך</Link>
           <Link href="/contact">יצירת קשר</Link>
           <Link href="/guides">מדריכים</Link>
