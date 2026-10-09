@@ -15,7 +15,7 @@ export const metadata: Metadata = pageMeta({
 export default function ServicesPage() {
   return (
     <SiteFrame>
-      <header className="page-hero">
+      <header className="page-hero page-hero-dark">
         <div className="shell">
           <Breadcrumbs
             items={[
@@ -26,7 +26,8 @@ export default function ServicesPage() {
           <h1>מה אפשר לבנות</h1>
           <p>
             שישה מבנים, לפי המטרה של העסק. בכל הקמה: מובייל, מסלול פנייה, ובסיס
-            SEO. חנות כוללת תהליך רכישה לפי ההיקף שסוכם.
+            SEO. חנות כוללת תהליך רכישה לפי ההיקף שסוכם. המחיר נקבע אחרי שיחה,
+            לא מתפריט מומצא.
           </p>
         </div>
       </header>
@@ -35,16 +36,19 @@ export default function ServicesPage() {
           <h2 id="service-list" className="sr-only">
             רשימת השירותים
           </h2>
-          <ul className="card-grid">
-            {SERVICES.map((service) => (
+          <ol className="service-index">
+            {SERVICES.map((service, index) => (
               <li key={service.slug}>
-                <Link className="text-card" href={`/services/${service.slug}`}>
-                  <h3>{service.title}</h3>
-                  <p>{service.summary}</p>
+                <Link href={`/services/${service.slug}`}>
+                  <span className="brand-latin">{String(index + 1).padStart(2, "0")}</span>
+                  <span>
+                    <h3>{service.title}</h3>
+                    <p>{service.summary}</p>
+                  </span>
                 </Link>
               </li>
             ))}
-          </ul>
+          </ol>
         </div>
       </section>
     </SiteFrame>

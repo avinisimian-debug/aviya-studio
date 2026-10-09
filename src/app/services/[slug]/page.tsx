@@ -4,6 +4,8 @@ import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/studio/Breadcrumbs";
 import { LdJson } from "@/components/studio/LdJson";
 import { SiteFrame } from "@/components/studio/SiteFrame";
+import { ConceptFrame } from "@/components/studio/ConceptFrame";
+import { conceptForService } from "@/data/concepts";
 import { SERVICES, serviceBySlug } from "@/data/studio-site";
 import { pageMeta, serviceJsonLd } from "@/lib/seo";
 
@@ -34,17 +36,21 @@ export default async function ServicePage({ params }: Props) {
   return (
     <SiteFrame>
       <LdJson data={serviceJsonLd(service)} />
-      <header className="page-hero">
-        <div className="shell prose">
-          <Breadcrumbs
-            items={[
-              { name: "בית", path: "/" },
-              { name: "שירותים", path: "/services" },
-              { name: service.title, path: `/services/${service.slug}` },
-            ]}
-          />
-          <h1>{service.title}</h1>
-          <p>{service.body}</p>
+      <header className="page-hero page-hero-dark">
+        <div className="shell service-hero">
+          <div className="prose">
+            <Breadcrumbs
+              items={[
+                { name: "בית", path: "/" },
+                { name: "שירותים", path: "/services" },
+                { name: service.title, path: `/services/${service.slug}` },
+              ]}
+            />
+            <h1>{service.title}</h1>
+            <p>{service.body}</p>
+            <p className="hero-caption">הפריוויו ליד הוא קונספט לסוג העבודה, לא פרויקט לקוח.</p>
+          </div>
+          <ConceptFrame concept={conceptForService(service.slug)} heading="p" />
         </div>
       </header>
       <section className="band" aria-labelledby="includes-title">
