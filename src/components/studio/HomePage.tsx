@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { concepts } from "@/data/concepts";
 import { deliveryGuarantee, homeFaqs, stages, standards } from "@/data/depth";
 import { fitNo, fitYes, hero, principles, SERVICES, valueProps } from "@/data/studio-site";
-import { ConceptGallery } from "@/components/studio/ConceptGallery";
-import { ConceptStage } from "@/components/studio/ConceptStage";
+import { BespokeStandard } from "@/components/studio/BespokeStandard";
+import { EngineeringHud } from "@/components/studio/EngineeringHud";
 import { FlagshipCase } from "@/components/studio/FlagshipCase";
 import { LdJson } from "@/components/studio/LdJson";
 import { Reveal } from "@/components/Reveal";
@@ -56,59 +55,17 @@ export function HomePage() {
             </Reveal>
           </div>
           <div className="hero-stage">
-            <div className="hero-frames" aria-hidden="true">
-              <div className="hero-frame hero-frame-back">
-                <div className="browser">
-                  <div className="browser-bar">
-                    <span />
-                    <span />
-                    <span />
-                    <em>מקרה בוחן</em>
-                  </div>
-                  <ConceptStage category="service" />
-                </div>
-              </div>
-              <div className="hero-frame hero-frame-front">
-                <div className="browser">
-                  <div className="browser-bar">
-                    <span />
-                    <span />
-                    <span />
-                    <em>מקרה בוחן</em>
-                  </div>
-                  <ConceptStage category="shop" />
-                </div>
-              </div>
-            </div>
-            <p className="hero-caption">חשיבה, מבנה, והמרה — בכל מסך.</p>
+            <Reveal delay={0.1}>
+              <EngineeringHud />
+            </Reveal>
+            <p className="hero-caption">הנדסה, ביצועים והמרה — מדידה, לא הצהרה.</p>
           </div>
         </div>
       </section>
 
       <FlagshipCase />
 
-      <section className="band band-ink" id="portfolio" aria-labelledby="portfolio-title">
-        <div className="shell">
-          <div className="section-head">
-            <div>
-              <p className="marker">
-                <span className="brand-latin">01</span>
-                <span>מקרי בוחן</span>
-              </p>
-              <h2 id="portfolio-title">החשיבה מאחורי הפיקסלים.</h2>
-            </div>
-            <p>
-              חמש עבודות ליבה, לפי סוג עסק. כל אחת מוצגת כמו מקרה בוחן אמיתי:
-              האתגר העסקי, הפתרון העיצובי, ומנגנון ההמרה. לא קישוט — תכנון.
-            </p>
-          </div>
-          <ConceptGallery concepts={concepts} />
-          <p className="folio-note">
-            רוצים לראות את העומק המלא, שכבה אחר שכבה?{" "}
-            <Link href="/work">לכל מקרי הבוחן</Link>
-          </p>
-        </div>
-      </section>
+      <BespokeStandard />
 
       <section className="band" aria-labelledby="value-title">
         <div className="shell">

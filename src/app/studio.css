@@ -1998,3 +1998,476 @@
     transform: none !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Hero visual — Engineering & Performance HUD.
+   A single sharp technical card (Lighthouse audit + real Edge code) instead of
+   fake product mockups. Rendered LTR, like a real developer surface.
+   --------------------------------------------------------------------------- */
+
+.hud {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  padding: 1.1rem 1.15rem 1.25rem;
+  border-radius: 1.15rem;
+  background:
+    radial-gradient(120% 80% at 85% -10%, rgba(42, 63, 212, 0.35), transparent 55%),
+    linear-gradient(180deg, #0f1728, #0a0e1a);
+  border: 1px solid rgba(142, 160, 255, 0.18);
+  box-shadow:
+    0 40px 90px rgba(0, 0, 0, 0.5),
+    0 0 70px rgba(42, 63, 212, 0.18);
+  color: #e8ecf6;
+  overflow: hidden;
+}
+
+.hud-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding-bottom: 0.9rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hud-dots {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex: none;
+}
+
+.hud-dots i {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.hud-title {
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #9aa6c4;
+}
+
+.hud-title-mark {
+  color: var(--accent-bright);
+}
+
+.hud-live {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(55, 214, 122, 0.4);
+  color: #7ff0ab;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+}
+
+.hud-live i {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: #37d67a;
+  box-shadow: 0 0 8px #37d67a;
+}
+
+.hud-scores {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+}
+
+.hud-score {
+  display: grid;
+  justify-items: center;
+  gap: 0.45rem;
+  text-align: center;
+}
+
+.hud-ring {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: conic-gradient(
+    from -90deg,
+    #37d67a calc(var(--v, 100) * 1%),
+    rgba(255, 255, 255, 0.09) 0
+  );
+}
+
+.hud-ring::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: #0b1120;
+}
+
+.hud-ring b {
+  position: relative;
+  z-index: 1;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #eaf6ee;
+}
+
+.hud-score-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.02em;
+  color: #9aa6c4;
+  line-height: 1.25;
+}
+
+.hud-code {
+  margin: 0;
+  padding: 0.85rem 0.95rem;
+  border-radius: 0.8rem;
+  background: rgba(3, 6, 14, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  display: grid;
+  gap: 0.12rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.77rem;
+  line-height: 1.55;
+  overflow-x: auto;
+}
+
+.hud-line {
+  display: flex;
+  gap: 0.8rem;
+  white-space: pre;
+}
+
+.hud-ln {
+  color: #4b577a;
+  min-width: 1em;
+  text-align: right;
+  user-select: none;
+}
+
+.tok-k {
+  color: #c792ea;
+}
+
+.tok-f {
+  color: #82aaff;
+}
+
+.tok-s {
+  color: #c3e88d;
+}
+
+.tok-v {
+  color: #e8ecf6;
+}
+
+.tok-c {
+  color: #5a6580;
+  font-style: italic;
+}
+
+.hud-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+.hud-metric {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.7rem 0.75rem;
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.hud-metric b {
+  font-size: 1.12rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.hud-metric span {
+  font-size: 0.66rem;
+  letter-spacing: 0.03em;
+  color: #9aa6c4;
+}
+
+.hud-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.hud-stack span {
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid rgba(142, 160, 255, 0.22);
+  background: rgba(142, 160, 255, 0.07);
+  color: #cdd6f0;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+}
+
+/* ---------------------------------------------------------------------------
+   Bespoke Standard — premium engineering vs generic templates.
+   --------------------------------------------------------------------------- */
+
+.pillar-grid {
+  list-style: none;
+  margin: 0 0 2.4rem;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.pillar {
+  height: 100%;
+  padding: 1.35rem 1.3rem;
+  border-radius: 1.1rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  transition:
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.pillar-index {
+  font-size: 1.05rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+.pillar-title {
+  display: grid;
+  gap: 0.18rem;
+  margin: 0.45rem 0 0.5rem;
+  font-size: 1.18rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.pillar-title em {
+  font-style: normal;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+
+.pillar p {
+  margin: 0;
+  color: var(--soft);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.compare {
+  border-radius: 1.3rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  padding: 1.3rem;
+  box-shadow: 0 24px 60px rgba(17, 16, 24, 0.08);
+}
+
+.compare-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.compare-head h3 {
+  margin: 0;
+  font-size: clamp(1.15rem, 3vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.compare-head h3 span {
+  color: var(--mute);
+  font-weight: 400;
+  margin-inline: 0.35rem;
+}
+
+.compare-toggle {
+  display: inline-flex;
+  padding: 0.25rem;
+  border-radius: 999px;
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+}
+
+.compare-toggle button {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 0.42rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  color: var(--soft);
+  min-height: 40px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.compare-toggle button[aria-pressed="true"] {
+  background: var(--night);
+  color: var(--on-night);
+}
+
+.compare-table {
+  overflow-x: auto;
+}
+
+.compare-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.compare-table thead th {
+  text-align: start;
+  font-size: 0.74rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mute);
+  font-weight: 600;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.compare-table tbody th {
+  text-align: start;
+  font-weight: 600;
+  color: var(--ink);
+  padding: 0.8rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.compare-table td {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.8rem 0.7rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--soft);
+  font-size: 0.95rem;
+}
+
+.compare-table tr:last-child th,
+.compare-table tr:last-child td {
+  border-bottom: 0;
+}
+
+.compare-table .col-bespoke {
+  color: var(--ink);
+  font-weight: 500;
+  background: linear-gradient(180deg, rgba(42, 63, 212, 0.06), rgba(42, 63, 212, 0.02));
+}
+
+.compare-table thead .col-bespoke {
+  color: var(--accent);
+}
+
+.compare-table.is-bespoke .col-generic {
+  opacity: 0.5;
+}
+
+.compare-table.is-generic .col-bespoke {
+  opacity: 0.5;
+}
+
+.cmp-mark {
+  width: 1.05rem;
+  height: 1.05rem;
+  flex: none;
+}
+
+.cmp-mark-yes {
+  color: #1a9e57;
+}
+
+.cmp-mark-no {
+  color: #c2543f;
+}
+
+@media (min-width: 800px) {
+  .pillar-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+
+  .compare {
+    padding: 1.6rem 1.7rem;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .pillar:hover {
+    transform: translateY(-4px);
+    border-color: rgba(42, 63, 212, 0.28);
+    box-shadow: 0 18px 44px rgba(17, 16, 24, 0.1);
+  }
+}
+
+@media (max-width: 799px) {
+  .compare-table table,
+  .compare-table thead,
+  .compare-table tbody,
+  .compare-table tr,
+  .compare-table th,
+  .compare-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .compare-table thead {
+    display: none;
+  }
+
+  .compare-table tr {
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .compare-table tr:last-child {
+    border-bottom: 0;
+  }
+
+  .compare-table tbody th {
+    border: 0;
+    padding: 0 0 0.6rem;
+    font-size: 1.02rem;
+  }
+
+  .compare-table td {
+    border: 0;
+    padding: 0.3rem 0;
+  }
+
+  .compare-table td::before {
+    content: attr(data-label);
+    flex: none;
+    width: 7rem;
+    color: var(--mute);
+    font-size: 0.8rem;
+  }
+
+  .compare-table .col-bespoke {
+    background: transparent;
+  }
+}
