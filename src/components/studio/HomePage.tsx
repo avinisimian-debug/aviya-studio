@@ -2,9 +2,9 @@ import Link from "next/link";
 import { deliveryGuarantee, homeFaqs, stages, standards } from "@/data/depth";
 import { fitNo, fitYes, hero, principles, SERVICES, valueProps } from "@/data/studio-site";
 import { BespokeStandard } from "@/components/studio/BespokeStandard";
-import { EngineeringHud } from "@/components/studio/EngineeringHud";
 import { FlagshipCase } from "@/components/studio/FlagshipCase";
 import { LdJson } from "@/components/studio/LdJson";
+import { SignaturePanel } from "@/components/studio/SignaturePanel";
 import { Reveal } from "@/components/Reveal";
 
 export function HomePage() {
@@ -56,9 +56,9 @@ export function HomePage() {
           </div>
           <div className="hero-stage">
             <Reveal delay={0.1}>
-              <EngineeringHud />
+              <SignaturePanel />
             </Reveal>
-            <p className="hero-caption">הנדסה, ביצועים והמרה — מדידה, לא הצהרה.</p>
+            <p className="hero-caption">קוד מאפס, עיצוב מוקפד — נכס דיגיטלי שנשאר שלכם.</p>
           </div>
         </div>
       </section>

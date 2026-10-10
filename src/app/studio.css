@@ -78,10 +78,13 @@
 .site-header {
   position: sticky;
   top: 0;
-  z-index: 40;
-  background: rgba(7, 11, 20, 0.94);
+  z-index: 60;
+  background: rgba(7, 11, 20, 0.82);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
   color: var(--on-night);
   border-bottom: 1px solid rgba(244, 239, 230, 0.1);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
 }
 
 .header-bar {
@@ -2000,226 +2003,6 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Hero visual — Engineering & Performance HUD.
-   A single sharp technical card (Lighthouse audit + real Edge code) instead of
-   fake product mockups. Rendered LTR, like a real developer surface.
-   --------------------------------------------------------------------------- */
-
-.hud {
-  position: relative;
-  display: grid;
-  gap: 1rem;
-  padding: 1.1rem 1.15rem 1.25rem;
-  border-radius: 1.15rem;
-  background:
-    radial-gradient(120% 80% at 85% -10%, rgba(42, 63, 212, 0.35), transparent 55%),
-    linear-gradient(180deg, #0f1728, #0a0e1a);
-  border: 1px solid rgba(142, 160, 255, 0.18);
-  box-shadow:
-    0 40px 90px rgba(0, 0, 0, 0.5),
-    0 0 70px rgba(42, 63, 212, 0.18);
-  color: #e8ecf6;
-  overflow: hidden;
-}
-
-.hud-bar {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding-bottom: 0.9rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.hud-dots {
-  display: inline-flex;
-  gap: 0.35rem;
-  flex: none;
-}
-
-.hud-dots i {
-  width: 0.55rem;
-  height: 0.55rem;
-  border-radius: 99px;
-  background: rgba(255, 255, 255, 0.18);
-}
-
-.hud-title {
-  font-size: 0.74rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #9aa6c4;
-}
-
-.hud-title-mark {
-  color: var(--accent-bright);
-}
-
-.hud-live {
-  margin-inline-start: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 999px;
-  border: 1px solid rgba(55, 214, 122, 0.4);
-  color: #7ff0ab;
-  font-size: 0.66rem;
-  letter-spacing: 0.14em;
-}
-
-.hud-live i {
-  width: 0.4rem;
-  height: 0.4rem;
-  border-radius: 50%;
-  background: #37d67a;
-  box-shadow: 0 0 8px #37d67a;
-}
-
-.hud-scores {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0.5rem;
-}
-
-.hud-score {
-  display: grid;
-  justify-items: center;
-  gap: 0.45rem;
-  text-align: center;
-}
-
-.hud-ring {
-  position: relative;
-  width: 54px;
-  height: 54px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: conic-gradient(
-    from -90deg,
-    #37d67a calc(var(--v, 100) * 1%),
-    rgba(255, 255, 255, 0.09) 0
-  );
-}
-
-.hud-ring::before {
-  content: "";
-  position: absolute;
-  inset: 4px;
-  border-radius: 50%;
-  background: #0b1120;
-}
-
-.hud-ring b {
-  position: relative;
-  z-index: 1;
-  font-size: 1rem;
-  font-weight: 700;
-  color: #eaf6ee;
-}
-
-.hud-score-label {
-  font-size: 0.6rem;
-  letter-spacing: 0.02em;
-  color: #9aa6c4;
-  line-height: 1.25;
-}
-
-.hud-code {
-  margin: 0;
-  padding: 0.85rem 0.95rem;
-  border-radius: 0.8rem;
-  background: rgba(3, 6, 14, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  display: grid;
-  gap: 0.12rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.77rem;
-  line-height: 1.55;
-  overflow-x: auto;
-}
-
-.hud-line {
-  display: flex;
-  gap: 0.8rem;
-  white-space: pre;
-}
-
-.hud-ln {
-  color: #4b577a;
-  min-width: 1em;
-  text-align: right;
-  user-select: none;
-}
-
-.tok-k {
-  color: #c792ea;
-}
-
-.tok-f {
-  color: #82aaff;
-}
-
-.tok-s {
-  color: #c3e88d;
-}
-
-.tok-v {
-  color: #e8ecf6;
-}
-
-.tok-c {
-  color: #5a6580;
-  font-style: italic;
-}
-
-.hud-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
-}
-
-.hud-metric {
-  display: grid;
-  gap: 0.15rem;
-  padding: 0.7rem 0.75rem;
-  border-radius: 0.75rem;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-}
-
-.hud-metric b {
-  font-size: 1.12rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #ffffff;
-}
-
-.hud-metric span {
-  font-size: 0.66rem;
-  letter-spacing: 0.03em;
-  color: #9aa6c4;
-}
-
-.hud-stack {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  padding-top: 0.9rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.hud-stack span {
-  padding: 0.28rem 0.6rem;
-  border-radius: 999px;
-  border: 1px solid rgba(142, 160, 255, 0.22);
-  background: rgba(142, 160, 255, 0.07);
-  color: #cdd6f0;
-  font-size: 0.7rem;
-  letter-spacing: 0.02em;
-}
-
-/* ---------------------------------------------------------------------------
    Bespoke Standard — premium engineering vs generic templates.
    --------------------------------------------------------------------------- */
 
@@ -2470,4 +2253,125 @@
   .compare-table .col-bespoke {
     background: transparent;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   Hero side panel — quiet-luxury studio signature.
+   Replaces the technical HUD: craft, prestige and lasting value, no code.
+   --------------------------------------------------------------------------- */
+
+.signature {
+  position: relative;
+  margin: 0;
+  padding: 1.9rem 1.8rem 1.6rem;
+  border-radius: 1.4rem;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(42, 63, 212, 0.22), transparent 60%),
+    linear-gradient(180deg, #10182c, #0a0f1e);
+  border: 1px solid rgba(244, 239, 230, 0.14);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
+  color: var(--on-night);
+  overflow: hidden;
+}
+
+.signature::before {
+  content: "";
+  position: absolute;
+  inset-inline: 1.8rem;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent-bright), transparent);
+}
+
+.signature-head {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgba(244, 239, 230, 0.12);
+}
+
+.signature-seal {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  flex: none;
+  border-radius: 50%;
+  border: 1px solid rgba(244, 239, 230, 0.3);
+  background: rgba(244, 239, 230, 0.04);
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--on-night);
+}
+
+.signature-kicker {
+  font-size: 0.84rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--on-night-soft);
+}
+
+.signature-quote {
+  margin: 1.4rem 0 1.5rem;
+  font-size: clamp(1.3rem, 2.3vw, 1.75rem);
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--on-night);
+}
+
+.signature-facets {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.signature-facets li {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(244, 239, 230, 0.1);
+}
+
+.signature-facets .brand-latin {
+  min-width: 1.7rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  color: var(--accent-bright);
+}
+
+.signature-facet-text {
+  display: grid;
+  gap: 0.12rem;
+  font-size: 0.98rem;
+}
+
+.signature-facet-text em {
+  font-style: normal;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-night-soft);
+  opacity: 0.7;
+}
+
+.signature-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.4rem;
+  padding-top: 1.2rem;
+  border-top: 1px solid rgba(244, 239, 230, 0.12);
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--on-night-soft);
+}
+
+.signature-foot .brand-latin {
+  font-size: 1.05rem;
+  letter-spacing: 0.14em;
+  color: var(--on-night);
 }
