@@ -31,7 +31,7 @@ export function ConceptGallery({
       <p className="sr-only" aria-live="polite">
         {visible.length === 1 ? "מוצג מקרה בוחן אחד" : `מוצגים ${visible.length} מקרי בוחן`}
       </p>
-      <ul className="folio">
+      <ul className={`folio${visible.length === 1 ? " folio-single" : ""}`}>
         {concepts.map((concept) => {
           const shown = filter === "all" || concept.category === filter;
           return (

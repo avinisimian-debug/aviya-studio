@@ -1,10 +1,16 @@
-"use client";
+import type { CSSProperties, ReactNode } from "react";
 
-import { motion, useReducedMotion } from "framer-motion";
-import type { ReactNode } from "react";
-
+/** Shared easing curve kept for legacy framer-motion callers. */
 export const ease = [0.4, 0, 0.2, 1] as const;
 
+/**
+ * Bulletproof reveal.
+ *
+ * Content renders at full opacity by default and is only animated by CSS
+ * keyframes. There is no IntersectionObserver and no inline `opacity: 0`
+ * from JS, so a failed observer, disabled script, or hydration error can
+ * never leave a section blank — the worst case is content simply appears.
+ */
 export function Reveal({
   children,
   className,
@@ -18,37 +24,16 @@ export function Reveal({
   y?: number;
   as?: "div" | "li";
 }) {
-  const prefersReduced = useReducedMotion();
-
-  if (prefersReduced) {
-    const Tag = as;
-    return <Tag className={className}>{children}</Tag>;
-  }
-
-  if (as === "li") {
-    return (
-      <motion.li
-        className={className}
-        initial={{ opacity: 0, y }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-8% 0px -8% 0px" }}
-        transition={{ duration: 0.65, delay, ease }}
-      >
-        {children}
-      </motion.li>
-    );
-  }
+  const Tag = as;
+  const style = {
+    "--reveal-delay": `${delay}s`,
+    "--reveal-y": `${y}px`,
+  } as CSSProperties;
 
   return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8% 0px -8% 0px" }}
-      transition={{ duration: 0.65, delay, ease }}
-    >
+    <Tag className={className ? `reveal ${className}` : "reveal"} style={style}>
       {children}
-    </motion.div>
+    </Tag>
   );
 }
 

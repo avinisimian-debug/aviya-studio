@@ -3,6 +3,7 @@ import { concepts } from "@/data/concepts";
 import { deliveryGuarantee, homeFaqs, stages, standards } from "@/data/depth";
 import { fitNo, fitYes, hero, principles, SERVICES, valueProps } from "@/data/studio-site";
 import { ConceptGallery } from "@/components/studio/ConceptGallery";
+import { ConceptStage } from "@/components/studio/ConceptStage";
 import { LdJson } from "@/components/studio/LdJson";
 import { Reveal } from "@/components/Reveal";
 
@@ -63,15 +64,7 @@ export function HomePage() {
                     <span />
                     <em>מקרה בוחן</em>
                   </div>
-                  <div className="stage stage-service">
-                    <p>השירות</p>
-                    <ol>
-                      <li />
-                      <li />
-                      <li />
-                    </ol>
-                    <b>פנייה</b>
-                  </div>
+                  <ConceptStage category="service" />
                 </div>
               </div>
               <div className="hero-frame hero-frame-front">
@@ -82,18 +75,7 @@ export function HomePage() {
                     <span />
                     <em>מקרה בוחן</em>
                   </div>
-                  <div className="stage stage-shop">
-                    <div className="stage-top">
-                      <span>חנות</span>
-                      <i />
-                    </div>
-                    <div className="product-grid">
-                      <span />
-                      <span />
-                      <span />
-                      <span />
-                    </div>
-                  </div>
+                  <ConceptStage category="shop" />
                 </div>
               </div>
             </div>
