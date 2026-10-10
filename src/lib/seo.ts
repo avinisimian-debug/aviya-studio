@@ -49,6 +49,12 @@ export const siteSeo = {
   ogDescription:
     "סטודיו Aviya: אתרים וחנויות בקוד בעבודת יד. מהיר, מדויק במובייל, בעלות מלאה, ואספקה מובטחת עד 14 יום.",
   keywords: [
+    "בניית אתרים בהתאמה אישית",
+    "פיתוח Next.js",
+    "סטודיו דיגיטלי בוטיק",
+    "אתרי יוקרה",
+    "פיתוח קוד מאפס",
+    "UI/UX פרימיום",
     "Aviya",
     "אביה",
     "סטודיו דיגיטלי",
@@ -158,17 +164,26 @@ export function buildJsonLd() {
   const logo = `${siteSeo.url}/opengraph-image`;
 
   const organization: Record<string, unknown> = {
-    "@type": ["Organization", "ProfessionalService"],
+    "@type": ["ProfessionalService", "Organization"],
     "@id": orgId,
-    name: "Aviya Studio",
-    alternateName: ["AVIYA", "Aviya", "אביה", "אביה סטודיו"],
+    name: "Aviya Digital Studio",
+    alternateName: ["AVIYA", "Aviya", "סטודיו אביה", "אביה"],
     url: siteSeo.url,
     logo,
     image: `${siteSeo.url}/brand/aviya-portrait.png`,
     description: siteSeo.description,
     email: siteSeo.email,
-    areaServed: { "@type": "Country", name: "Israel" },
+    areaServed: "IL",
     knowsLanguage: ["he", "en"],
+    serviceType: "בניית אתרים בהתאמה אישית ופיתוח קוד מאפס",
+    knowsAbout: [
+      "בניית אתרים בהתאמה אישית",
+      "פיתוח Next.js",
+      "סטודיו דיגיטלי בוטיק",
+      "אתרי יוקרה",
+      "פיתוח קוד מאפס",
+      "UI/UX פרימיום",
+    ],
     founder: {
       "@type": "Person",
       name: "אביה",
@@ -208,7 +223,8 @@ export function buildJsonLd() {
         "@type": "WebSite",
         "@id": websiteId,
         url: siteSeo.url,
-        name: "Aviya Studio",
+        name: "Aviya Digital Studio",
+        alternateName: "סטודיו אביה",
         description: siteSeo.description,
         inLanguage: "he-IL",
         publisher: { "@id": orgId },
