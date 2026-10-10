@@ -1,11 +1,37 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { concepts } from "@/data/concepts";
 import { Breadcrumbs } from "@/components/studio/Breadcrumbs";
-import { ConceptGallery } from "@/components/studio/ConceptGallery";
 import { FlagshipCase } from "@/components/studio/FlagshipCase";
 import { SiteFrame } from "@/components/studio/SiteFrame";
+import { Reveal } from "@/components/Reveal";
 import { pageMeta } from "@/lib/seo";
+
+const standards = [
+  {
+    n: "01",
+    title: "ארכיטקטורה מאפס",
+    en: "Zero-Bloat Architecture",
+    body: "המבנה, הקוד והנתונים נכתבים סביב העסק — לא מורכבים מתבנית. אפס תוספים מיותרים ואפס חוב טכני.",
+  },
+  {
+    n: "02",
+    title: "עיצוב ותנועה בקנה מידה",
+    en: "Design & Motion",
+    body: "טיפוגרפיה בינלאומית, קצב אנכי מדויק ואנימציות אלגנטיות שמרגישות כמו מותג — לא כמו אפקטים.",
+  },
+  {
+    n: "03",
+    title: "מהירות וביצועים",
+    en: "Sub-Second Performance",
+    body: "טעינה מתחת לשנייה וניקוד Core Web Vitals גבוה — חוויה חלקה מהנייד ועד המסך הגדול.",
+  },
+  {
+    n: "04",
+    title: "בעלות מלאה",
+    en: "Full Ownership",
+    body: "הקוד, העיצוב והתוכן הם 100% שלכם. בלי תלות בפלטפורמה סגורה ובלי מנוי חובה כדי להישאר באוויר.",
+  },
+] as const;
 
 const methodLayers = [
   {
@@ -18,7 +44,7 @@ const methodLayers = [
   },
   {
     title: "מנגנון ההמרה",
-    body: "איך תשומת הלב הופכת לפעולה: איפה הכפתור יושב, מה הוא אומר, ומה קורה אחר שלוחצים. כאן נסגרת המכירה.",
+    body: "איך תשומת הלב הופכת לפעולה: איפה הכפתור יושב, מה הוא אומר, ומה קורה אחרי שלוחצים. כאן נסגרת המכירה.",
   },
 ] as const;
 
@@ -30,9 +56,9 @@ const craftPillars = [
 ] as const;
 
 export const metadata: Metadata = pageMeta({
-  title: "מקרי בוחן — אתגר, פתרון ומנגנון המרה",
+  title: "מקרי בוחן — נכס חי בהתאמה אישית",
   description:
-    "נכס דיגיטלי חי — LUXORA למטבחי יוקרה — וחמישה מקרי בוחן עיצוביים: עסק שירותים, חנות, קליניקה, דף נחיתה ומותג. לכל אחד האתגר העסקי, הפתרון העיצובי, ומנגנון ההמרה — חשיבה, לא קישוט.",
+    "נכס דיגיטלי חי אחד, LUXORA למטבחי יוקרה, שנבנה מאפס בארכיטקטורה, עיצוב והמרה בתכנון אחד — לצד סטנדרט ההנדסה שמאחורי כל פרויקט בהתאמה אישית.",
   path: "/work",
 });
 
@@ -53,35 +79,76 @@ export default function WorkPage() {
           </p>
           <h1>מקרי בוחן</h1>
           <p>
-            נכס חי אחד שנבנה מאפס — LUXORA, מותג מטבחי יוקרה בהתאמה אישית — ולצידו
-            חמישה כיווני עיצוב מלאים. כל אחד בנוי באותה שיטה: אתגר עסקי, פתרון
-            עיצובי, ומנגנון המרה. חשיבה, לא קישוט.
+            נכס חי אחד, שנבנה מאפס — LUXORA, מותג מטבחי יוקרה בהתאמה אישית. לא מוקאפ
+            ולא תבנית: ארכיטקטורה, עיצוב והמרה בתכנון אחד, מהאפיון ועד ההשקה.
           </p>
         </div>
       </header>
       <FlagshipCase />
-      <section className="band band-ink" aria-labelledby="folio-title">
+      <section className="band band-muted" aria-labelledby="standard-title">
         <div className="shell">
-          <h2 id="folio-title" className="sr-only">
-            גלריית מקרי בוחן
-          </h2>
-          <ConceptGallery concepts={concepts} detailed />
-          <p className="folio-note">
-            רוצים כיוון לעסק שלכם, לא העתק של המסכים האלה?{" "}
-            <Link href="/contact">שיחה קצרה</Link>
-          </p>
+          <div className="section-head">
+            <div>
+              <p className="marker">
+                <span className="brand-latin">01</span>
+                <span>הסטנדרט</span>
+              </p>
+              <h2 id="standard-title">כל נכס נבנה מאפס באותה הקפדה.</h2>
+            </div>
+            <p>
+              מאחורי כל פרויקט עומד אותו סטנדרט הנדסי: קוד שכתוב מהיסוד, עיצוב שנבנה
+              סביב המותג, ביצועים שנמדדים, ובעלות מלאה שנשארת בידיים שלכם.
+            </p>
+          </div>
+
+          <ol className="pillar-grid">
+            {standards.map((item, index) => (
+              <Reveal as="li" key={item.en} delay={index * 0.06}>
+                <div className="pillar">
+                  <span className="pillar-index brand-latin">{item.n}</span>
+                  <h3 className="pillar-title">
+                    {item.title}
+                    <em>{item.en}</em>
+                  </h3>
+                  <p>{item.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </ol>
+
+          <Reveal className="commission">
+            <div>
+              <p className="marker">
+                <span className="brand-latin">COMMISSION</span>
+                <span>הזמנת פרויקט</span>
+              </p>
+              <h3>חוויית מותג בהתאמה אישית לפרויקט הבא שלך.</h3>
+              <p>
+                כל פרויקט נבנה בהתאמה מלאה — מהאפיון הראשון ועד ההשקה. שיחה קצרה
+                מספיקה כדי להבין אם אנחנו מתאימים, ומה הצעד הבא.
+              </p>
+            </div>
+            <div className="commission-actions">
+              <Link className="btn btn-primary" href="/contact">
+                לתיאום שיחה
+              </Link>
+              <Link className="btn btn-ghost" href="/services">
+                לשירותים
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
       <section className="band" aria-labelledby="reading-title">
         <div className="shell">
           <p className="marker">
-            <span className="brand-latin">01</span>
+            <span className="brand-latin">02</span>
             <span>השיטה</span>
           </p>
-          <h2 id="reading-title">שלוש שכבות בכל מקרה בוחן</h2>
+          <h2 id="reading-title">שלוש שכבות בכל פרויקט</h2>
           <p className="caption">
-            כל עבודה נבנית באותו סדר: קודם מבינים את האתגר, אחר כך מעצבים את
-            הפתרון, ולבסוף מגדירים את ההמרה. שום מסך לא נבנה לפני שהשאלה ברורה.
+            כל פרויקט נבנה באותו סדר: קודם מבינים את האתגר, אחר כך מעצבים את הפתרון,
+            ולבסוף מגדירים את ההמרה. שום מסך לא נבנה לפני שהשאלה ברורה.
           </p>
           <ol className="reading-list">
             {methodLayers.map((layer, index) => (
@@ -102,13 +169,13 @@ export default function WorkPage() {
               ))}
             </ul>
             <p>
-              מאחורי כל מקרה בוחן עומדת אותה הקפדה: גריד מדויק, קצב אנכי, טיפוגרפיה
-              בקנה מידה, וזרימת מכירה שמובילה לפעולה. אלה הדברים שמפרידים אתר
-              שנבנה ביד מאתר שהרכיבו מתבנית.
+              מאחורי כל פרויקט עומדת אותה הקפדה: גריד מדויק, קצב אנכי, טיפוגרפיה בקנה
+              מידה, וזרימת מכירה שמובילה לפעולה. אלה הדברים שמפרידים אתר שנבנה ביד מאתר
+              שהרכיבו מתבנית.
             </p>
           </div>
           <p className="after-link">
-            <Link href="/services">מהמבנים האלה נגזרים השירותים</Link>
+            <Link href="/services">מהסטנדרט הזה נגזרים השירותים</Link>
           </p>
         </div>
       </section>

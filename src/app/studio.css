@@ -2375,3 +2375,70 @@
   letter-spacing: 0.14em;
   color: var(--on-night);
 }
+
+/* ---------------------------------------------------------------------------
+   Work page — bespoke commission card.
+   A refined inquiry panel closing the flagship-only portfolio.
+   --------------------------------------------------------------------------- */
+
+.commission {
+  display: grid;
+  gap: 1.2rem;
+  margin-top: 2.4rem;
+  padding: 1.7rem 1.5rem;
+  border-radius: 1.4rem;
+  background:
+    radial-gradient(120% 110% at 100% 0%, rgba(42, 63, 212, 0.2), transparent 62%),
+    linear-gradient(180deg, #10182c, #0a0f1e);
+  border: 1px solid rgba(244, 239, 230, 0.14);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.35);
+  color: var(--on-night);
+}
+
+.commission h3 {
+  margin: 0.35rem 0 0;
+  font-size: clamp(1.3rem, 3vw, 1.75rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  line-height: 1.25;
+}
+
+.commission p {
+  margin: 0.7rem 0 0;
+  color: var(--on-night-soft);
+  max-width: 46rem;
+  line-height: 1.7;
+}
+
+.commission .marker {
+  margin: 0;
+  color: var(--on-night-soft);
+}
+
+.commission .marker .brand-latin {
+  color: var(--accent-bright);
+}
+
+.commission-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.commission .btn-ghost {
+  color: var(--on-night);
+  border-color: rgba(244, 239, 230, 0.32);
+}
+
+@media (min-width: 860px) {
+  .commission {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 2rem 2.1rem;
+  }
+
+  .commission-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
