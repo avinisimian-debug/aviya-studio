@@ -102,7 +102,8 @@ export function pageMeta({
 }
 
 export function buildMetadata(): Metadata {
-  const verification = gscVerification();
+  const verification =
+    gscVerification() ?? "Y66KQyLlpKYOWvCVZzeNJ0GBhReQNnlevCE9HmmGg8Q";
   return {
     metadataBase: new URL(siteSeo.url),
     title: {
@@ -145,7 +146,7 @@ export function buildMetadata(): Metadata {
         "max-video-preview": -1,
       },
     },
-    ...(verification ? { verification: { google: verification } } : {}),
+    verification: { google: verification },
   };
 }
 
