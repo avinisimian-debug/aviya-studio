@@ -3,6 +3,7 @@ import Link from "next/link";
 import { concepts } from "@/data/concepts";
 import { Breadcrumbs } from "@/components/studio/Breadcrumbs";
 import { ConceptGallery } from "@/components/studio/ConceptGallery";
+import { FlagshipCase } from "@/components/studio/FlagshipCase";
 import { SiteFrame } from "@/components/studio/SiteFrame";
 import { pageMeta } from "@/lib/seo";
 
@@ -31,7 +32,7 @@ const craftPillars = [
 export const metadata: Metadata = pageMeta({
   title: "מקרי בוחן — אתגר, פתרון ומנגנון המרה",
   description:
-    "חמישה מקרי בוחן עיצוביים: עסק שירותים, חנות, קליניקה, דף נחיתה ומותג. לכל אחד האתגר העסקי, הפתרון העיצובי, ומנגנון ההמרה — חשיבה, לא קישוט.",
+    "נכס דיגיטלי חי — LUXORA למטבחי יוקרה — וחמישה מקרי בוחן עיצוביים: עסק שירותים, חנות, קליניקה, דף נחיתה ומותג. לכל אחד האתגר העסקי, הפתרון העיצובי, ומנגנון ההמרה — חשיבה, לא קישוט.",
   path: "/work",
 });
 
@@ -52,12 +53,13 @@ export default function WorkPage() {
           </p>
           <h1>מקרי בוחן</h1>
           <p>
-            חמישה כיוונים עיצוביים מלאים, כל אחד בנוי כמו מקרה בוחן: אתגר עסקי,
-            פתרון עיצובי, ומנגנון המרה. אלה הדגמות של חשיבה ושיטה — לא תוצאות של
-            לקוחות, בלי מספרים מומצאים.
+            נכס חי אחד שנבנה מאפס — LUXORA, מותג מטבחי יוקרה בהתאמה אישית — ולצידו
+            חמישה כיווני עיצוב מלאים. כל אחד בנוי באותה שיטה: אתגר עסקי, פתרון
+            עיצובי, ומנגנון המרה. חשיבה, לא קישוט.
           </p>
         </div>
       </header>
+      <FlagshipCase />
       <section className="band band-ink" aria-labelledby="folio-title">
         <div className="shell">
           <h2 id="folio-title" className="sr-only">

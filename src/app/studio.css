@@ -1716,3 +1716,285 @@
 .hero .hero-caption {
   color: var(--accent-bright);
 }
+
+/* ---------------------------------------------------------------------------
+   Flagship work — LUXORA. A single, real bespoke build shown on its own stage:
+   deep canvas, soft studio glow, a refined 1px frame around a live screenshot.
+   --------------------------------------------------------------------------- */
+
+.flagship {
+  position: relative;
+  background:
+    radial-gradient(80% 55% at 50% -10%, rgba(42, 63, 212, 0.28), transparent 62%),
+    linear-gradient(180deg, #05070d 0%, #070b14 55%, #05070d 100%);
+  border-top: 1px solid rgba(244, 239, 230, 0.08);
+  border-bottom: 1px solid rgba(244, 239, 230, 0.08);
+  overflow: clip;
+}
+
+.flagship-head {
+  display: grid;
+  gap: 0.55rem;
+  margin-bottom: 2rem;
+}
+
+.flagship-title {
+  margin: 0;
+  font-size: clamp(2.3rem, 6.4vw, 4.6rem);
+  font-weight: 500;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+  color: var(--on-night);
+}
+
+.flagship-title .brand-latin {
+  font-size: 0.86em;
+  letter-spacing: 0.05em;
+}
+
+.flagship-slash {
+  color: var(--accent-bright);
+  font-weight: 400;
+}
+
+.flagship-sub {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--on-night-soft);
+  font-size: 1.12rem;
+  line-height: 1.7;
+}
+
+.flagship-stage {
+  position: relative;
+  margin: 0;
+  display: grid;
+  gap: 0.9rem;
+  isolation: isolate;
+}
+
+.flagship-stage::before {
+  content: "";
+  position: absolute;
+  inset: -6% -4% auto;
+  height: 64%;
+  z-index: -1;
+  background: radial-gradient(58% 62% at 50% 0%, rgba(42, 63, 212, 0.5), transparent 72%);
+  filter: blur(26px);
+  pointer-events: none;
+}
+
+.flagship-frame {
+  position: relative;
+  border-radius: 1.15rem;
+  overflow: hidden;
+  background: #0a0e18;
+  border: 1px solid rgba(3, 5, 10, 0.9);
+  box-shadow:
+    0 0 0 1px rgba(142, 160, 255, 0.18),
+    0 44px 110px rgba(0, 0, 0, 0.62),
+    0 0 90px rgba(42, 63, 212, 0.22);
+}
+
+.flagship-chrome {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.62rem 0.9rem;
+  background: linear-gradient(180deg, #f8f4ed, #e8e1d4);
+  border-bottom: 1px solid rgba(3, 5, 10, 0.14);
+}
+
+.flagship-dots {
+  display: inline-flex;
+  gap: 0.35rem;
+  flex: none;
+}
+
+.flagship-dots i {
+  width: 0.58rem;
+  height: 0.58rem;
+  border-radius: 99px;
+  background: #cdc1ad;
+}
+
+.flagship-url {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.55rem;
+  max-width: 72%;
+  padding: 0.3rem 0.8rem;
+  border-radius: 999px;
+  background: rgba(3, 5, 10, 0.06);
+  border: 1px solid rgba(3, 5, 10, 0.09);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+  color: #6a6258;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.flagship-url .brand-latin {
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  font-size: 0.7rem;
+}
+
+.flagship-shot {
+  background: #070b14;
+}
+
+.flagship-img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.flagship-caption {
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  color: var(--on-night-soft);
+  opacity: 0.82;
+}
+
+.flagship-body {
+  display: grid;
+  gap: 1.5rem;
+  margin-top: 2.2rem;
+}
+
+.flagship-deliverables {
+  display: grid;
+  gap: 1.1rem;
+  align-content: start;
+}
+
+.flagship-deliverables h3,
+.flagship-copy h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--on-night);
+}
+
+.flagship-deliverables ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.flagship-deliverables li {
+  display: flex;
+  align-items: center;
+  gap: 0.95rem;
+  padding: 0.95rem 1.05rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(244, 239, 230, 0.14);
+  background: linear-gradient(180deg, rgba(244, 239, 230, 0.055), rgba(244, 239, 230, 0.02));
+}
+
+.flagship-idx {
+  color: var(--accent-bright);
+  font-size: 0.95rem;
+  letter-spacing: 0.06em;
+  flex: none;
+}
+
+.flagship-deliverable {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.flagship-deliverable b {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--on-night);
+}
+
+.flagship-deliverable em {
+  font-style: normal;
+  font-size: 0.78rem;
+  letter-spacing: 0.035em;
+  color: var(--on-night-soft);
+  opacity: 0.78;
+}
+
+.flagship-copy {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.flagship-copy p {
+  margin: 0;
+  max-width: 42rem;
+  color: var(--on-night-soft);
+  line-height: 1.78;
+}
+
+.flagship-facts {
+  list-style: none;
+  margin: 0.2rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.flagship-facts li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  padding-top: 0.55rem;
+  border-top: 1px solid rgba(244, 239, 230, 0.12);
+}
+
+.flagship-facts span {
+  flex: none;
+  min-width: 4.2rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--on-night-soft);
+}
+
+.flagship-facts b {
+  font-weight: 500;
+  color: var(--on-night);
+}
+
+.flagship-live {
+  justify-self: start;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 800px) {
+  .flagship-body {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2.6rem;
+    align-items: start;
+  }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .flagship-frame {
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.5s ease;
+  }
+
+  .flagship-stage:hover .flagship-frame {
+    transform: translateY(-4px);
+    box-shadow:
+      0 0 0 1px rgba(142, 160, 255, 0.28),
+      0 50px 120px rgba(0, 0, 0, 0.66),
+      0 0 110px rgba(42, 63, 212, 0.32);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flagship-frame {
+    transform: none !important;
+  }
+}

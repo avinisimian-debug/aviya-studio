@@ -4,6 +4,7 @@ import { deliveryGuarantee, homeFaqs, stages, standards } from "@/data/depth";
 import { fitNo, fitYes, hero, principles, SERVICES, valueProps } from "@/data/studio-site";
 import { ConceptGallery } from "@/components/studio/ConceptGallery";
 import { ConceptStage } from "@/components/studio/ConceptStage";
+import { FlagshipCase } from "@/components/studio/FlagshipCase";
 import { LdJson } from "@/components/studio/LdJson";
 import { Reveal } from "@/components/Reveal";
 
@@ -83,6 +84,8 @@ export function HomePage() {
           </div>
         </div>
       </section>
+
+      <FlagshipCase />
 
       <section className="band band-ink" id="portfolio" aria-labelledby="portfolio-title">
         <div className="shell">
